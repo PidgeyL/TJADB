@@ -9,7 +9,7 @@ from lib.Objects       import Song, Genre, Charter
 
 db = DatabaseLayer()
 
-g = Genre(None, 'ボカロイド', 'Vocaloid', 'ボカロイド')
+g = Genre(None, 'ボーカロイド', 'Vocaloid', 'ボーカロイド')
 c = Charter(None, 'Bandai Namco', b'png', '', False)
 
 g._id = db.genres.add(g)
