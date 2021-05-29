@@ -4,7 +4,7 @@ import sys
 run_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(os.path.join(run_path, ".."))
 
-from lib.Objects import Song
+from lib.Objects import Song, Genre, Charter
 
 
 def verify_song(song):
@@ -51,3 +51,41 @@ def verify_song(song):
         traceback.print_exc()
         print(e)
         return False
+
+
+def verify_genre(genre):
+    none = type(None)
+    try:
+        assert isinstance(genre,           Genre)
+        assert isinstance(genre._id,      (int, none))
+        assert isinstance(genre.name_eng,  str)
+        assert isinstance(genre.name_jp,   str)
+        assert isinstance(genre.genre,     str)
+        assert len(genre.name_eng) > 0
+        assert len(genre.name_jp)  > 0
+        assert len(genre.genre)    > 0
+        return True
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        print(e)
+        return False
+
+
+def verify_charter(charter):
+    none = type(None)
+    try:
+        assert isinstance(charter,       Charter)
+        assert isinstance(charter._id,   (int, none))
+        assert isinstance(charter.name,   str)
+        assert isinstance(charter.image, (bytes, none))
+        assert isinstance(charter.about, (str, none))
+        assert isinstance(charter.staff,  bool)
+        assert len(charter.name) > 0
+        return True
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        print(e)
+        return False
+

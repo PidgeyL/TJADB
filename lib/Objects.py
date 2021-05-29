@@ -1,18 +1,18 @@
 class Genre:
-    def __init__(self, **args):
-        self._id
-        self.name_eng
-        self.name_jp
-        self.description
+    def __init__(self, db_id:int, name_eng:str, name_jp:str, genre:str):
+        self._id      = db_id
+        self.name_eng = name_eng
+        self.name_jp  = name_jp
+        self.genre    = genre
 
 
 class Charter:
-    def __init__(self, **args):
-        self._id
-        self.name
-        self.profile_img
-        self.about
-
+    def __init__(self, db_id:int, name:str, image:bytes, about:str, staff:bool):
+        self._id   = db_id
+        self.name  = name
+        self.image = image
+        self.about = about
+        self.staff = staff
 
 class Song:
     def __init__(self, db_id:int, title_orig:str, title_eng:str,subtitle_orig:str,

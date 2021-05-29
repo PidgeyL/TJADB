@@ -1,3 +1,18 @@
+PRAGMA foreign_keys = ON;
+
+CREATE TABLE IF NOT EXISTS Genres
+(ID        INTEGER  PRIMARY KEY  AUTOINCREMENT,
+ Title_JP  TEXT     NOT NULL,
+ Title_EN  TEXT     NOT NULL,
+ Genre     TEXT     NOT NULL);
+
+CREATE TABLE IF NOT EXISTS Charters
+(ID     INTEGER  PRIMARY KEY  AUTOINCREMENT,
+ Name   TEXT     NOT NULL,
+ Image  BLOB,
+ About  TEXT,
+ Staff  BOOL     DEFAULT 0);
+
 CREATE TABLE IF NOT EXISTS Songs
 (ID             INTEGER  PRIMARY KEY  AUTOINCREMENT,
  Title_Orig     TEXT     NOT NULL,
@@ -10,7 +25,7 @@ CREATE TABLE IF NOT EXISTS Songs
  Source_Eng     TEXT,
  BPM            REAL     NOT NULL,
  Genre_ID       INTEGER  NOT NULL,
- Charter_ID      INTEGER  NOT NULL,
+ Charter_ID     INTEGER  NOT NULL,
  D_Kantan       INTEGER,
  D_Futsuu       INTEGER,
  D_Muzukashii   INTEGER,
@@ -20,16 +35,6 @@ CREATE TABLE IF NOT EXISTS Songs
  Comments       TEXT,
  Video_Link     TEXT,
  Path           TEXT     NOT NULL,
- MD5            TEXT     NOT NULL);
-
-CREATE TABLE IF NOT EXISTS Genre
-(ID        INTEGER  PRIMARY KEY  AUTOINCREMENT,
- Title_JP  TEXT     NOT NULL,
- Title_EN  TEXT     NOT NULL,
- Genre     TEXT     NOT NULL);
-
-CREATE TABLE IF NOT EXISTS Charter
-(ID     INTEGER  PRIMARY KEY  AUTOINCREMENT,
- Name   TEXT     NOT NULL,
- About  TEXT,
- Staff  BOOL     DEFAULT 0);
+ MD5            TEXT     NOT NULL,
+ FOREIGN KEY(Genre_ID)   REFERENCES "Genres" (ID),
+ FOREIGN KEY(Charter_ID) REFERENCES "Charters" (ID));

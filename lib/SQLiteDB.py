@@ -30,15 +30,16 @@ class Database(metaclass=Singleton):
 
     def _db_wrapped(funct):
         def wrapper(self, *args, **kwargs):
-            db = self._ensure_database()
-            result = funct(self, db, *args, **kwargs)
+            db  = self._ensure_database()
+            cur = db.cursor()
+            result = funct(self, db, cur, *args, **kwargs)
             db.close()
             return result
         return wrapper
 
 
     @_db_wrapped
-    def add_song(self, db, title_o, title_e, sub_o, sub_e, artist_o, artist_e,
+    def add_song(self, db, cur, title_o, title_e, sub_o, sub_e, artist_o, artist_e,
                  source_o, source_e, bpm, genre_id, charter_id, kantan, futsuu,
                  muzukashii, oni, ura, vetted, comments, video, path, md5):
         s = """INSERT INTO Songs(
@@ -50,14 +51,25 @@ class Database(metaclass=Singleton):
         v = (title_o, title_e, sub_o, sub_e, artist_o, artist_e, source_o,
              source_e, bpm, genre_id, charter_id, kantan, futsuu,
              muzukashii, oni, ura, vetted, comments, video, path, md5)
-        db.execute(s, v)
+        cur.execute(s, v)
         db.commit()
+        return cur.lastrowid
 
 
     @_db_wrapped
-    def add_genre(self, db, title_jp, title_eng, genre):
-        s = """INSERT INTO Genre(Title_JP, Title_EN, Genre) VALUES(?, ?, ?)"""
-        db.execute(s, (title_jp, title_eng, genre))
+    def add_genre(self, db, cur, title_jp, title_eng, genre):
+        s = "INSERT INTO Genres(Title_JP, Title_EN, Genre) VALUES(?, ?, ?)"
+        cur.execute(s, (title_jp, title_eng, genre))
+        db.commit()
+        return cur.lastrowid
+
+
+    @_db_wrapped
+    def add_charter(self, db, cur, name, image, about, staff):
+        s = "INSERT INTO Charters(Name, Image, About, Staff) VALUES(?, ?, ?, ?)"
+        cur.execute(s, (name, image, about, staff))
+        db.commit()
+        return cur.lastrowid
 
 
     @_db_wrapped
