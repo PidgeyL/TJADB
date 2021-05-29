@@ -1,0 +1,13 @@
+import os
+import sys
+
+run_path = os.path.dirname(os.path.realpath(__file__))
+sys.path.append(os.path.join(run_path, ".."))
+
+from lib.SQLiteDB import Database
+
+db = Database()
+db.add_song('千本桜', 'Senbonzakura', '黒うさP feat.初音ミク',
+            'Kurousa-P feat. Hatsune Miku', '黒うさP', 'Kurousa-P', None, None,
+            154, 1, 1, 3, 5, 6, 7, 8, True, None, None, '/tmp/test.zip',
+            'some_md5')
