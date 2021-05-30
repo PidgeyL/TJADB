@@ -1,3 +1,4 @@
+import functools
 import os
 import sys
 
@@ -5,7 +6,7 @@ run_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(os.path.join(run_path, ".."))
 
 import lib.SQLiteDB as Database
-from lib.Objects            import Song
+from lib.Objects            import Song, Genre, Charter
 from lib.ObjectVerification import verify_song, verify_genre, verify_charter
 from lib.Singleton          import Singleton
 
@@ -33,12 +34,22 @@ class Songs():
         return self.db.add_song(*vars)
 
 
-#    def get_all(self):
-#        data = []
-#        for s in self.db.get_all_songs():
-#            x = Song(s['ID'], s['Title_Orig'], s['Title_Eng'], s['Subtitle_Orig'],
-#                     s['Subtitle_Eng'], s['Artist_Orig'], s['Artist_Eng'],
-#                     s['Source_Orig'], s['Source_Eng'], s['BPM'], genre)
+    def get_all(self):
+        data = []
+        print(self.db.get_all_songs())
+
+        for s in self.db.get_all_songs():
+            g = DatabaseLayer().genres.get_by_id(s['Genre_ID'])
+            c = DatabaseLayer().charters.get_by_id(s['Charter_ID'])
+            x = Song(s['ID'], s['Title_Orig'], s['Title_Eng'], s['Subtitle_Orig'],
+                     s['Subtitle_Eng'], s['Artist_Orig'], s['Artist_Eng'],
+                     s['Source_Orig'], s['Source_Eng'], s['BPM'], g, c,
+                     s['D_Kantan'], s['D_Futsuu'], s['D_Muzukashii'],
+                     s['D_Oni'], s['D_Ura'], bool(s['Vetted']), s['Comments'],
+                     s['Video_Link'], s['Path'], s['MD5'])
+            data.append(x)
+        return data
+
 
 class Genres():
     def __init__(self):
@@ -49,6 +60,15 @@ class Genres():
         if not verify_genre(genre):
             sys.exit("Could not verify object!")
         return self.db.add_genre(genre.name_jp, genre.name_eng, genre.genre)
+
+
+    @functools.cache
+    def get_by_id(self, id):
+        g = self.db.get_genre_by_id(id)
+        if len(g) == 0:
+            return None
+        g = g[0]
+        return Genre(g['ID'], g['Title_EN'], g['Title_JP'], g['Genre'])
 
 
 class Charters():
@@ -62,3 +82,11 @@ class Charters():
         return self.db.add_charter(charter.name, charter.image, charter.about,
                                    charter.staff )
 
+
+    @functools.cache
+    def get_by_id(self, id):
+        g = self.db.get_charter_by_id(id)
+        if len(g) == 0:
+            return None
+        g = g[0]
+        return Charter(g['ID'], g['Name'], g['Image'], g['About'], bool(g['Staff']))

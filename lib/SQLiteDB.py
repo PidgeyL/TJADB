@@ -38,6 +38,9 @@ class Database(metaclass=Singleton):
         return wrapper
 
 
+    ###############
+    # Adding data #
+    ###############
     @_db_wrapped
     def add_song(self, db, cur, title_o, title_e, sub_o, sub_e, artist_o, artist_e,
                  source_o, source_e, bpm, genre_id, charter_id, kantan, futsuu,
@@ -72,12 +75,27 @@ class Database(metaclass=Singleton):
         return cur.lastrowid
 
 
+    ################
+    # reading data #
+    ################
     @_db_wrapped
-    def get_all_songs(self, db):
-        s = """SELECT s.* g.FROM Songs as s
-               INNER JOIN Genre  as g ON s.Genre_ID=g.ID
-               INNER JOIN Mapper as m on s.Mapper_ID=m.ID"""
-        cur = db.cursor()
+    def _get_id(self, db, cur, table, id):
+        data  = list(cur.execute("SELECT * FROM %s WHERE ID=?"%table, (id,)))
+        names = list(map(lambda x: x[0], cur.description))
+        return [dict(zip(names, d)) for d in data]
+
+
+    def get_genre_by_id(self, id):
+        return self._get_id('Genres', id)
+
+
+    def get_charter_by_id(self, id):
+        return self._get_id('Charters', id)
+
+
+
+    @_db_wrapped
+    def get_all_songs(self, db, cur):
         data  = list(cur.execute("SELECT * FROM Songs"))
         names = list(map(lambda x: x[0], cur.description))
-        return dict(zip(names, data))
+        return [dict(zip(names, d)) for d in data]

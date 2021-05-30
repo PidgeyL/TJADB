@@ -12,7 +12,7 @@ class Charter:
         self.name  = name
         self.image = image
         self.about = about
-        self.staff = staff
+        self.staff = bool(staff)
 
 class Song:
     def __init__(self, db_id:int, title_orig:str, title_eng:str,subtitle_orig:str,
@@ -30,7 +30,7 @@ class Song:
         self.artist_eng    = artist_eng
         self.charter       = charter
         self.bpm           = bpm
-        self.vetted        = vetted
+        self.vetted        = bool(vetted)
         self.d_kantan      = kantan
         self.d_futsuu      = futsuu
         self.d_muzukashii  = muzukashii
