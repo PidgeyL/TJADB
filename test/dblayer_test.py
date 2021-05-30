@@ -18,6 +18,6 @@ c._id = db.charters.add(c)
 s = Song(None,'千本桜', 'Senbonzakura', '黒うさP feat.初音ミク',
            'Kurousa-P feat. Hatsune Miku', '黒うさP', 'Kurousa-P', None, None,
             154, g, c, 3, 5, 6, 7, 8, True, None, None, '/tmp/test.zip',
-           'c5f8f41459bdbc3f77e72601b7f5ebd1')
+           'c5f8f41459bdbc3f77e72601b7f5ebd1', '2021-04-31', '2021-04-31')
 
 db.songs.add(s)

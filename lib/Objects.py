@@ -20,7 +20,8 @@ class Song:
                        source_orig:str, source_eng:str, bpm:float, genre:Genre,
                        charter:Charter,kantan:int, futsuu:int,
                        muzukashii:int, oni:int, ura:int, vetted:bool,
-                       comments:str, video_link:str, path:str, md5:str):
+                       comments:str, video_link:str, path:str, md5:str,
+                       added:str, updated:str):
         self._id           = db_id
         self.title_orig    = title_orig
         self.title_eng     = title_eng
@@ -43,5 +44,19 @@ class Song:
         self.video_link    = video_link
         self.path          = path
         self.md5           = md5
+        self.added         = added
+        self.updated       = updated
 
 
+    def to_dict(self):
+        obj = dict(vars(self))
+        difficulties = [x for x in obj.keys() if x.startswith('d_')]
+        for remove in (['_id', 'path', 'genre', 'charter'] + difficulties):
+            del obj[remove]
+        obj['charter']    = self.charter.name
+        obj['genre_eng']  = self.genre.name_eng
+        obj['genre_jp']   = self.genre.name_jp
+        obj['difficulty'] = {}
+        for difficulty in difficulties:
+            obj['difficulty'][difficulty[2:]] = getattr(self, difficulty)
+        return obj

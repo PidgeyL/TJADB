@@ -36,5 +36,7 @@ CREATE TABLE IF NOT EXISTS Songs
  Video_Link     TEXT,
  Path           TEXT     NOT NULL,
  MD5            TEXT     NOT NULL,
+ Added          TEXT     NOT NULL,
+ Updated        TEXT     NOT NULL,
  FOREIGN KEY(Genre_ID)   REFERENCES "Genres" (ID),
  FOREIGN KEY(Charter_ID) REFERENCES "Charters" (ID));

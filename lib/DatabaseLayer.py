@@ -30,14 +30,13 @@ class Songs():
                 song.source_orig, song.source_eng, song.bpm, song.genre._id,
                 song.charter._id, song.d_kantan, song.d_futsuu,
                 song.d_muzukashii, song.d_oni, song.d_ura, song.vetted,
-                song.comments, song.video_link, song.path, song.md5)
+                song.comments, song.video_link, song.path, song.md5, song.added,
+                song.updated)
         return self.db.add_song(*vars)
 
 
     def get_all(self):
         data = []
-        print(self.db.get_all_songs())
-
         for s in self.db.get_all_songs():
             g = DatabaseLayer().genres.get_by_id(s['Genre_ID'])
             c = DatabaseLayer().charters.get_by_id(s['Charter_ID'])
@@ -46,7 +45,7 @@ class Songs():
                      s['Source_Orig'], s['Source_Eng'], s['BPM'], g, c,
                      s['D_Kantan'], s['D_Futsuu'], s['D_Muzukashii'],
                      s['D_Oni'], s['D_Ura'], bool(s['Vetted']), s['Comments'],
-                     s['Video_Link'], s['Path'], s['MD5'])
+                     s['Video_Link'], s['Path'], s['MD5'], s['Added'], s['Updated'])
             data.append(x)
         return data
 
