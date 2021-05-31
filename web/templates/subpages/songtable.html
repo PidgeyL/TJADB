@@ -1,0 +1,36 @@
+<table id="dtSongTable" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+  <thead>
+    <tr>
+      <th class="th-sm"> Name   </th>
+      <th class="th-sm"> Artist </th>
+      <th class="th-sm"> Source </th>
+      <th class="th-sm"> BPM    </th>
+      <th class="th-sm"> Genre  </th>
+      <th class="th-sm">  <img src="/static/imgs/kantan.png"     alt="かんたん(easy)">        </th>
+      <th class="th-sm">  <img src="/static/imgs/futsuu.png"     alt="ふつう(Normal)">        </th>
+      <th class="th-sm">  <img src="/static/imgs/muzukashii.png" alt="むずかしい(Difficult)"> </th>
+      <th class="th-sm">  <img src="/static/imgs/oni.png"        alt="おに(Extreme)">         </th>
+      <th class="th-sm">  <img src="/static/imgs/ura.png"        alt="うら(Extreme Alt.)">    </th>
+      <th class="th-sm"> Charter </th>
+      <th class="th-sm"> Last Updated </th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for song in songlist %}
+      <tr>
+        <td> {{ song['title_eng'] }}  <br /> ({{ song['title_orig'] }})  </td>
+        <td> {{ song['artist_eng'] }} <br /> ({{ song['artist_orig'] }}) </td>
+        <td> {{ song['source_eng'] }} <br /> ({{ song['source_orig'] }}) </td>
+        <td> {{ song['bpm'] }} </td>
+        <td> {{ song['genre_eng'] }}  <br /> ({{ song['genre_jp'] }}) </td>
+        <td> {{ song['difficulty']['kantan'] }}     </td>
+        <td> {{ song['difficulty']['futsuu'] }}     </td>
+        <td> {{ song['difficulty']['muzukashii'] }} </td>
+        <td> {{ song['difficulty']['oni'] }}        </td>
+        <td> {{ song['difficulty']['ura'] }}        </td>
+        <td> {{ song['charter'] }} </td>
+        <td> {{ song['updated'] }} </td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
