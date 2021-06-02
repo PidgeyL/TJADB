@@ -8,7 +8,8 @@ from lib.SQLiteDB import Database
 
 db = Database()
 
-g_id = db.add_genre('ボーカロイド', 'Vocaloid', 'ボーカロイド')
+#g_id = db.add_genre('ボーカロイド', 'Vocaloid', 'ボーカロイド')
+g_id = 3
 c_id = db.add_charter('Bandai Namco', b'png', '', False)
 
 db.add_song('千本桜', 'Senbonzakura', '黒うさP feat.初音ミク',

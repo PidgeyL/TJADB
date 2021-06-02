@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS Genres
 (ID        INTEGER  PRIMARY KEY  AUTOINCREMENT,
  Title_JP  TEXT     NOT NULL,
  Title_EN  TEXT     NOT NULL,
- Genre     TEXT     NOT NULL);
+ Genre     TEXT     NOT NULL  UNIQUE);
 
 CREATE TABLE IF NOT EXISTS Charters
 (ID     INTEGER  PRIMARY KEY  AUTOINCREMENT,
@@ -40,3 +40,20 @@ CREATE TABLE IF NOT EXISTS Songs
  Updated        TEXT     NOT NULL,
  FOREIGN KEY(Genre_ID)   REFERENCES "Genres" (ID),
  FOREIGN KEY(Charter_ID) REFERENCES "Charters" (ID));
+
+INSERT OR IGNORE INTO Genres(Title_JP, Title_EN, Genre)
+  VALUES('J-Pop', 'J-Pop', 'J-Pop') ON CONFLICT DO NOTHING;
+INSERT OR IGNORE INTO Genres(Title_JP, Title_EN, Genre)
+  VALUES('アニメ', 'Anime', 'アニメ') ON CONFLICT DO NOTHING;
+INSERT OR IGNORE INTO Genres(Title_JP, Title_EN, Genre)
+  VALUES('ボーカロイド', 'Vocaloid', 'ボーカロイド') ON CONFLICT DO NOTHING;
+INSERT OR IGNORE INTO Genres(Title_JP, Title_EN, Genre)
+  VALUES('どうよう', 'Children & Folk', 'どうよう') ON CONFLICT DO NOTHING;
+INSERT OR IGNORE INTO Genres(Title_JP, Title_EN, Genre)
+  VALUES('バラエティ', 'Variety', 'バラエティ') ON CONFLICT DO NOTHING;
+INSERT OR IGNORE INTO Genres(Title_JP, Title_EN, Genre)
+  VALUES('クラシック', 'Classical', 'クラシック') ON CONFLICT DO NOTHING;
+INSERT OR IGNORE INTO Genres(Title_JP, Title_EN, Genre)
+  VALUES('ゲームミュージック', 'Game Music', 'ゲームミュージック') ON CONFLICT DO NOTHING;
+INSERT OR IGNORE INTO Genres(Title_JP, Title_EN, Genre)
+  VALUES('ナムコオリジナル', 'Namco Original', 'ナムコオリジナル') ON CONFLICT DO NOTHING;
