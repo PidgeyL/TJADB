@@ -18,16 +18,32 @@
   <tbody>
     {% for song in songlist %}
       <tr>
-        <td> {{ song['title_eng'] }}  <br /> ({{ song['title_orig'] }})  </td>
-        <td> {{ song['artist_eng'] }} <br /> ({{ song['artist_orig'] }}) </td>
-        <td> {{ song['source_eng'] }} <br /> ({{ song['source_orig'] }}) </td>
+        <td> {{ song['title_eng'] }}
+             {% if song['title_eng'] != song['title_orig'] %}
+               <br /> ({{ song['title_orig'] }})
+             {% endif %}
+        </td>
+        <td> {{ song['artist_eng'] }}
+             {% if song['artist_eng'] != song['artist_orig'] %}
+               <br /> ({{ song['artist_orig'] }})
+             {% endif %}
+        </td>
+        <td> {{ song['source_eng'] }}
+             {% if song['source_eng'] != song['source_orig'] %}
+               <br /> ({{ song['source_orig'] }})
+             {% endif %}
+        </td>
         <td> {{ song['bpm'] }} </td>
-        <td> {{ song['genre_eng'] }}  <br /> ({{ song['genre_jp'] }}) </td>
-        <td> {{ song['difficulty']['kantan'] }}     </td>
-        <td> {{ song['difficulty']['futsuu'] }}     </td>
-        <td> {{ song['difficulty']['muzukashii'] }} </td>
-        <td> {{ song['difficulty']['oni'] }}        </td>
-        <td> {{ song['difficulty']['ura'] }}        </td>
+        <td> {{ song['genre_eng'] }}
+             {% if song['genre_eng'] != song['genre_jp'] %}
+               <br /> ({{ song['genre_jp'] }})
+             {% endif %}
+        </td>
+        <td> {% if song['difficulty']['kantan'] != 0 %}     {{ song['difficulty']['kantan'] }} {% endif %}     </td>
+        <td> {% if song['difficulty']['futsuu'] != 0 %}     {{ song['difficulty']['futsuu'] }} {% endif %}     </td>
+        <td> {% if song['difficulty']['muzukashii'] != 0 %} {{ song['difficulty']['muzukashii'] }} {% endif %} </td>
+        <td> {% if song['difficulty']['oni'] != 0 %}        {{ song['difficulty']['oni'] }} {% endif %}        </td>
+        <td> {% if song['difficulty']['ura'] != 0 %}        {{ song['difficulty']['ura'] }} {% endif %}        </td>
         <td> {{ song['charter'] }} </td>
         <td> {{ song['updated'] }} </td>
       </tr>
