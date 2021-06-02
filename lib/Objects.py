@@ -1,8 +1,8 @@
 class Genre:
-    def __init__(self, db_id:int, name_eng:str, name_jp:str, genre:str):
+    def __init__(self, db_id:int, name_jp:str, name_eng:str, genre:str):
         self._id      = db_id
-        self.name_eng = name_eng
         self.name_jp  = name_jp
+        self.name_eng = name_eng
         self.genre    = genre
 
 
