@@ -7,7 +7,7 @@ import zipfile
 
 
 def decode_tja(raw):
-    for enc in ['utf-8', 'utf-16', 'utf-8-sig', 'shift-jis', 'shift-jis_2004']:
+    for enc in ['utf-8-sig', 'utf-8', 'utf-16', 'shift-jis', 'shift-jis_2004']:
         try:
             data = raw.decode(enc)
             assert 'TITLE:' in data
@@ -49,12 +49,13 @@ def read_dir(dir):
     return tjas
 
 
-# returns title, sub, bpm, kantan, futsuu, muzukashii, oni, ura, song, path
+# returns title, sub, bpm, genre, kantan, futsuu, muzukashii, oni, ura, song, path
 def parse_tja(path, data):
     title = ''
     sub   = ''
     bpm   = ''
     song  = ''
+    genre = ''
     dif   = {'kantan': '', 'futsuu': '', 'muzukashii': '', 'oni': '', 'ura': ''}
     difficulty = None
 
@@ -63,6 +64,7 @@ def parse_tja(path, data):
         if line.lower().startswith('subtitle:'): sub   = line.split(':')[1]
         if line.lower().startswith('bpm:'):      bpm   = line.split(':')[1]
         if line.lower().startswith('wave:'):     song  = line.split(':')[1]
+        if line.lower().startswith('genre:'):    genre = line.split(':')[1]
         if line.lower().startswith('course'):
             if 'easy'   in line.lower(): difficulty = 'kantan'
             if 'normal' in line.lower(): difficulty = 'futsuu'
@@ -71,7 +73,7 @@ def parse_tja(path, data):
             if 'ura'    in line.lower(): difficulty = 'ura'
         if line.lower().startswith('level:'):
             dif[difficulty] = line.split(':')[1]
-    return ( title, sub, bpm, dif['kantan'], dif['futsuu'], dif['muzukashii'], dif['oni'], dif['ura'], song, path )
+    return ( title, sub, bpm, genre, dif['kantan'], dif['futsuu'], dif['muzukashii'], dif['oni'], dif['ura'], song, path )
 
 
 def create_csv(dir):
@@ -82,10 +84,10 @@ def create_csv(dir):
              'added', 'updated')]
     for tja in read_dir(dir):
         d = parse_tja(*tja)
-        data.append( (d[0], '', d[1], '', '', '', '', d[2], 'no', d[3], d[4], d[5],
-                      d[6], d[7], '', '', '', '', '', d[9], d[8], '', '') )
+        data.append( (d[0], '', d[1], '', '', '', '', d[2], 'no', d[4], d[5], d[6],
+                      d[7], d[8], '', '', d[3], '', '', d[10], d[9], '', '') )
 
-    with open('songlist.csv', mode='w') as _f:
+    with open('songlist.csv', mode='w', encoding="utf16") as _f:
         writer = csv.writer(_f, delimiter=',', quotechar='"',
                                 quoting=csv.QUOTE_MINIMAL)
         for line in data:
