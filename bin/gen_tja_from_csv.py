@@ -2,29 +2,40 @@ import csv
 import os
 
 def update_tja(path, title, sub, song, numbered=False):
+    def valid_path(string):
+        for c in '\/:*?"<>|':
+            string = string.replace(c, "_")
+        return string
+
+    print(path)
+    title     = valid_path(title)
     tja       = read_tja(path)
     new_tja   = ""
     orig_dir  = os.path.dirname(path)
+    to_dir    = os.path.join(*os.path.split(orig_dir)[:-1], title)
+    if numbered:
+        topdir = os.path.join(*os.path.split(to_dir)[:-1])
+        number = os.path.split(orig_dir)[-1].split(' ')[0]
+        to_dir =os.path.join(topdir, number+' '+title)
     orig_file = os.path.splitext(path)[0]
-    to_dir    = os.path.join(*os.path.dirname(path).split('/')[:-1], title)
     to_file   = os.path.join(os.path.dirname(path), title)
 
     # update TJA
+    orig_song = ''
     for line in tja.splitlines():
         if line.lower().startswith('title:'):
             line = line.split(':')[0] + ':' + title
         if line.lower().startswith('subtitle:'):
             line = line.split(':')[0] + ':' + sub
         if line.lower().startswith('wave:'):
-            line = line.split(':')[0] + ':' + title+'.ogg'
+            orig_song = line.split(':')[1]
+            line = line.split(':')[0] + ':' + valid_path(title)+'.ogg'
         new_tja = new_tja + line + '\r\n'
     open(path, 'wb').write(new_tja.encode('utf-8-sig'))
     # Rename everything
-    if numbered:
-        to_dir = orig_dir.split(' ')[0] + ' ' + to_dir
-    os.rename(orig_file+'.tja', to_file+'.tja')
-    os.rename(orig_file+'.ogg', to_file+'.ogg')
-    os.rename(orig_dir, to_dir)
+    if orig_file != to_file: os.rename(orig_file+'.tja', to_file+'.tja')
+    if orig_file != to_file: os.rename(os.path.join(orig_dir,orig_song), to_file+'.ogg')
+    if orig_dir  != to_dir:  os.rename(orig_dir, to_dir)
 
 
 def decode_tja(raw):
