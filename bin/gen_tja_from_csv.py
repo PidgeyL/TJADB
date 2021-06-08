@@ -1,6 +1,14 @@
+# Imports
 import csv
 import os
+import sys
 
+run_path = os.path.dirname(os.path.realpath(__file__))
+sys.path.append(os.path.join(run_path, ".."))
+
+from lib.TJA import read_tja
+
+# Functions
 def update_tja(path, title, sub, song, numbered=False):
     def valid_path(string):
         for c in '\/:*?"<>|':
@@ -36,25 +44,6 @@ def update_tja(path, title, sub, song, numbered=False):
     if orig_file != to_file: os.rename(orig_file+'.tja', to_file+'.tja')
     if orig_file != to_file: os.rename(os.path.join(orig_dir,orig_song), to_file+'.ogg')
     if orig_dir  != to_dir:  os.rename(orig_dir, to_dir)
-
-
-def decode_tja(raw):
-    for enc in ['utf-8-sig', 'utf-8', 'utf-16', 'shift-jis', 'shift-jis_2004']:
-        try:
-            data = raw.decode(enc)
-            assert 'TITLE:' in data
-            return data
-        except Exception as e:
-            pass
-    print("unknown encoding")
-    print("Copy the below in cyberchef for bruteforcing:")
-    print(base64.b64encode(raw[:300]))
-    sys.exit()
-
-
-def read_tja(file):
-    raw = open(file, 'rb').read()
-    return decode_tja(raw)
 
 
 def csv_to_tjas(songfile, to_orig=False, numbered=False, prefix=''):

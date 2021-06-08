@@ -5,25 +5,10 @@ import os
 import sys
 import zipfile
 
+run_path = os.path.dirname(os.path.realpath(__file__))
+sys.path.append(os.path.join(run_path, ".."))
 
-def decode_tja(raw):
-    for enc in ['utf-8-sig', 'utf-8', 'utf-16', 'shift-jis', 'shift-jis_2004']:
-        try:
-            data = raw.decode(enc)
-            assert 'TITLE:' in data
-            return data
-        except Exception as e:
-            pass
-    print("unknown encoding")
-    print("Copy the below in cyberchef for bruteforcing:")
-    print(base64.b64encode(raw[:300]))
-    sys.exit()
-
-
-def read_tja(file):
-    raw = open(file, 'rb').read()
-    return decode_tja(raw)
-
+from lib.TJA import read_tja, decode_tja, parse_tja
 
 def read_tja_zip(file):
     tjas = []
@@ -49,33 +34,6 @@ def read_dir(dir):
     return tjas
 
 
-# returns title, sub, bpm, genre, kantan, futsuu, muzukashii, oni, ura, song, path
-def parse_tja(path, data):
-    title = ''
-    sub   = ''
-    bpm   = ''
-    song  = ''
-    genre = ''
-    dif   = {'kantan': '', 'futsuu': '', 'muzukashii': '', 'oni': '', 'ura': ''}
-    difficulty = None
-
-    for line in data.splitlines():
-        if line.lower().startswith('title:'):    title = line.split(':')[1]
-        if line.lower().startswith('subtitle:'): sub   = line.split(':')[1]
-        if line.lower().startswith('bpm:'):      bpm   = line.split(':')[1]
-        if line.lower().startswith('wave:'):     song  = line.split(':')[1]
-        if line.lower().startswith('genre:'):    genre = line.split(':')[1]
-        if line.lower().startswith('course'):
-            if 'easy'   in line.lower(): difficulty = 'kantan'
-            if 'normal' in line.lower(): difficulty = 'futsuu'
-            if 'hard'   in line.lower(): difficulty = 'muzukashii'
-            if 'oni'    in line.lower(): difficulty = 'oni'
-            if 'ura'    in line.lower(): difficulty = 'ura'
-        if line.lower().startswith('level:'):
-            dif[difficulty] = line.split(':')[1]
-    return ( title, sub, bpm, genre, dif['kantan'], dif['futsuu'], dif['muzukashii'], dif['oni'], dif['ura'], song, path )
-
-
 def create_csv(dir):
     data = [('title_orig', 'title_eng', 'subtitle_orig', 'subtitle_eng',
              'artist_orig', 'artist_eng', 'charter', 'bpm', 'vetted', 'd_kantan',
@@ -83,11 +41,12 @@ def create_csv(dir):
              'source_eng', 'genre', 'comments', 'video_link', 'path', 'songpath',
              'added', 'updated')]
     for tja in read_dir(dir):
-        d = parse_tja(*tja)
-        data.append( (d[0], '', d[1], '', '', '', '', d[2], 'no', d[4], d[5], d[6],
-                      d[7], d[8], '', '', d[3], '', '', d[10], d[9], '', '') )
+        d = parse_tja(tja[1])
+        data.append( (d['title'], '', d['sub'], '', '', '', '', d['bpm'], 'no',
+                      d['easy'], d['normal'], d['hard'], d['oni'], d['ura'], '',
+                      '', d['genre'], '', '', tja[0], d['song'], '', '') )
 
-    with open('songlist.csv', mode='w', encoding="utf16") as _f:
+    with open('songlist.csv', mode='w', encoding="utf-8") as _f:
         writer = csv.writer(_f, delimiter=',', quotechar='"',
                                 quoting=csv.QUOTE_MINIMAL)
         for line in data:
