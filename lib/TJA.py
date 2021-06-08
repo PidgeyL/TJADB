@@ -10,7 +10,8 @@ sys.path.append(os.path.join(run_path, ".."))
 
 # Functions
 def read_tja(path):
-    raw = open(path, 'rb').read()
+    with open(path, 'rb') as fh:
+        raw = fh.read()
     return decode_tja(raw)
 
 
@@ -32,7 +33,7 @@ def encode_tja(text):
     return text.encode('utf-8-sig')
 
 
-def set_tja_metadata(tja=None, title=None, sub=None, song=None):
+def set_tja_metadata(tja, title=None, sub=None, song=None):
     return_raw = False
     if isinstance(tja, bytes):
         tja = decode_tja(tja)
