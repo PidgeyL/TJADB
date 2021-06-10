@@ -6,7 +6,7 @@ import sys
 run_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(os.path.join(run_path, ".."))
 
-from lib.TJA import read_tja
+from lib.TJA import read_tja, set_tja_metadata, parse_tja, write_tja
 
 # Functions
 def update_tja(path, title, sub, song, numbered=False):
@@ -17,8 +17,6 @@ def update_tja(path, title, sub, song, numbered=False):
 
     print(path)
     title     = valid_path(title)
-    tja       = read_tja(path)
-    new_tja   = ""
     orig_dir  = os.path.dirname(path)
     to_dir    = os.path.join(*os.path.split(orig_dir)[:-1], title)
     if numbered:
@@ -29,17 +27,11 @@ def update_tja(path, title, sub, song, numbered=False):
     to_file   = os.path.join(os.path.dirname(path), title)
 
     # update TJA
-    orig_song = ''
-    for line in tja.splitlines():
-        if line.lower().startswith('title:'):
-            line = line.split(':')[0] + ':' + title
-        if line.lower().startswith('subtitle:'):
-            line = line.split(':')[0] + ':' + sub
-        if line.lower().startswith('wave:'):
-            orig_song = line.split(':')[1]
-            line = line.split(':')[0] + ':' + valid_path(title)+'.ogg'
-        new_tja = new_tja + line + '\r\n'
-    open(path, 'wb').write(new_tja.encode('utf-8-sig'))
+    tja       = read_tja(path)
+    orig_song = parse_tja(tja)['song']
+    tja = set_tja_metadata(tja, title=title, sub=sub, song=valid_path(title))
+    write_tja(tja, path)
+
     # Rename everything
     if orig_file != to_file: os.rename(orig_file+'.tja', to_file+'.tja')
     if orig_file != to_file: os.rename(os.path.join(orig_dir,orig_song), to_file+'.ogg')

@@ -33,6 +33,12 @@ def encode_tja(text):
     return text.encode('utf-8-sig')
 
 
+def write_tja(data, path):
+    if isinstance(data, str):
+        data = encode_tja(data)
+    open(path, 'wb').write(data)
+
+
 def set_tja_metadata(tja, title=None, sub=None, song=None):
     return_raw = False
     if isinstance(tja, bytes):
