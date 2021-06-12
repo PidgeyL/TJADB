@@ -46,7 +46,7 @@ INSERT OR IGNORE INTO Genres(Title_JP, Title_EN, Genre)
 INSERT OR IGNORE INTO Genres(Title_JP, Title_EN, Genre)
   VALUES('アニメ', 'Anime', 'アニメ') ON CONFLICT DO NOTHING;
 INSERT OR IGNORE INTO Genres(Title_JP, Title_EN, Genre)
-  VALUES('ボーカロイド', 'Vocaloid', 'ボーカロイド') ON CONFLICT DO NOTHING;
+  VALUES('ボーカロイド曲', 'Vocaloid', 'ボーカロイド') ON CONFLICT DO NOTHING;
 INSERT OR IGNORE INTO Genres(Title_JP, Title_EN, Genre)
   VALUES('どうよう', 'Children & Folk', 'どうよう') ON CONFLICT DO NOTHING;
 INSERT OR IGNORE INTO Genres(Title_JP, Title_EN, Genre)

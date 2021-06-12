@@ -9,11 +9,9 @@ from lib.Objects       import Song, Genre, Charter
 
 db = DatabaseLayer()
 
-#g = Genre(None, 'ボーカロイド', 'Vocaloid', 'ボーカロイド')
-g = 3
+g = Genre(3, 'ボーカロイド', 'Vocaloid', 'ボーカロイド')
 c = Charter(None, 'Bandai Namco', b'png', '', False)
 
-g._id = db.genres.add(g)
 c._id = db.charters.add(c)
 
 s = Song(None,'千本桜', 'Senbonzakura', '黒うさP feat.初音ミク',
