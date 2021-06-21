@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS Genres
 
 CREATE TABLE IF NOT EXISTS Charters
 (ID     INTEGER  PRIMARY KEY  AUTOINCREMENT,
- Name   TEXT     NOT NULL,
+ Name   TEXT     NOT NULL  UNIQUE,
  Image  BLOB,
  About  TEXT,
  Staff  BOOL     DEFAULT 0);
@@ -34,8 +34,8 @@ CREATE TABLE IF NOT EXISTS Songs
  Vetted         BOOL     DEFAULT 0,
  Comments       TEXT,
  Video_Link     TEXT,
- Path           TEXT     NOT NULL,
- MD5            TEXT     NOT NULL,
+ Path           TEXT     NOT NULL  UNIQUE,
+ MD5            TEXT     NOT NULL  UNIQUE,
  Added          TEXT     NOT NULL,
  Updated        TEXT     NOT NULL,
  FOREIGN KEY(Genre_ID)   REFERENCES "Genres" (ID),

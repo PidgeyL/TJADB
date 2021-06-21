@@ -80,19 +80,27 @@ class Database(metaclass=Singleton):
     # reading data #
     ################
     @_db_wrapped
-    def _get_id(self, db, cur, table, id):
-        data  = list(cur.execute("SELECT * FROM %s WHERE ID=?"%table, (id,)))
+    def _get_by_field(self, db, cur, table, field, value):
+        data  = list(cur.execute("SELECT * FROM %s WHERE %s=?"%(table, field),
+                    (value,)))
         names = list(map(lambda x: x[0], cur.description))
         return [dict(zip(names, d)) for d in data]
 
 
     def get_genre_by_id(self, id):
-        return self._get_id('Genres', id)
+        return self._get_by_field('Genres', 'ID', id)
+
+
+    def get_genre_by_genre(self, genre):
+        return self._get_by_field('Genres', 'Genre', genre)
 
 
     def get_charter_by_id(self, id):
-        return self._get_id('Charters', id)
+        return self._get_by_field('Charters', 'ID', id)
 
+
+    def get_charter_by_name(self, name):
+        return self._get_by_field('Charters', 'Name', name)
 
 
     @_db_wrapped
@@ -100,3 +108,29 @@ class Database(metaclass=Singleton):
         data  = list(cur.execute("SELECT * FROM Songs"))
         names = list(map(lambda x: x[0], cur.description))
         return [dict(zip(names, d)) for d in data]
+
+
+    @_db_wrapped
+    def update_song(self, db, cur, id, title_o, title_e, sub_o, sub_e, artist_o,
+                 artist_e, source_o, source_e, bpm, genre_id, charter_id, kantan,
+                 futsuu, muzukashii, oni, ura, vetted, comments, video, path, md5,
+                 added, updated):
+
+        s = """UPDATE Songs SET
+                   Title_Orig = ?,     Title_Eng = ?,
+                   Subtitle_Orig = ?,  Subtitle_Eng = ?,
+                   Artist_Orig = ?,    Artist_Eng = ?,
+                   Source_Orig = ?,    Source_Eng = ?,
+                   BPM = ?, Genre_ID = ?, Charter_ID = ?, D_Kantan = ?,
+                   D_Futsuu = ?, D_Muzukashii = ?, D_Oni = ?, D_Ura = ?,
+                   Vetted = ?, Comments = ?, Video_Link = ?, Path = ?, MD5 = ?,
+                   Added = ?, Updated = ?
+               WHERE
+                   ID = ?;"""
+        v = (title_o, title_e, sub_o, sub_e, artist_o, artist_e, source_o,
+             source_e, bpm, genre_id, charter_id, kantan, futsuu, muzukashii,
+             oni, ura, vetted, comments, video, path, md5, added, updated, id)
+        cur.execute(s, v)
+        db.commit()
+        return cur.lastrowid
+

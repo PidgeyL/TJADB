@@ -35,6 +35,22 @@ class Songs():
         return self.db.add_song(*vars)
 
 
+    def update(self, song):
+        if not verify_song(song):
+            sys.exit("Could not verify object!")
+        if not song._id:
+            raise Exception("Song has no ID")
+
+        vars = (song._id, song.title_orig, song.title_eng, song.subtitle_orig,
+                song.subtitle_eng, song.artist_orig, song.artist_eng,
+                song.source_orig, song.source_eng, song.bpm, song.genre._id,
+                song.charter._id, song.d_kantan, song.d_futsuu,
+                song.d_muzukashii, song.d_oni, song.d_ura, song.vetted,
+                song.comments, song.video_link, song.path, song.md5, song.added,
+                song.updated)
+        return self.db.update_song(*vars)
+
+
     def get_all(self):
         data = []
         for s in self.db.get_all_songs():
@@ -70,6 +86,15 @@ class Genres():
         return Genre(g['ID'], g['Title_EN'], g['Title_JP'], g['Genre'])
 
 
+    @functools.cache
+    def get_by_genre(self, genre):
+        g = self.db.get_genre_by_genre(genre)
+        if len(g) == 0:
+            return None
+        g = g[0]
+        return Genre(g['ID'], g['Title_EN'], g['Title_JP'], g['Genre'])
+
+
 class Charters():
     def __init__(self):
         self.db = Database.Database()
@@ -85,6 +110,15 @@ class Charters():
     @functools.cache
     def get_by_id(self, id):
         g = self.db.get_charter_by_id(id)
+        if len(g) == 0:
+            return None
+        g = g[0]
+        return Charter(g['ID'], g['Name'], g['Image'], g['About'], bool(g['Staff']))
+
+
+    @functools.cache
+    def get_by_name(self, name):
+        g = self.db.get_charter_by_name(name)
         if len(g) == 0:
             return None
         g = g[0]

@@ -9,3 +9,6 @@ class Settings:
     certfile = './ssl/tjadb.crt'
     keyfile  = './ssl/tjadb.key'
 
+    # Database
+    file_db  = './db/files/'
+    prefix   = 'TJADB'
