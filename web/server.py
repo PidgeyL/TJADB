@@ -1,13 +1,15 @@
 # Imports
+import io
 import json
 import logging
 import os
 import signal
 import sys
 import time
+import zipfile
 from functools import wraps
 
-from flask              import Flask, request, Response, render_template, abort
+from flask              import Flask, request, Response, render_template, abort, send_file
 from logging.handlers   import RotatingFileHandler
 from tornado.httpserver import HTTPServer
 from tornado.ioloop     import IOLoop
@@ -19,6 +21,7 @@ sys.path.append(os.path.join(run_path, ".."))
 from etc.Settings      import Settings
 from lib.DatabaseLayer import DatabaseLayer
 from lib.Objects       import Song, Genre, Charter
+from lib.TJA           import parse_tja
 
 # Variables
 conf = Settings()
@@ -65,6 +68,26 @@ def browse():
     data = api_browse()
     return render_template('browse.html', songlist=data)
 
+
+@app.route('/download/orig/<id>', methods=['GET'])
+def download_orig(id):
+    try:
+        song = db.songs.get_by_id(id)
+        if song == None: abort(404)
+        tja  = db.tjas.get_tja(song)
+        name = os.path.basename(song.path)[:-4]
+        blob = io.BytesIO()
+        with zipfile.ZipFile(blob, "a", zipfile.ZIP_DEFLATED, False) as archive:
+            archive.writestr(name+".tja", tja)
+            archive.writestr(parse_tja(tja)['song'], db.tjas.get_ogg(song))
+            archive.writestr(name+"_-_info.txt", db.tjas.get_info(song))
+        blob.seek(0)
+        return send_file(blob, mimetype="application/octet-stream",
+                         as_attachment=True, download_name="%s.zip"%name)
+
+    except Exception as e:
+        print(e)
+        abort(500)
 
 ###########
 # Filters #

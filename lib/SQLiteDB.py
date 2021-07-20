@@ -110,6 +110,10 @@ class Database(metaclass=Singleton):
         return [dict(zip(names, d)) for d in data]
 
 
+    def get_song_by_id(self, id):
+        return self._get_by_field('Songs', 'ID', id)
+
+
     @_db_wrapped
     def update_song(self, db, cur, id, title_o, title_e, sub_o, sub_e, artist_o,
                  artist_e, source_o, source_e, bpm, genre_id, charter_id, kantan,

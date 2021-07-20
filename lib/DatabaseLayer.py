@@ -10,6 +10,7 @@ from lib.Objects            import Song, Genre, Charter
 from lib.ObjectVerification import verify_song, verify_genre, verify_charter
 from lib.Singleton          import Singleton
 from etc.Settings           import Settings
+from lib.TJA                import read_tja, parse_tja, set_tja_metadata
 
 conf = Settings()
 
@@ -18,6 +19,7 @@ class DatabaseLayer(metaclass=Singleton):
         self.songs    = Songs()
         self.genres   = Genres()
         self.charters = Charters()
+        self.tjas     = TJAs()
 
 
 class Songs():
@@ -28,6 +30,7 @@ class Songs():
     def add(self, song):
         if not verify_song(song):
             sys.exit("Could not verify object!")
+        if song.updated == None:  song.updated = song.added
         vars = (song.title_orig, song.title_eng, song.subtitle_orig,
                 song.subtitle_eng, song.artist_orig, song.artist_eng,
                 song.source_orig, song.source_eng, song.bpm, song.genre._id,
@@ -52,6 +55,21 @@ class Songs():
                 song.comments, song.video_link, song.path, song.md5, song.added,
                 song.updated)
         return self.db.update_song(*vars)
+
+
+    def get_by_id(self, id):
+        song = self.db.get_song_by_id(id)
+        if len(song) == 0:
+            return None
+        s = song[0]
+        g = DatabaseLayer().genres.get_by_id(s['Genre_ID'])
+        c = DatabaseLayer().charters.get_by_id(s['Charter_ID'])
+        return Song(s['ID'], s['Title_Orig'], s['Title_Eng'], s['Subtitle_Orig'],
+                    s['Subtitle_Eng'], s['Artist_Orig'], s['Artist_Eng'],
+                    s['Source_Orig'], s['Source_Eng'], s['BPM'], g, c,
+                    s['D_Kantan'], s['D_Futsuu'], s['D_Muzukashii'],
+                    s['D_Oni'], s['D_Ura'], bool(s['Vetted']), s['Comments'],
+                    s['Video_Link'], s['Path'], s['MD5'], s['Added'], s['Updated'])
 
 
     def get_all(self):
@@ -145,3 +163,45 @@ class Charters():
         g = g[0]
         return Charter(g['ID'], g['Name'], g['Image'], g['About'], bool(g['Staff']))
 
+
+class TJAs():
+    def store_tja(self, song, tja, song_path):
+        tja = set_tja_metadata(tja, title=song.title_orig, sub=song.subtitle_orig,
+                                    song=clean_path(song.title_orig))
+
+        if not os.path.exists(os.path.dirname(song.path)):
+            os.makedirs(os.path.dirname(song.path))
+        open(song.path, 'w').write(tja)
+        shutil.move(song_path, song.path[:-3]+"ogg")
+
+
+    def get_tja(self, song):
+        return open(song.path, "rb").read()
+
+
+    def get_ogg(self, song):
+        return open(song.path[:-3]+"ogg", "rb").read()
+
+
+    def get_info(self, song):
+        def _score(i):
+            if i == None:
+                return '*'
+            return str(i)
+        def _alt(orig, alt):
+            if orig != alt:
+                return " (%s)\n"%alt
+            return '\n'
+        def _difficulty(song):
+            scores = [song.d_kantan, song.d_futsuu, song.d_muzukashii, song.d_oni, song.d_ura]
+            return '/'.join([_score(i) for i in scores])
+
+        text =  "Title: " + song.title_orig + _alt(song.title_orig, song.title_eng)
+        text += "Artist: " + song.artist_orig + _alt(song.artist_orig, song.artist_eng)
+        text += "From: " + song.source_orig + _alt(song.source_orig, song.source_eng)
+        text += "Charter: " + song.charter.name + "\n"
+        text += "Difficulty: " + _difficulty(song) + "\n"
+        text += "Genre: %s (%s)\n"%(song.genre.name_jp, song.genre.name_eng)
+        text += "BPM: %s\n"%song.bpm
+        text += "Last update: %s\n\n"%song.updated
+        return text
