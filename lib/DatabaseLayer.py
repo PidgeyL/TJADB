@@ -9,6 +9,9 @@ import lib.SQLiteDB as Database
 from lib.Objects            import Song, Genre, Charter
 from lib.ObjectVerification import verify_song, verify_genre, verify_charter
 from lib.Singleton          import Singleton
+from etc.Settings           import Settings
+
+conf = Settings()
 
 class DatabaseLayer(metaclass=Singleton):
     def __init__(self):
@@ -66,6 +69,24 @@ class Songs():
         return data
 
 
+    def generate_path(self, song):
+        def _clean(s):
+            for c in " %:/,.\\[]<>*?":
+                s = s.replace(c, '_')
+            return s
+
+        if not song._id:
+            raise Execption("No ID set")
+        if not song.title_orig:
+            raise Exception("No title set")
+
+        path = conf.file_db
+        if not os.path.isabs(path):
+            path = os.path.join(run_path, '..', path)
+        path = os.path.join(path, str(song._id), _clean(song.title_orig)) + ".tja"
+        return os.path.normpath(path)
+
+
 class Genres():
     def __init__(self):
         self.db = Database.Database()
@@ -83,7 +104,7 @@ class Genres():
         if len(g) == 0:
             return None
         g = g[0]
-        return Genre(g['ID'], g['Title_EN'], g['Title_JP'], g['Genre'])
+        return Genre(g['ID'], g['Title_JP'], g['Title_EN'], g['Genre'])
 
 
     @functools.cache
@@ -92,7 +113,7 @@ class Genres():
         if len(g) == 0:
             return None
         g = g[0]
-        return Genre(g['ID'], g['Title_EN'], g['Title_JP'], g['Genre'])
+        return Genre(g['ID'], g['Title_JP'], g['Title_EN'], g['Genre'])
 
 
 class Charters():
@@ -123,3 +144,4 @@ class Charters():
             return None
         g = g[0]
         return Charter(g['ID'], g['Name'], g['Image'], g['About'], bool(g['Staff']))
+
