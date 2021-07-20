@@ -5,7 +5,7 @@ run_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(os.path.join(run_path, ".."))
 
 from lib.DatabaseLayer import DatabaseLayer
-from lib.Objects       import Genre
+from lib.Objects       import Charter
 
 # Python3 compatibility & safety
 try:
@@ -16,17 +16,16 @@ except NameError:
 
 def query_info():
     while True:
-        name_jp = input('Japanese Title: ')
-        name_en = input('English Title: ')
-        genre   = input('Genre tag: ')
+        name  = input('Charter Name: ')
+        staff = True if input('Staff? y/n: ').lower() == 'y' else False
         if input("Is this correct? y/n: ").lower() == 'y':
-            return Genre(None, name_jp, name_en, genre)
+            return Charter(None, name, None, None, staff)
 
 
 if __name__ == '__main__':
     db = DatabaseLayer()
     while True:
-        genre = query_info()
-        db.genres.add(genre)
+        charter = query_info()
+        db.charters.add(charter)
         if input("Add more? y/n: ").lower() == 'n':
             break
