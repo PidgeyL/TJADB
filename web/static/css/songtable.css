@@ -1,8 +1,50 @@
 #dtSongTable img {
-    max-width:  30px;
-    max-height: 30px;
+    max-width:  25px;
+    max-height: 25px;
 }
 #dtSongTable td, th {
     text-align:     center;
     vertical-align: middle;
+}
+
+#dtSongTable>tbody>tr>td, #dtSongTable>tbody>tr>th,
+#dtSongTable>tfoot>tr>td, #dtSongTable>tfoot>tr>th,
+#dtSongTable>thead>tr>td, #dtSongTable>thead>tr>th {
+    padding: 4px;
+}
+
+#dtSongTable a{
+    color: black;
+}
+
+.jpop td {
+    background-color: #88ceebB0;
+}
+
+.anime td {
+    background-color: #ff9935B0;
+}
+
+.vocaloid td {
+    background-color: #a7a7a7B0;
+}
+
+.folk td {
+    background-color: #ff689bB0;
+}
+
+.variety td {
+    background-color: #68cb51B0;
+}
+
+.classical td {
+    background-color: #fcbe19B0;
+}
+
+.gamemusic td {
+    background-color: #9385dbB0;
+}
+
+.namcooriginal td {
+    background-color: #ff6a29B0;
 }

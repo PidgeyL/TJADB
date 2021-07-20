@@ -4,20 +4,42 @@
       <th class="th-sm"> Name   </th>
       <th class="th-sm"> Artist </th>
       <th class="th-sm"> Source </th>
-      <th class="th-sm"> BPM    </th>
-      <th class="th-sm"> Genre  </th>
-      <th class="th-sm">  <img src="/static/imgs/kantan.png"     alt="かんたん(easy)">        </th>
-      <th class="th-sm">  <img src="/static/imgs/futsuu.png"     alt="ふつう(Normal)">        </th>
-      <th class="th-sm">  <img src="/static/imgs/muzukashii.png" alt="むずかしい(Difficult)"> </th>
-      <th class="th-sm">  <img src="/static/imgs/oni.png"        alt="おに(Extreme)">         </th>
-      <th class="th-sm">  <img src="/static/imgs/ura.png"        alt="うら(Extreme Alt.)">    </th>
+      <th class="th-sm fit"> BPM    </th>
+      <th class="th-sm fit">  <img src="/static/imgs/kantan.png"     alt="かんたん(easy)">        </th>
+      <th class="th-sm fit">  <img src="/static/imgs/futsuu.png"     alt="ふつう(Normal)">        </th>
+      <th class="th-sm fit">  <img src="/static/imgs/muzukashii.png" alt="むずかしい(Difficult)"> </th>
+      <th class="th-sm fit">  <img src="/static/imgs/oni.png"        alt="おに(Extreme)">         </th>
+      <th class="th-sm fit">  <img src="/static/imgs/ura.png"        alt="うら(Extreme Alt.)">    </th>
       <th class="th-sm"> Charter </th>
       <th class="th-sm"> Last Updated </th>
+      <th class="th-sm"> </th>
     </tr>
   </thead>
   <tbody>
     {% for song in songlist %}
-      <tr>
+      {% if song['genre_eng']   == 'J-Pop' %}
+        {% set class = 'jpop' %}
+      {% elif song['genre_eng'] == 'Anime' %}
+        {% set class = 'anime' %}
+      {% elif song['genre_eng'] == 'Vocaloid' %}
+        {% set class = 'vocaloid' %}
+      {% elif song['genre_eng'] == 'Children & Folk' %}
+        {% set class = 'folk' %}
+      {% elif song['genre_eng'] == 'Variety' %}
+        {% set class = 'variety' %}
+      {% elif song['genre_eng'] == 'Classical' %}
+        {% set class = 'classical' %}
+      {% elif song['genre_eng'] == 'Game Music' %}
+        {% set class = 'gamemusic' %}
+      {% elif song['genre_eng'] == 'Namco Original' %}
+        {% set class = 'namcooriginal' %}
+      {% endif %}
+      {% set tooltip = "Genre: \n" + song['genre_eng'] + '\n(' + song['genre_jp'] + ')\n\n' %}
+      {% set tooltip = tooltip + "Song ID: " + song['id']|string + "\n\n" %}
+      {% if song['comments'] != "" %}
+        {% set tooltip = tooltip + "Extra info: " + song['comments'] %}
+      {% endif %}
+      <tr data-html="true" class="{{class}}" data-toggle="tooltip" data-placement="top" title="{{tooltip}}">
         <td> {{ song['title_eng'] }}
              {% if song['title_eng'] != song['title_orig'] %}
                <br /> ({{ song['title_orig'] }})
@@ -33,19 +55,16 @@
                <br /> ({{ song['source_orig'] }})
              {% endif %}
         </td>
-        <td> {{ song['bpm'] }} </td>
-        <td> {{ song['genre_eng'] }}
-             {% if song['genre_eng'] != song['genre_jp'] %}
-               <br /> ({{ song['genre_jp'] }})
-             {% endif %}
-        </td>
-        <td> {% if song['difficulty']['kantan'] != 0 %}     {{ song['difficulty']['kantan'] }} {% endif %}     </td>
-        <td> {% if song['difficulty']['futsuu'] != 0 %}     {{ song['difficulty']['futsuu'] }} {% endif %}     </td>
-        <td> {% if song['difficulty']['muzukashii'] != 0 %} {{ song['difficulty']['muzukashii'] }} {% endif %} </td>
-        <td> {% if song['difficulty']['oni'] != 0 %}        {{ song['difficulty']['oni'] }} {% endif %}        </td>
-        <td> {% if song['difficulty']['ura'] != 0 %}        {{ song['difficulty']['ura'] }} {% endif %}        </td>
+        <td> {{ song['bpm'] | number_format }} </td>
+        <td> {{ song['difficulty']['kantan'] | number_format }}     </td>
+        <td> {{ song['difficulty']['futsuu'] | number_format }}     </td>
+        <td> {{ song['difficulty']['muzukashii'] | number_format }} </td>
+        <td> {{ song['difficulty']['oni'] | number_format }}        </td>
+        <td> {{ song['difficulty']['ura'] | number_format }}        </td>
         <td> {{ song['charter'] }} </td>
         <td> {{ song['updated'] }} </td>
+        <td> <a href="/download/orig/{{song['id']}}"><i class="bi bi-cloud-download"></i></a>
+             <a href="/download/eng/{{song['id']}}"><i class="bi bi-translate"></i></a></td>
       </tr>
     {% endfor %}
   </tbody>

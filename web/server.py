@@ -65,6 +65,26 @@ def browse():
     data = api_browse()
     return render_template('browse.html', songlist=data)
 
+
+###########
+# Filters #
+###########
+@app.template_filter('number_format')
+def number_format(number):
+    if isinstance(number, type(None)):
+        return ''
+    if isinstance(number, str):
+        try:
+            number = float(number)
+        except:
+            return number
+    if isinstance(number, int) and number == 0:
+        return ''
+    if isinstance(number, float) and number == int(number):
+        number = int(number)
+    return str(number)
+
+
 ##################
 # Error Messages #
 ##################

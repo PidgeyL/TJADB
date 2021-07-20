@@ -10,5 +10,18 @@
 
 {% block title %}Browse{% endblock %}
 {% block content %}
-  {% include 'subpages/songtable.html' %}
+  <div class="card">
+    <div class="card-body">
+      TJA-DB offers a range of custom .tja charts, that can be searched, sorted,
+      and downloaded here. You have the option to download each song in its
+      original language or in English.
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      {% include 'subpages/songtable.html' %}
+    </div>
+  </div>
+
 {% endblock %}
