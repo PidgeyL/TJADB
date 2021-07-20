@@ -53,6 +53,7 @@ class Song:
         difficulties = [x for x in obj.keys() if x.startswith('d_')]
         for remove in (['_id', 'path', 'genre', 'charter'] + difficulties):
             del obj[remove]
+        obj['id']         = self._id
         obj['charter']    = self.charter.name
         obj['genre_eng']  = self.genre.name_eng
         obj['genre_jp']   = self.genre.name_jp

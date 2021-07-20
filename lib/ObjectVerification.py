@@ -24,11 +24,11 @@ def verify_song(song):
         #assert isinstance(song.Genre,          Genre)
         assert isinstance(song.bpm,            int)
         assert isinstance(song.vetted,         bool)
-        assert isinstance(song.d_kantan,       int)
-        assert isinstance(song.d_futsuu,       int)
-        assert isinstance(song.d_muzukashii,   int)
-        assert isinstance(song.d_oni,          int)
-        assert isinstance(song.d_ura,          int)
+        assert isinstance(song.d_kantan,      (int, none))
+        assert isinstance(song.d_futsuu,      (int, none))
+        assert isinstance(song.d_muzukashii,  (int, none))
+        assert isinstance(song.d_oni,         (int, none))
+        assert isinstance(song.d_ura,         (int, none))
         assert isinstance(song.comments,      (str, none))
         assert isinstance(song.video_link,    (str, none))
         assert isinstance(song.path,           str)
@@ -40,11 +40,11 @@ def verify_song(song):
         assert len(song.artist_eng)  > 0
         assert len(song.path)        > 0
         assert len(song.md5)        == 32
-        assert -1 < song.d_kantan     < 11
-        assert -1 < song.d_futsuu     < 11
-        assert -1 < song.d_muzukashii < 11
-        assert -1 < song.d_oni        < 11
-        assert -1 < song.d_ura        < 11
+        assert song.d_kantan     == None or -1 < song.d_kantan     < 11
+        assert song.d_futsuu     == None or -1 < song.d_futsuu     < 11
+        assert song.d_muzukashii == None or -1 < song.d_muzukashii < 11
+        assert song.d_oni        == None or -1 < song.d_oni        < 11
+        assert song.d_ura        == None or -1 < song.d_ura        < 11
         return True
     except Exception as e:
         import traceback
