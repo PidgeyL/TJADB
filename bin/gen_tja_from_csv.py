@@ -22,7 +22,7 @@ def update_tja(path, title, sub, song, numbered=False):
     if numbered:
         topdir = os.path.join(*os.path.split(to_dir)[:-1])
         number = os.path.split(orig_dir)[-1].split(' ')[0]
-        to_dir =os.path.join(topdir, number+' '+title)
+        to_dir = os.path.join(topdir, number+' '+title)
     orig_file = os.path.splitext(path)[0]
     to_file   = os.path.join(os.path.dirname(path), title)
 
