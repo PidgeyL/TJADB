@@ -6,14 +6,14 @@ run_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(os.path.join(run_path, ".."))
 
 from lib.Singleton import Singleton
+from etc.Settings  import Settings
 
 
 class Database(metaclass=Singleton):
     def __init__(self):
-        path = os.path.join(run_path, '..', 'db', 'database.db')
-        path = "/tmp/test.db" # TEMPORARY VALUE
+        path = Settings().sqlite_db
         if not os.path.exists(os.path.dirname(path)):
-            os.makedirs(path)
+            os.makedirs(os.path.dirname(path))
         self.struct = os.path.join(run_path, "sqlite_struct.sql")
         self.path   = path
 
