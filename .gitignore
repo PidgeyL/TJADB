@@ -1,4 +1,6 @@
 __pycache__
 data/
 songlist.csv
-
+db/
+test/
+songlist.csv*

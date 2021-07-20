@@ -1,0 +1,25 @@
+.header{
+    width:               100%;
+    height:              240px;
+    background-image:    url("/static/imgs/header.png");
+    background-position: center;
+    background-size:     cover;
+    position: relative;
+}
+
+.header nav{
+    position: absolute;
+    bottom: 0;
+    right:  0;
+
+}
+
+body{
+    background-image:  url("/static/imgs/bg_pattern.png");
+    background-repeat: repeat
+}
+
+#content{
+    background-color: white;
+    padding:          24px 6px;
+}
