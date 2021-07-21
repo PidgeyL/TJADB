@@ -116,7 +116,8 @@ class Genres():
         return self.db.add_genre(genre.name_jp, genre.name_eng, genre.genre)
 
 
-    @functools.cache
+    #@functools.cache
+    @functools.lru_cache(maxsize=None)
     def get_by_id(self, id):
         g = self.db.get_genre_by_id(id)
         if len(g) == 0:
@@ -125,7 +126,8 @@ class Genres():
         return Genre(g['ID'], g['Title_JP'], g['Title_EN'], g['Genre'])
 
 
-    @functools.cache
+    #@functools.cache
+    @functools.lru_cache(maxsize=None)
     def get_by_genre(self, genre):
         g = self.db.get_genre_by_genre(genre)
         if len(g) == 0:
@@ -146,7 +148,8 @@ class Charters():
                                    charter.staff )
 
 
-    @functools.cache
+    #@functools.cache
+    @functools.lru_cache(maxsize=None)
     def get_by_id(self, id):
         g = self.db.get_charter_by_id(id)
         if len(g) == 0:
@@ -155,7 +158,8 @@ class Charters():
         return Charter(g['ID'], g['Name'], g['Image'], g['About'], bool(g['Staff']))
 
 
-    @functools.cache
+    #@functools.cache
+    @functools.lru_cache(maxsize=None)
     def get_by_name(self, name):
         g = self.db.get_charter_by_name(name)
         if len(g) == 0:
