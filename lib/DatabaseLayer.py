@@ -1,5 +1,6 @@
 import functools
 import os
+import shutil
 import sys
 
 run_path = os.path.dirname(os.path.realpath(__file__))
@@ -13,6 +14,8 @@ from etc.Settings           import Settings
 from lib.TJA                import read_tja, parse_tja, set_tja_metadata
 
 conf = Settings()
+
+
 
 class DatabaseLayer(metaclass=Singleton):
     def __init__(self):
@@ -170,13 +173,14 @@ class Charters():
 
 class TJAs():
     def store_tja(self, song, tja, song_path):
+        path = DatabaseLayer().songs.generate_path(song)[:-4]+'.ogg'
         tja = set_tja_metadata(tja, title=song.title_orig, sub=song.subtitle_orig,
-                                    song=clean_path(song.title_orig))
+                                    song=os.path.basename(path))
 
         if not os.path.exists(os.path.dirname(song.path)):
             os.makedirs(os.path.dirname(song.path))
         open(song.path, 'w').write(tja)
-        shutil.move(song_path, song.path[:-3]+"ogg")
+        shutil.move(song_path, path)
 
 
     def get_tja(self, song):
