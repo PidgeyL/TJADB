@@ -33,7 +33,7 @@ class Songs():
     def add(self, song):
         if not verify_song(song):
             sys.exit("Could not verify object!")
-        if song.updated == None:  song.updated = song.added
+        if song.updated in (None, ''):  song.updated = song.added
         vars = (song.title_orig, song.title_eng, song.subtitle_orig,
                 song.subtitle_eng, song.artist_orig, song.artist_eng,
                 song.source_orig, song.source_eng, song.bpm, song.genre._id,
