@@ -21,12 +21,33 @@ sys.path.append(os.path.join(run_path, ".."))
 from etc.Settings      import Settings
 from lib.DatabaseLayer import DatabaseLayer
 from lib.Objects       import Song, Genre, Charter
-from lib.TJA           import parse_tja
+from lib.TJA           import parse_tja, set_tja_metadata
 
 # Variables
 conf = Settings()
 app  = Flask(__name__, static_folder='static', static_url_path='/static')
 db   = DatabaseLayer()
+
+def archive(song, orig=True):
+    def _clean(s):
+        for c in " %:/,.\\[]<>*?":
+            s = s.replace(c, '_')
+        return s
+
+    tja  = db.tjas.get_tja(song)
+    if not orig:
+        tja = set_tja_metadata(tja, title=song.title_eng, sub=song.subtitle_eng,
+                               song=_clean(song.title_eng)+'.ogg')
+
+    name = _clean(song.title_orig) if orig else _clean(song.title_eng)
+    blob = io.BytesIO()
+    with zipfile.ZipFile(blob, "a", zipfile.ZIP_DEFLATED, False) as arch:
+        arch.writestr(name+".tja", tja)
+        arch.writestr(parse_tja(tja)['song'], db.tjas.get_ogg(song))
+        arch.writestr(name+"_-_info.txt", db.tjas.get_info(song))
+    blob.seek(0)
+    return (blob, name+'.zip')
+
 
 def dictify(data):
     if isinstance(data,(list, tuple, set)):
@@ -74,20 +95,26 @@ def download_orig(id):
     try:
         song = db.songs.get_by_id(id)
         if song == None: abort(404)
-        tja  = db.tjas.get_tja(song)
-        name = os.path.basename(song.path)[:-4]
-        blob = io.BytesIO()
-        with zipfile.ZipFile(blob, "a", zipfile.ZIP_DEFLATED, False) as archive:
-            archive.writestr(name+".tja", tja)
-            archive.writestr(parse_tja(tja)['song'], db.tjas.get_ogg(song))
-            archive.writestr(name+"_-_info.txt", db.tjas.get_info(song))
-        blob.seek(0)
+        blob, name = archive(song, orig=True)
         return send_file(blob, mimetype="application/octet-stream",
-                         as_attachment=True, download_name="%s.zip"%name)
-
+                         as_attachment=True, download_name=name)
     except Exception as e:
         print(e)
         abort(500)
+
+
+@app.route('/download/eng/<id>', methods=['GET'])
+def download_eng(id):
+    try:
+        song = db.songs.get_by_id(id)
+        if song == None: abort(404)
+        blob, name = archive(song, orig=False)
+        return send_file(blob, mimetype="application/octet-stream",
+                         as_attachment=True, download_name=name)
+    except Exception as e:
+        print(e)
+        abort(500)
+
 
 ###########
 # Filters #
