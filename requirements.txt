@@ -1,0 +1,8 @@
+flask
+click
+itsdangerous
+tornado
+
+Jinja2
+Werkzeug
+MarkupSafe
