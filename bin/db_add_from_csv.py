@@ -45,23 +45,6 @@ def find_song(path):
             return os.path.join(path, f)
 
 
-def store_tja(path, song):
-    '''Ensures the TJA is stored with the original file name, subtitle and song'''
-    try:
-        tja = read_tja(path)
-        tja = set_tja_metadata(tja, title=song.title_orig, sub=song.subtitle_orig,
-                               song=clean_path(song.title_orig))
-
-        if not os.path.exists(os.path.dirname(song.path)):
-            os.makedirs(os.path.dirname(song.path))
-        open(song.path, 'w').write(tja)
-        shutil.move(find_song(path), song.path[:-3]+"ogg")
-
-    except Exception as e:
-        print("Could not prepare tja file: %s"%path)
-        sys.exit(e)
-
-
 def get_md5(file):
     try:
         data = open(file, 'rb').read()
@@ -87,14 +70,14 @@ def add_row_to_db(l):
 
     s = Song(None, l['title_orig'], l['title_eng'], l['subtitle_orig'],
              l['subtitle_eng'], l['artist_orig'], l['artist_eng'],
-             l['source_orig'], l['source_eng'], int(l['bpm']), genre, charter,
+             l['source_orig'], l['source_eng'], float(l['bpm']), genre, charter,
              _int(l['d_kantan']), _int(l['d_futsuu']), _int(l['d_muzukashii']),
              _int(l['d_oni']), _int(l['d_ura']), bool(l['vetted']), l['comments'],
              l['video_link'], path, md5, l['added'], l['updated'])
     s._id  = db.songs.add(s)
     s.path = db.songs.generate_path(s)
     db.songs.update(s)
-    store_tja(make_abs(l['path']), s)
+    db.tjas.store_tja(s, read_tja(l['path']), find_song(l['path']))
 
 
 def read_from_csv(path):
