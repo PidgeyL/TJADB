@@ -78,6 +78,11 @@ def api_reply(data):
 ##################
 # ROUTE HANDLERS #
 ##################
+@app.route('/', methods=['GET'])
+def index():
+    return render_template('index.html')
+
+
 @app.route('/api/browse', methods=['GET'])
 def api_browse():
     data = db.songs.get_all()
