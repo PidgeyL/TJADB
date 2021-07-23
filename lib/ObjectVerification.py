@@ -40,11 +40,11 @@ def verify_song(song):
         assert len(song.artist_eng)  > 0
         assert len(song.path)        > 0
         assert len(song.md5)        == 32
-        assert song.d_kantan     == None or -1 < song.d_kantan     < 11
-        assert song.d_futsuu     == None or -1 < song.d_futsuu     < 11
-        assert song.d_muzukashii == None or -1 < song.d_muzukashii < 11
-        assert song.d_oni        == None or -1 < song.d_oni        < 11
-        assert song.d_ura        == None or -1 < song.d_ura        < 11
+        assert song.d_kantan     == None or -1 < song.d_kantan     < 6
+        assert song.d_futsuu     == None or -1 < song.d_futsuu     < 8
+        assert song.d_muzukashii == None or -1 < song.d_muzukashii < 9
+        assert song.d_oni        == None or -1 < song.d_oni        < 12
+        assert song.d_ura        == None or -1 < song.d_ura        < 12
         return True
     except Exception as e:
         import traceback
