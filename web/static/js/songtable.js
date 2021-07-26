@@ -9,7 +9,7 @@ function download(ID) {
 
 $(document).ready(function () {
     var table = $('#dtSongTable').DataTable({
-        "order": [[ 3, "desc" ]],
+        "order": [[ 11, "desc" ]],
         "columnDefs": [
             { width: 27, targets: 4 },
             { width: 27, targets: 5 },

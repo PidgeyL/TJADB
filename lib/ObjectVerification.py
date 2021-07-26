@@ -40,9 +40,11 @@ def verify_song(song):
         assert len(song.artist_eng)  > 0
         assert len(song.path)        > 0
         assert len(song.md5)        == 32
-        assert song.d_kantan     == None or -1 < song.d_kantan     < 6
-        assert song.d_futsuu     == None or -1 < song.d_futsuu     < 8
-        assert song.d_muzukashii == None or -1 < song.d_muzukashii < 9
+        # Note: Agreement was made that a +1 to the difficulty cap is allowed
+        #       to signify "This is even harder than normal"
+        assert song.d_kantan     == None or -1 < song.d_kantan     < 7
+        assert song.d_futsuu     == None or -1 < song.d_futsuu     < 9
+        assert song.d_muzukashii == None or -1 < song.d_muzukashii < 10
         assert song.d_oni        == None or -1 < song.d_oni        < 12
         assert song.d_ura        == None or -1 < song.d_ura        < 12
         return True
