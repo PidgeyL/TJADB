@@ -21,7 +21,7 @@ sys.path.append(os.path.join(run_path, ".."))
 from etc.Settings      import Settings
 from lib.DatabaseLayer import DatabaseLayer
 from lib.Objects       import Song, Genre, Charter
-from lib.TJA           import parse_tja, set_tja_metadata
+from lib.TJA           import parse_tja, set_tja_metadata, clean_path
 
 # Variables
 conf = Settings()
@@ -29,17 +29,12 @@ app  = Flask(__name__, static_folder='static', static_url_path='/static')
 db   = DatabaseLayer()
 
 def archive(song, orig=True):
-    def _clean(s):
-        for c in " %:/,.\\[]<>*?":
-            s = s.replace(c, '_')
-        return s
-
     tja  = db.tjas.get_tja(song)
     if not orig:
         tja = set_tja_metadata(tja, title=song.title_eng, sub=song.subtitle_eng,
-                               song=_clean(song.title_eng)+'.ogg')
+                               song=clean_path(song.title_eng)+'.ogg')
 
-    name = _clean(song.title_orig) if orig else _clean(song.title_eng)
+    name = clean_path(song.title_orig) if orig else clean_path(song.title_eng)
     blob = io.BytesIO()
     with zipfile.ZipFile(blob, "a", zipfile.ZIP_DEFLATED, False) as arch:
         arch.writestr(name+".tja", tja)

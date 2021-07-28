@@ -100,9 +100,10 @@ def md5(tja):
 def generate_md5s(tja, song):
     # Orig TJA
     tja = set_tja_metadata(tja, title=song.title_orig, sub=song.subtitle_orig,
-                           song=clean_path(song.title_orig))
+                           song=clean_path(song.title_orig)+'.ogg')
     md5_orig = md5(tja)
     # Eng TJA
     tja = set_tja_metadata(tja, title=song.title_eng, sub=song.subtitle_eng,
-                           song=clean_path(song.title_eng))
+                           song=clean_path(song.title_eng)+'.ogg')
+    write_tja(tja, '/tmp/test/'+clean_path(song.title_eng))
     return md5_orig, md5(tja)

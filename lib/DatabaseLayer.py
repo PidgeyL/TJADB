@@ -169,7 +169,7 @@ class TJAs():
     def store_tja(self, song, tja, song_path):
         path = DatabaseLayer().songs.generate_path(song)[:-4]+'.ogg'
         tja = set_tja_metadata(tja, title=song.title_orig, sub=song.subtitle_orig,
-                                    song=clean_path(song.title_orig))
+                                    song=clean_path(song.title_orig)+'.ogg')
         if not os.path.exists(os.path.dirname(song.path)):
             os.makedirs(os.path.dirname(song.path))
         write_tja(tja, song.path)
