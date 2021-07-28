@@ -11,7 +11,7 @@ from lib.Objects            import Song, Genre, Charter
 from lib.ObjectVerification import verify_song, verify_genre, verify_charter
 from lib.Singleton          import Singleton
 from etc.Settings           import Settings
-from lib.TJA                import read_tja, parse_tja, set_tja_metadata
+from lib.TJA                import read_tja, parse_tja, set_tja_metadata, clean_path, write_tja
 
 conf = Settings()
 
@@ -39,8 +39,8 @@ class Songs():
                 song.source_orig, song.source_eng, song.bpm, song.genre._id,
                 song.charter._id, song.d_kantan, song.d_futsuu,
                 song.d_muzukashii, song.d_oni, song.d_ura, song.vetted,
-                song.comments, song.video_link, song.path, song.md5, song.added,
-                song.updated)
+                song.comments, song.video_link, song.path, song.md5_orig,
+                song.md5_eng, song.added, song.updated)
         return self.db.add_song(*vars)
 
 
@@ -55,8 +55,8 @@ class Songs():
                 song.source_orig, song.source_eng, song.bpm, song.genre._id,
                 song.charter._id, song.d_kantan, song.d_futsuu,
                 song.d_muzukashii, song.d_oni, song.d_ura, song.vetted,
-                song.comments, song.video_link, song.path, song.md5, song.added,
-                song.updated)
+                song.comments, song.video_link, song.path, song.md5_orig,
+                song.md5_eng, song.added, song.updated)
         return self.db.update_song(*vars)
 
 
@@ -72,7 +72,8 @@ class Songs():
                     s['Source_Orig'], s['Source_Eng'], s['BPM'], g, c,
                     s['D_Kantan'], s['D_Futsuu'], s['D_Muzukashii'],
                     s['D_Oni'], s['D_Ura'], bool(s['Vetted']), s['Comments'],
-                    s['Video_Link'], s['Path'], s['MD5'], s['Added'], s['Updated'])
+                    s['Video_Link'], s['Path'], s['MD5_Orig'], s['MD5_Eng'],
+                    s['Added'], s['Updated'])
 
 
     def get_all(self):
@@ -85,17 +86,13 @@ class Songs():
                      s['Source_Orig'], s['Source_Eng'], s['BPM'], g, c,
                      s['D_Kantan'], s['D_Futsuu'], s['D_Muzukashii'],
                      s['D_Oni'], s['D_Ura'], bool(s['Vetted']), s['Comments'],
-                     s['Video_Link'], s['Path'], s['MD5'], s['Added'], s['Updated'])
+                     s['Video_Link'], s['Path'], s['MD5_Orig'], s['MD5_Eng'],
+                     s['Added'], s['Updated'])
             data.append(x)
         return data
 
 
     def generate_path(self, song):
-        def _clean(s):
-            for c in " %:/,.\\[]<>*?":
-                s = s.replace(c, '_')
-            return s
-
         if not song._id:
             raise Execption("No ID set")
         if not song.title_orig:
@@ -104,7 +101,8 @@ class Songs():
         path = conf.file_db
         if not os.path.isabs(path):
             path = os.path.join(run_path, '..', path)
-        path = os.path.join(path, str(song._id), _clean(song.title_orig)) + ".tja"
+        path = os.path.join(path, str(song._id),
+                            clean_path(song.title_orig)) + ".tja"
         return os.path.normpath(path)
 
 
@@ -119,7 +117,6 @@ class Genres():
         return self.db.add_genre(genre.name_jp, genre.name_eng, genre.genre)
 
 
-    #@functools.cache
     @functools.lru_cache(maxsize=None)
     def get_by_id(self, id):
         g = self.db.get_genre_by_id(id)
@@ -129,7 +126,6 @@ class Genres():
         return Genre(g['ID'], g['Title_JP'], g['Title_EN'], g['Genre'])
 
 
-    #@functools.cache
     @functools.lru_cache(maxsize=None)
     def get_by_genre(self, genre):
         g = self.db.get_genre_by_genre(genre)
@@ -151,7 +147,6 @@ class Charters():
                                    charter.staff )
 
 
-    #@functools.cache
     @functools.lru_cache(maxsize=None)
     def get_by_id(self, id):
         g = self.db.get_charter_by_id(id)
@@ -161,7 +156,6 @@ class Charters():
         return Charter(g['ID'], g['Name'], g['Image'], g['About'], bool(g['Staff']))
 
 
-    #@functools.cache
     @functools.lru_cache(maxsize=None)
     def get_by_name(self, name):
         g = self.db.get_charter_by_name(name)
@@ -175,11 +169,10 @@ class TJAs():
     def store_tja(self, song, tja, song_path):
         path = DatabaseLayer().songs.generate_path(song)[:-4]+'.ogg'
         tja = set_tja_metadata(tja, title=song.title_orig, sub=song.subtitle_orig,
-                                    song=os.path.basename(path))
-
+                                    song=clean_path(song.title_orig))
         if not os.path.exists(os.path.dirname(song.path)):
             os.makedirs(os.path.dirname(song.path))
-        open(song.path, 'w').write(tja)
+        write_tja(tja, song.path)
         shutil.move(song_path, path)
 
 

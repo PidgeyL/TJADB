@@ -10,11 +10,10 @@ sys.path.append(os.path.join(run_path, ".."))
 from etc.Settings      import Settings
 from lib.DatabaseLayer import DatabaseLayer
 from lib.Objects       import Genre, Song
-from lib.TJA           import read_tja, parse_tja, set_tja_metadata
+from lib.TJA           import read_tja, parse_tja, set_tja_metadata, generate_md5s
 
 def make_abs(path):
     if not os.path.isabs(path):
-        #return os.path.normpath(os.path.join(run_path, '..', path))
         return os.path.normpath(os.path.abspath(path))
     return os.path.normpath(path)
 
@@ -30,12 +29,6 @@ header = ['title_orig', 'title_eng', 'subtitle_orig', 'subtitle_eng',
           'added', 'updated']
 
 
-def clean_path(path):
-    for c in  "%:/,.\\[]<>*?":
-        path = path.replace(c, '_')
-    return path
-
-
 def find_song(path):
     if os.path.isfile(path[:-3]+"ogg"):
         return path[:-3]+"ogg"
@@ -43,14 +36,6 @@ def find_song(path):
     for f in next(os.walk(path), (None, None, []))[2]:
         if f[-4:] == ".ogg":
             return os.path.join(path, f)
-
-
-def get_md5(file):
-    try:
-        data = open(file, 'rb').read()
-        return hashlib.md5(data).hexdigest()
-    except Exception as e:
-        raise Exception("Could not open file %s"%file)
 
 
 def add_row_to_db(l):
@@ -61,7 +46,6 @@ def add_row_to_db(l):
 
     genre   = db.genres.get_by_genre(l['genre'])
     charter = db.charters.get_by_name(l['charter'])
-    md5     = get_md5(make_abs(l['path']))
     path    = '<Not Set>'
     if genre == None:
         raise Exception("Unknown Genre")
@@ -73,11 +57,19 @@ def add_row_to_db(l):
              l['source_orig'], l['source_eng'], float(l['bpm']), genre, charter,
              _int(l['d_kantan']), _int(l['d_futsuu']), _int(l['d_muzukashii']),
              _int(l['d_oni']), _int(l['d_ura']), bool(l['vetted']), l['comments'],
-             l['video_link'], path, md5, l['added'], l['updated'])
+             l['video_link'], path, None, None, l['added'], l['updated'])
+    try:
+        s.md5_orig, s.md5_eng = generate_md5s(read_tja(l['path']), s)
+    except Exception as e:
+        raise Exception("Could not read the TJA")
+
     s._id  = db.songs.add(s)
     s.path = db.songs.generate_path(s)
     db.songs.update(s)
-    db.tjas.store_tja(s, read_tja(l['path']), find_song(l['path']))
+
+    tja = read_tja(l['path'])
+
+    db.tjas.store_tja(s, tja, find_song(l['path']))
 
 
 def read_from_csv(path):

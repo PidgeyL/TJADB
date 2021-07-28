@@ -32,14 +32,16 @@ def verify_song(song):
         assert isinstance(song.comments,      (str, none))
         assert isinstance(song.video_link,    (str, none))
         assert isinstance(song.path,           str)
-        assert isinstance(song.md5,            str)
+        assert isinstance(song.md5_orig,       str)
+        assert isinstance(song.md5_eng,        str)
 
         assert len(song.title_orig)  > 0
         assert len(song.title_eng)   > 0
         assert len(song.artist_orig) > 0
         assert len(song.artist_eng)  > 0
         assert len(song.path)        > 0
-        assert len(song.md5)        == 32
+        assert len(song.md5_orig)    == 32
+        assert len(song.md5_eng)     == 32
         # Note: Agreement was made that a +1 to the difficulty cap is allowed
         #       to signify "This is even harder than normal"
         assert song.d_kantan     == None or -1 < song.d_kantan     < 7

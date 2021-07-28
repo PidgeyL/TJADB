@@ -1,6 +1,7 @@
 
 # Imports
 import base64
+import hashlib
 import os
 import sys
 
@@ -9,6 +10,12 @@ sys.path.append(os.path.join(run_path, ".."))
 
 
 # Functions
+def clean_path(path):
+    for c in  "%:/,.\\[]<>*?":
+        path = path.replace(c, '_')
+    return path
+
+
 def read_tja(path):
     with open(path, 'rb') as fh:
         raw = fh.read()
@@ -83,3 +90,19 @@ def parse_tja(tja):
         if all( [len(x) > 0 for x in meta.values()] ):
             return meta
     return meta
+
+
+def md5(tja):
+    encoded = encode_tja(tja)
+    return hashlib.md5(encoded).hexdigest()
+
+
+def generate_md5s(tja, song):
+    # Orig TJA
+    tja = set_tja_metadata(tja, title=song.title_orig, sub=song.subtitle_orig,
+                           song=clean_path(song.title_orig))
+    md5_orig = md5(tja)
+    # Eng TJA
+    tja = set_tja_metadata(tja, title=song.title_eng, sub=song.subtitle_eng,
+                           song=clean_path(song.title_eng))
+    return md5_orig, md5(tja)

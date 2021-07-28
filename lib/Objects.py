@@ -20,8 +20,8 @@ class Song:
                        source_orig:str, source_eng:str, bpm:float, genre:Genre,
                        charter:Charter,kantan:int, futsuu:int,
                        muzukashii:int, oni:int, ura:int, vetted:bool,
-                       comments:str, video_link:str, path:str, md5:str,
-                       added:str, updated:str):
+                       comments:str, video_link:str, path:str, md5_orig:str,
+                       md5_eng:str, added:str, updated:str):
         self._id           = db_id
         self.title_orig    = title_orig
         self.title_eng     = title_eng
@@ -43,7 +43,8 @@ class Song:
         self.comments      = comments
         self.video_link    = video_link
         self.path          = path
-        self.md5           = md5
+        self.md5_orig      = md5_orig
+        self.md5_eng       = md5_eng
         self.added         = added
         self.updated       = updated
 

@@ -44,17 +44,18 @@ class Database(metaclass=Singleton):
     @_db_wrapped
     def add_song(self, db, cur, title_o, title_e, sub_o, sub_e, artist_o, artist_e,
                  source_o, source_e, bpm, genre_id, charter_id, kantan, futsuu,
-                 muzukashii, oni, ura, vetted, comments, video, path, md5, added,
-                 updated):
+                 muzukashii, oni, ura, vetted, comments, video, path, md5_orig,
+                 md5_eng, added, updated):
         s = """INSERT INTO Songs(
                  Title_Orig, Title_Eng, Subtitle_Orig, Subtitle_Eng, Artist_Orig,
                  Artist_Eng, Source_Orig, Source_Eng, BPM, Genre_ID, Charter_ID,
                  D_Kantan, D_Futsuu, D_Muzukashii, D_Oni, D_Ura, Vetted,
-                 Comments, Video_Link, Path, MD5, Added, Updated)
-               VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"""
+                 Comments, Video_Link, Path, MD5_Orig, MD5_Eng, Added, Updated)
+               VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
+                      ?, ?, ?, ?)"""
         v = (title_o, title_e, sub_o, sub_e, artist_o, artist_e, source_o,
-             source_e, bpm, genre_id, charter_id, kantan, futsuu, muzukashii,
-             oni, ura, vetted, comments, video, path, md5, added, updated)
+             source_e, bpm, genre_id, charter_id, kantan, futsuu, muzukashii, oni,
+             ura, vetted, comments, video, path, md5_orig, md5_eng, added, updated)
         cur.execute(s, v)
         db.commit()
         return cur.lastrowid
@@ -117,8 +118,8 @@ class Database(metaclass=Singleton):
     @_db_wrapped
     def update_song(self, db, cur, id, title_o, title_e, sub_o, sub_e, artist_o,
                  artist_e, source_o, source_e, bpm, genre_id, charter_id, kantan,
-                 futsuu, muzukashii, oni, ura, vetted, comments, video, path, md5,
-                 added, updated):
+                 futsuu, muzukashii, oni, ura, vetted, comments, video, path,
+                 md5_orig, md5_eng, added, updated):
 
         s = """UPDATE Songs SET
                    Title_Orig = ?,     Title_Eng = ?,
@@ -127,13 +128,14 @@ class Database(metaclass=Singleton):
                    Source_Orig = ?,    Source_Eng = ?,
                    BPM = ?, Genre_ID = ?, Charter_ID = ?, D_Kantan = ?,
                    D_Futsuu = ?, D_Muzukashii = ?, D_Oni = ?, D_Ura = ?,
-                   Vetted = ?, Comments = ?, Video_Link = ?, Path = ?, MD5 = ?,
-                   Added = ?, Updated = ?
+                   Vetted = ?, Comments = ?, Video_Link = ?, Path = ?,
+                   MD5_Orig = ?, MD5_Eng = ?, Added = ?, Updated = ?
                WHERE
                    ID = ?;"""
         v = (title_o, title_e, sub_o, sub_e, artist_o, artist_e, source_o,
              source_e, bpm, genre_id, charter_id, kantan, futsuu, muzukashii,
-             oni, ura, vetted, comments, video, path, md5, added, updated, id)
+             oni, ura, vetted, comments, video, path, md5_orig, md5_eng, added,
+             updated, id)
         cur.execute(s, v)
         db.commit()
         return cur.lastrowid
