@@ -35,11 +35,17 @@ CREATE TABLE IF NOT EXISTS Songs
  Comments       TEXT,
  Video_Link     TEXT,
  Path           TEXT     NOT NULL  UNIQUE,
- MD5            TEXT     NOT NULL  UNIQUE,
+ MD5_Orig       TEXT     NOT NULL  UNIQUE,
+ MD5_Eng        TEXT     NOT NULL  UNIQUE,
  Added          TEXT     NOT NULL,
  Updated        TEXT     NOT NULL,
  FOREIGN KEY(Genre_ID)   REFERENCES "Genres" (ID),
  FOREIGN KEY(Charter_ID) REFERENCES "Charters" (ID));
+
+UPDATE SQLITE_SEQUENCE SET seq = 9999 WHERE name = 'Songs';
+INSERT INTO SQLITE_SEQUENCE (name, seq) SELECT 'Songs', 9999 WHERE NOT EXISTS
+    (SELECT changes() AS change FROM sqlite_sequence WHERE change <> 0);
+COMMIT;
 
 INSERT OR IGNORE INTO Genres(Title_JP, Title_EN, Genre)
   VALUES('J-Pop', 'J-Pop', 'J-Pop') ON CONFLICT DO NOTHING;
