@@ -9,7 +9,7 @@ import time
 import zipfile
 from functools import wraps
 
-from flask              import Flask, request, Response, render_template, abort, send_file
+from flask              import Flask, request, Response, render_template, abort, send_file, send_from_directory
 from logging.handlers   import RotatingFileHandler
 from tornado.httpserver import HTTPServer
 from tornado.ioloop     import IOLoop
@@ -27,6 +27,8 @@ from lib.TJA           import parse_tja, set_tja_metadata, clean_path
 conf = Settings()
 app  = Flask(__name__, static_folder='static', static_url_path='/static')
 db   = DatabaseLayer()
+
+app.config['ASSETS'] = os.path.join(run_path, 'assets')
 
 def archive(song, orig=True):
     tja  = db.tjas.get_tja(song)
@@ -115,6 +117,23 @@ def download_eng(id):
         print(e)
         abort(500)
 
+
+@app.route('/custom/nameplates', methods=['GET'])
+def custom_nameplates():
+    return render_template('custom/nameplates.html')
+
+
+@app.route('/custom/dons', methods=['GET'])
+def custom_dons():
+    return render_template('custom/dons.html')
+
+
+@app.route('/assets/<asset>', methods=['GET'])
+def assets(asset):
+    try:
+        return send_from_directory(app.config['ASSETS'], asset, as_attachment=True)
+    except FileNotFoundError:
+        abort(404)
 
 ###########
 # Filters #

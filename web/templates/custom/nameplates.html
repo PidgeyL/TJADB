@@ -1,0 +1,40 @@
+{% extends 'layouts/master-page' %}
+{% block css %}
+  <link href="/static/css/datatables.min.css" rel="stylesheet">
+  <link href="/static/css/songtable.css" rel="stylesheet">
+{% endblock %}
+{% block js %}
+  <script type="text/javascript" src="/static/js/datatables.min.js"></script>
+  <script type="text/javascript" src="/static/js/songtable.js"></script>
+{% endblock %}
+
+{% block title %}Nameplates{% endblock %}
+{% block content %}
+  <div class="card border-secondary">
+    <div class="card-header">Custom Nameplates</div>
+    <div class="card-body">
+      <p>
+        Custom Nameplates can be created thanks to CRCR's nameplate program,
+        which can be downloaded <a href="/assets/Name_Plate_Maker.zip">here</a>.
+      </p>
+      <p>
+        This is an example name plate. Your title (usually gained from
+        completing certain challenges) goes in the top box, and your username
+        in the bottom.
+      </p>
+      <p>
+        The "Full" button switches between the full and standard nameplate. You
+        must hit "Save" twice to recieve both nameplates.
+      </p>
+      <p>
+        The "P" button switches between the 1P and 2P design.
+      </p>
+      <p>
+        The "On / Off" button switches the dan design on and off. Dans are a
+        way to measure your skill. Find more information in the
+        <a href="https://discord.gg/XHcVYKW">TJADB discord</a>.
+      </p>
+      <img src="/static/imgs/custom/nameplates.png" alt="Nameplate Maker">
+    </div>
+  </div>
+{% endblock %}
