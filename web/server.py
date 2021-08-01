@@ -128,6 +128,11 @@ def custom_dons():
     return render_template('custom/dons.html')
 
 
+@app.route('/custom/puchichara', methods=['GET'])
+def custom_puchichara():
+    return render_template('custom/puchichara.html')
+
+
 @app.route('/assets/<asset>', methods=['GET'])
 def assets(asset):
     try:
