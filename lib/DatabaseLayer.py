@@ -184,6 +184,14 @@ class TJAs():
         return open(song.path[:-3]+"ogg", "rb").read()
 
 
+    def get_mov(self, song):
+        meta = parse_tja(self.get_tja(song))
+        if meta['movie'] in [None, '', False]:
+            return None
+        path = os.path.join(os.path.dirname(song.path), meta['movie'])
+        return open(path, "rb").read()
+
+
     def get_info(self, song):
         def _score(i):
             if i == None:

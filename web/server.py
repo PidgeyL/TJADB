@@ -35,13 +35,17 @@ def archive(song, orig=True):
     if not orig:
         tja = set_tja_metadata(tja, title=song.title_eng, sub=song.subtitle_eng,
                                song=clean_path(song.title_eng)+'.ogg')
-
     name = clean_path(song.title_orig) if orig else clean_path(song.title_eng)
+    mov  = parse_tja(tja)['movie']
+    print(mov)
     blob = io.BytesIO()
     with zipfile.ZipFile(blob, "a", zipfile.ZIP_DEFLATED, False) as arch:
         arch.writestr(name+".tja", tja)
         arch.writestr(parse_tja(tja)['song'], db.tjas.get_ogg(song))
         arch.writestr(name+"_-_info.txt", db.tjas.get_info(song))
+        if mov:
+            arch.writestr(mov, db.tjas.get_mov(song))
+
     blob.seek(0)
     return (blob, name+'.zip')
 

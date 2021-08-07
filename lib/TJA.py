@@ -73,7 +73,8 @@ def parse_tja(tja):
         return_raw = True
 
     meta = {'title': '', 'sub': '', 'bpm': '', 'song': '', 'genre': '',
-            'easy': '', 'normal': '', 'hard': '', 'oni': '', 'ura': ''}
+            'easy': '', 'normal': '', 'hard': '', 'oni': '', 'ura': '',
+            'movie': ''}
     difficulty = None
     for line in tja.splitlines():
         if   line.lower().startswith('title:'):    meta['title'] = line.split(':')[1]
@@ -81,8 +82,11 @@ def parse_tja(tja):
         elif line.lower().startswith('bpm:'):      meta['bpm']   = line.split(':')[1]
         elif line.lower().startswith('wave:'):     meta['song']  = line.split(':')[1]
         elif line.lower().startswith('genre:'):    meta['genre'] = line.split(':')[1]
+        elif line.lower().startswith('bgmovie:'):  meta['movie'] = line.split(':')[1]
         elif line.lower().startswith('course'):
             difficulty = line.split(':')[1].lower()
+            if difficulty in "01234":
+                difficulty = ['easy', 'normal', 'hard', 'oni', 'ura'][difficulty]
             if difficulty == 'edit':
                 difficulty = 'ura'
         elif line.lower().startswith('level:'):
