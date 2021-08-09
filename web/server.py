@@ -37,7 +37,6 @@ def archive(song, orig=True):
                                song=clean_path(song.title_eng)+'.ogg')
     name = clean_path(song.title_orig) if orig else clean_path(song.title_eng)
     mov  = parse_tja(tja)['movie']
-    print(mov)
     blob = io.BytesIO()
     with zipfile.ZipFile(blob, "a", zipfile.ZIP_DEFLATED, False) as arch:
         arch.writestr(name+".tja", tja)

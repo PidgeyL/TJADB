@@ -59,7 +59,9 @@ def add_row_to_db(l):
              _int(l['d_oni']), _int(l['d_ura']), bool(l['vetted']), l['comments'],
              l['video_link'], path, None, None, l['added'], l['updated'])
     try:
-        s.md5_orig, s.md5_eng = generate_md5s(read_tja(l['path']), s)
+        tja = read_tja(l['path'])
+        s.md5_orig, s.md5_eng = generate_md5s(tja, s)
+        mov = parse_tja(tja)['movie']
     except Exception as e:
         raise Exception("Could not read the TJA")
 
@@ -69,7 +71,8 @@ def add_row_to_db(l):
 
     tja = read_tja(l['path'])
 
-    db.tjas.store_tja(s, tja, find_song(l['path']))
+    db.tjas.store_tja(s, tja, find_song(l['path']),
+                      movie_path=os.path.join(os.path.dirname(l['path']), mov))
 
 
 def read_from_csv(path):
