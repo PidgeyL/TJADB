@@ -86,7 +86,7 @@ def parse_tja(tja):
         elif line.lower().startswith('course'):
             difficulty = line.split(':')[1].lower()
             if difficulty in "01234":
-                difficulty = ['easy', 'normal', 'hard', 'oni', 'ura'][difficulty]
+                difficulty = ['easy', 'normal', 'hard', 'oni', 'ura'][int(difficulty)]
             if difficulty == 'edit':
                 difficulty = 'ura'
         elif line.lower().startswith('level:'):
