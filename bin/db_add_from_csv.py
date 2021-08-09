@@ -70,9 +70,9 @@ def add_row_to_db(l):
     db.songs.update(s)
 
     tja = read_tja(l['path'])
-
-    db.tjas.store_tja(s, tja, find_song(l['path']),
-                      movie_path=os.path.join(os.path.dirname(l['path']), mov))
+    if mov:
+        mov = os.path.join(os.path.dirname(l['path']), mov)
+    db.tjas.store_tja(s, tja, find_song(l['path']), movie_path=mov)
 
 
 def read_from_csv(path):
