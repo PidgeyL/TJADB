@@ -9,11 +9,12 @@ import time
 import zipfile
 from functools import wraps
 
-from flask              import Flask, request, Response, render_template, abort, send_file, send_from_directory
-from logging.handlers   import RotatingFileHandler
-from tornado.httpserver import HTTPServer
-from tornado.ioloop     import IOLoop
-from tornado.wsgi       import WSGIContainer
+from flask               import Flask, request, Response, render_template, abort, send_file, send_from_directory
+from logging.handlers    import RotatingFileHandler
+from tornado.httpserver  import HTTPServer
+from tornado.ioloop      import IOLoop
+from tornado.wsgi        import WSGIContainer
+from werkzeug.exceptions import NotFound
 
 run_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(os.path.join(run_path, ".."))
@@ -103,6 +104,8 @@ def download_orig(id):
         blob, name = archive(song, orig=True)
         return send_file(blob, mimetype="application/octet-stream",
                          as_attachment=True, download_name=name)
+    except NotFound:
+        abort(404)
     except Exception as e:
         print(e)
         abort(500)
@@ -116,6 +119,8 @@ def download_eng(id):
         blob, name = archive(song, orig=False)
         return send_file(blob, mimetype="application/octet-stream",
                          as_attachment=True, download_name=name)
+    except NotFound:
+        abort(404)
     except Exception as e:
         print(e)
         abort(500)
