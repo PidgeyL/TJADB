@@ -1,0 +1,118 @@
+{% extends 'layouts/master-page' %}
+{% block css %}
+  <link href="/static/css/autocomplete.css" rel="stylesheet">
+{% endblock %}
+{% block js %}
+  <script type="text/javascript" src="/static/js/autocomplete.js"></script>
+  <script>
+    $(document).ready(function () {
+      var artist_orig = {{ artist_orig | tojson }};
+      var artist_eng  = {{ artist_eng  | tojson }};
+      var source_orig = {{ source_orig | tojson }};
+      var source_eng  = {{ source_eng  | tojson }};
+      var genres      = {{ genres      | tojson }};
+      var charters    = {{ charters    | tojson }};
+
+      autocomplete(document.getElementById("artist_orig"), artist_orig);
+      autocomplete(document.getElementById("artist_eng"),  artist_eng);
+      autocomplete(document.getElementById("source_orig"), source_orig);
+      autocomplete(document.getElementById("source_eng"),  source_eng);
+      autocomplete(document.getElementById("genre"),       genres);
+      autocomplete(document.getElementById("charter"),     charters);
+
+      autocomplete_wrapper("#artist_orig", "#artist_eng", artist_orig, artist_eng);
+      autocomplete_wrapper("#source_orig", "#source_eng", source_orig, source_eng);
+    });
+  </script>
+  <script type="text/javascript" src="/static/js/submit.js"></script>
+
+{% endblock %}
+
+{% block title %}Submit{% endblock %}
+{% block content %}
+  <div class="card border-secondary">
+    <div class="card-header">Submit a new song</div>
+      <div class="card-body">
+
+        <div class="input-group">
+          <label class="input-group-text" for="tja_file">Select TJA</label>
+          <input type="file" class="form-control" id="tja_file">
+          <button id="tja_parse" class="btn btn-outline-secondary" type="button">Parse</button>
+        </div>
+
+        <div class="input-group mb-3">
+          <label class="input-group-text" for="tja_file">Select OGG</label>
+          <input type="file" class="form-control" id="tja_file">
+        </div>
+
+        <div class="input-group">
+          <span class="input-group-text">Title</span>
+          <input id="title_orig" type="text" aria-label="Title Original" placeholder="Title Original" class="form-control">
+          <input id="title_eng"  type="text" aria-label="Title English"  placeholder="Title English"  class="form-control">
+        </div>
+
+        <div class="input-group">
+          <span class="input-group-text">Artist</span>
+          <input id="artist_orig" type="text" aria-label="Artist Original" placeholder="Artist Original" class="form-control">
+          <input id="artist_eng"  type="text" aria-label="Artist English"  placeholder="Artist English"  class="form-control">
+          <div class="input-group-text">
+            <input id="artist_keep" class="form-check-input" type="checkbox" value="" aria-label="Keep field">
+          </div>
+        </div>
+
+        <div class="input-group mb-3">
+          <span class="input-group-text">Source</span>
+          <input id="source_orig" type="text" aria-label="Source Original" placeholder="Source Original" class="form-control">
+          <input id="source_eng"  type="text" aria-label="Source English"  placeholder="Source English"  class="form-control">
+          <div class="input-group-text">
+            <input id="source_keep" class="form-check-input" type="checkbox" value="" aria-label="Keep field">
+          </div>
+        </div>
+
+        <div class="input-group">
+          <span class="input-group-text">Suggested Sub</span>
+          <input id="subtitle_suggest_orig" type="text" aria-label="Subtitle Suggestion Original" placeholder="Subtitle Suggestion Original" class="form-control" disabled>
+          <input id="subtitle_suggest_eng"  type="text" aria-label="Subtitle Suggestion English"  placeholder="Subtitle Suggestion English"  class="form-control" disabled>
+          <button id="sub_accept" class="btn btn-outline-secondary" type="button">Accept suggestion</button>
+        </div>
+
+        <div class="input-group mb-3">
+          <span class="input-group-text">Subtitle</span>
+          <input id="subtitle_orig" type="text" aria-label="Subtitle Original" placeholder="Subtitle Original" class="form-control">
+          <input id="subtitle_eng"  type="text" aria-label="Subtitle English"  placeholder="Subtitle English"  class="form-control">
+        </div>
+
+        <div class="input-group mb-3">
+          <span class="input-group-text">Genre</span>
+          <input id="genre" type="text" aria-label="Genre" placeholder="Genre" class="form-control">
+          <div class="input-group-text">
+            <input id="genre_keep" class="form-check-input" type="checkbox" value="" aria-label="Keep field">
+          </div>
+
+          <span class="input-group-text">Charter</span>
+          <input id="charter" type="text" aria-label="Charter" placeholder="Charter" class="form-control">
+          <div class="input-group-text">
+            <input id="charter_keep" class="form-check-input" type="checkbox" value="" aria-label="Keep field">
+          </div>
+        </div>
+
+        <div class="input-group mb-3">
+          <span class="input-group-text">Difficulty</span>
+          <span class="input-group-text">Kantan</span>
+          <input id="d_kantan" type="text" class="form-control" aria-label="Kantan" disabled>
+          <span class="input-group-text">Futsuu</span>
+          <input id="d_futsuu" type="text" class="form-control" aria-label="Futsuu" disabled>
+          <span class="input-group-text">Muzukashii</span>
+          <input id="d_muzukashii" type="text" class="form-control" aria-label="Muzukashii" disabled>
+          <span class="input-group-text">Oni</span>
+          <input id="d_oni" type="text" class="form-control" aria-label="Oni" disabled>
+          <span class="input-group-text">Ura</span>
+          <input id="d_ura" type="text" class="form-control" aria-label="Uri" disabled>
+          <span class="input-group-text">BPM</span>
+          <input id="bpm" type="text" aria-label="BPM" placeholder="BPM" class="form-control" disabled>
+        </div>
+
+    </div>
+  </div>
+
+{% endblock %}
