@@ -135,6 +135,14 @@ class Genres():
         return Genre(g['ID'], g['Title_JP'], g['Title_EN'], g['Genre'])
 
 
+    def get_all(self):
+        data = []
+        for g in self.db.get_all_genres():
+            x = Genre(g['ID'], g['Title_JP'], g['Title_EN'], g['Genre'])
+            data.append(x)
+        return data
+
+
 class Charters():
     def __init__(self):
         self.db = Database.Database()
@@ -149,20 +157,28 @@ class Charters():
 
     @functools.lru_cache(maxsize=None)
     def get_by_id(self, id):
-        g = self.db.get_charter_by_id(id)
-        if len(g) == 0:
+        c = self.db.get_charter_by_id(id)
+        if len(c) == 0:
             return None
-        g = g[0]
-        return Charter(g['ID'], g['Name'], g['Image'], g['About'], bool(g['Staff']))
+        c = c[0]
+        return Charter(c['ID'], c['Name'], c['Image'], c['About'], bool(c['Staff']))
 
 
     @functools.lru_cache(maxsize=None)
     def get_by_name(self, name):
-        g = self.db.get_charter_by_name(name)
-        if len(g) == 0:
+        c = self.db.get_charter_by_name(name)
+        if len(c) == 0:
             return None
-        g = g[0]
-        return Charter(g['ID'], g['Name'], g['Image'], g['About'], bool(g['Staff']))
+        c = c[0]
+        return Charter(c['ID'], c['Name'], c['Image'], c['About'], bool(c['Staff']))
+
+
+    def get_all(self):
+        data = []
+        for c in self.db.get_all_charters():
+            x = Charter(c['ID'], c['Name'], c['Image'], c['About'], bool(c['Staff']))
+            data.append(x)
+        return data
 
 
 class TJAs():

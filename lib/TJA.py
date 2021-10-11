@@ -33,7 +33,7 @@ def decode_tja(raw):
     print("unknown encoding")
     print("Copy the below in cyberchef for bruteforcing:")
     print(base64.b64encode(raw[:300]))
-    sys.exit()
+    raise(Exception("Unknown Encoding"))
 
 
 def encode_tja(text):

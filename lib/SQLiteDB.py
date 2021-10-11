@@ -81,6 +81,13 @@ class Database(metaclass=Singleton):
     # reading data #
     ################
     @_db_wrapped
+    def _get_all(self, db, cur, table):
+        data  = list(cur.execute("SELECT * FROM %s"%table))
+        names = list(map(lambda x: x[0], cur.description))
+        return [dict(zip(names, d)) for d in data]
+
+
+    @_db_wrapped
     def _get_by_field(self, db, cur, table, field, value):
         data  = list(cur.execute("SELECT * FROM %s WHERE %s=?"%(table, field),
                     (value,)))
@@ -96,6 +103,10 @@ class Database(metaclass=Singleton):
         return self._get_by_field('Genres', 'Genre', genre)
 
 
+    def get_all_genres(self):
+        return self._get_all('Genres')
+
+
     def get_charter_by_id(self, id):
         return self._get_by_field('Charters', 'ID', id)
 
@@ -104,11 +115,12 @@ class Database(metaclass=Singleton):
         return self._get_by_field('Charters', 'Name', name)
 
 
-    @_db_wrapped
-    def get_all_songs(self, db, cur):
-        data  = list(cur.execute("SELECT * FROM Songs"))
-        names = list(map(lambda x: x[0], cur.description))
-        return [dict(zip(names, d)) for d in data]
+    def get_all_charters(self):
+        return self._get_all('Charters')
+
+
+    def get_all_songs(self):
+        return self._get_all('Songs')
 
 
     def get_song_by_id(self, id):
