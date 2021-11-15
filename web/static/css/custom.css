@@ -25,3 +25,8 @@ body{
     padding:          24px 6px;
     min-width:        1000px;
 }
+
+
+.error{
+  border-color:red;
+}

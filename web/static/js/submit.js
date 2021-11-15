@@ -16,6 +16,7 @@ function autocomplete_wrapper(orig_id, eng_id, orig, eng) {
     })
 };
 
+
 function generate_suggestion(){
     var artist_orig = $("#artist_orig").val();
     var artist_eng  = $("#artist_eng" ).val();
@@ -32,12 +33,27 @@ function generate_suggestion(){
     }
 }
 
-$(document).ready(function () {
-    $("#sub_accept").click(function() {
 
+$(document).ready(function () {
+    $.validator.messages.required = '';
+    $('#submit_form').validate({
+        rules: {
+            highlight: function(element) {
+                $(element).parent().addClass('has-error');
+            },
+            unhighlight: function(element) {
+                $(element).parent().removeClass('has-error');
+            },
+        }
+    });
+
+
+
+    $("#sub_accept").click(function() {
         $("#subtitle_orig").val( $("#subtitle_suggest_orig").val() );
         $("#subtitle_eng" ).val( $("#subtitle_suggest_eng").val() );
     });
+
 
     $("#tja_parse").click(function() {
         var file = $("#tja_file")[0].files[0];
@@ -80,4 +96,32 @@ $(document).ready(function () {
             });
         }
     });
+
+/*
+    $("#submit_btn").click(function() {
+        title_orig    = $('#title_orig').val();
+        title_eng     = $('#title_eng').val();
+        subtitle_orig = $('#subtitle_orig').val();
+        subtitle_eng  = $('#subtitle_eng' ).val();
+        artist_orig   = $('#artist_orig').val();
+        artist_eng    = $('#artist_eng').val();
+        charter       = $('#charter').val();
+        bpm           = $('#bpm').val();
+        d_kantan      = $('#d_kantan').val();
+        d_futsuu      = $('#d_futsuu').val();
+        d_muzukashii  = $('#d_muzukashii').val();
+        d_oni         = $('#d_oni').val();
+        d_ura         = $('#d_ura').val();
+        source_orig   = $('#source_orig').val();
+        source_eng    = $('#source_eng').val();
+        genre         = $('#genre').val();
+        comments      = $('#comments').val();
+        video_link    = $('#video_link').val();
+        tja           = $('#tja_file')[0].files[0];
+        ogg           = $('#ogg_file')[0].files[0];
+        added         = $('#tja_added').val();
+        updated       = $('#tja_updated').val();
+        console.log(added);
+    });
+*/
 });

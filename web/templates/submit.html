@@ -3,6 +3,7 @@
   <link href="/static/css/autocomplete.css" rel="stylesheet">
 {% endblock %}
 {% block js %}
+  <script type="text/javascript" src="/static/js/jquery.validate.min.js"></script>
   <script type="text/javascript" src="/static/js/autocomplete.js"></script>
   <script>
     $(document).ready(function () {
@@ -22,6 +23,11 @@
 
       autocomplete_wrapper("#artist_orig", "#artist_eng", artist_orig, artist_eng);
       autocomplete_wrapper("#source_orig", "#source_eng", source_orig, source_eng);
+
+      {% for key, value in keep.items() %}
+        $( "#{{key}}" ).val( "{{value}}" );
+        $( "#{{key|keep}}_keep" ).prop( "checked", true );
+      {% endfor %}
     });
   </script>
   <script type="text/javascript" src="/static/js/submit.js"></script>
@@ -34,84 +40,116 @@
     <div class="card-header">Submit a new song</div>
       <div class="card-body">
 
-        <div class="input-group">
-          <label class="input-group-text" for="tja_file">Select TJA</label>
-          <input type="file" class="form-control" id="tja_file">
-          <button id="tja_parse" class="btn btn-outline-secondary" type="button">Parse</button>
-        </div>
+        <form id="submit_form" class="needs-validation" novalidate action="/submit" method="post" enctype="multipart/form-data">
+          <fieldset>
+            <div class="input-group">
+              <label class="input-group-text" for="tja_file">Select TJA</label>
+              <input name="tja_file" type="file" class="form-control" id="tja_file" required>
+              <button id="tja_parse" class="btn btn-outline-secondary" type="button">Parse</button>
+            </div>
 
-        <div class="input-group mb-3">
-          <label class="input-group-text" for="tja_file">Select OGG</label>
-          <input type="file" class="form-control" id="tja_file">
-        </div>
+            <div class="input-group mb-3">
+              <label class="input-group-text" for="ogg_file">Select OGG</label>
+              <input name="ogg_file" type="file" class="form-control" id="ogg_file" required>
+            </div>
 
-        <div class="input-group">
-          <span class="input-group-text">Title</span>
-          <input id="title_orig" type="text" aria-label="Title Original" placeholder="Title Original" class="form-control">
-          <input id="title_eng"  type="text" aria-label="Title English"  placeholder="Title English"  class="form-control">
-        </div>
+            <div class="input-group">
+              <span class="input-group-text">Title</span>
+              <input name="title_orig" id="title_orig" type="text" aria-label="Title Original" placeholder="Title Original" class="form-control" required>
+              <input name="title_eng"  id="title_eng"  type="text" aria-label="Title English"  placeholder="Title English"  class="form-control" required>
+            </div>
 
-        <div class="input-group">
-          <span class="input-group-text">Artist</span>
-          <input id="artist_orig" type="text" aria-label="Artist Original" placeholder="Artist Original" class="form-control">
-          <input id="artist_eng"  type="text" aria-label="Artist English"  placeholder="Artist English"  class="form-control">
-          <div class="input-group-text">
-            <input id="artist_keep" class="form-check-input" type="checkbox" value="" aria-label="Keep field">
-          </div>
-        </div>
+            <div class="input-group">
+              <span class="input-group-text">Artist</span>
+              <input name="artist_orig" id="artist_orig" type="text" aria-label="Artist Original" placeholder="Artist Original" class="form-control" required>
+              <input name="artist_eng"  id="artist_eng"  type="text" aria-label="Artist English"  placeholder="Artist English"  class="form-control" required>
+              <div class="input-group-text">
+                <input name="artist_keep" id="artist_keep" class="form-check-input" type="checkbox" value="" aria-label="Keep field">
+              </div>
+            </div>
 
-        <div class="input-group mb-3">
-          <span class="input-group-text">Source</span>
-          <input id="source_orig" type="text" aria-label="Source Original" placeholder="Source Original" class="form-control">
-          <input id="source_eng"  type="text" aria-label="Source English"  placeholder="Source English"  class="form-control">
-          <div class="input-group-text">
-            <input id="source_keep" class="form-check-input" type="checkbox" value="" aria-label="Keep field">
-          </div>
-        </div>
+            <div class="input-group mb-3">
+              <span class="input-group-text">Source</span>
+              <input name="source_orig" id="source_orig" type="text" aria-label="Source Original" placeholder="Source Original" class="form-control">
+              <input name="source_eng"  id="source_eng"  type="text" aria-label="Source English"  placeholder="Source English"  class="form-control">
+              <div class="input-group-text">
+                <input name="source_keep" id="source_keep" class="form-check-input" type="checkbox" value="" aria-label="Keep field">
+              </div>
+            </div>
 
-        <div class="input-group">
-          <span class="input-group-text">Suggested Sub</span>
-          <input id="subtitle_suggest_orig" type="text" aria-label="Subtitle Suggestion Original" placeholder="Subtitle Suggestion Original" class="form-control" disabled>
-          <input id="subtitle_suggest_eng"  type="text" aria-label="Subtitle Suggestion English"  placeholder="Subtitle Suggestion English"  class="form-control" disabled>
-          <button id="sub_accept" class="btn btn-outline-secondary" type="button">Accept suggestion</button>
-        </div>
+            <div class="input-group">
+              <span class="input-group-text">Suggested Sub</span>
+              <input id="subtitle_suggest_orig" type="text" aria-label="Subtitle Suggestion Original" placeholder="Subtitle Suggestion Original" class="form-control" disabled>
+              <input id="subtitle_suggest_eng"  type="text" aria-label="Subtitle Suggestion English"  placeholder="Subtitle Suggestion English"  class="form-control" disabled>
+              <button id="sub_accept" class="btn btn-outline-secondary" type="button">Accept suggestion</button>
+            </div>
 
-        <div class="input-group mb-3">
-          <span class="input-group-text">Subtitle</span>
-          <input id="subtitle_orig" type="text" aria-label="Subtitle Original" placeholder="Subtitle Original" class="form-control">
-          <input id="subtitle_eng"  type="text" aria-label="Subtitle English"  placeholder="Subtitle English"  class="form-control">
-        </div>
+            <div class="input-group mb-3">
+              <span class="input-group-text">Subtitle</span>
+              <input name="subtitle_orig" id="subtitle_orig" type="text" aria-label="Subtitle Original" placeholder="Subtitle Original" class="form-control">
+              <input name="subtitle_eng"  id="subtitle_eng"  type="text" aria-label="Subtitle English"  placeholder="Subtitle English"  class="form-control">
+            </div>
 
-        <div class="input-group mb-3">
-          <span class="input-group-text">Genre</span>
-          <input id="genre" type="text" aria-label="Genre" placeholder="Genre" class="form-control">
-          <div class="input-group-text">
-            <input id="genre_keep" class="form-check-input" type="checkbox" value="" aria-label="Keep field">
-          </div>
 
-          <span class="input-group-text">Charter</span>
-          <input id="charter" type="text" aria-label="Charter" placeholder="Charter" class="form-control">
-          <div class="input-group-text">
-            <input id="charter_keep" class="form-check-input" type="checkbox" value="" aria-label="Keep field">
-          </div>
-        </div>
+            <div class="input-group">
+              <span class="input-group-text">Genre</span>
+              <input name="genre" id="genre" type="text" aria-label="Genre" placeholder="Genre" class="form-control" required>
+              <div class="input-group-text">
+                <input name="genre_keep" id="genre_keep" class="form-check-input" type="checkbox" value="" aria-label="Keep field">
+              </div>
 
-        <div class="input-group mb-3">
-          <span class="input-group-text">Difficulty</span>
-          <span class="input-group-text">Kantan</span>
-          <input id="d_kantan" type="text" class="form-control" aria-label="Kantan" disabled>
-          <span class="input-group-text">Futsuu</span>
-          <input id="d_futsuu" type="text" class="form-control" aria-label="Futsuu" disabled>
-          <span class="input-group-text">Muzukashii</span>
-          <input id="d_muzukashii" type="text" class="form-control" aria-label="Muzukashii" disabled>
-          <span class="input-group-text">Oni</span>
-          <input id="d_oni" type="text" class="form-control" aria-label="Oni" disabled>
-          <span class="input-group-text">Ura</span>
-          <input id="d_ura" type="text" class="form-control" aria-label="Uri" disabled>
-          <span class="input-group-text">BPM</span>
-          <input id="bpm" type="text" aria-label="BPM" placeholder="BPM" class="form-control" disabled>
-        </div>
+              <span class="input-group-text">Charter</span>
+              <input name="charter" id="charter" type="text" aria-label="Charter" placeholder="Charter" class="form-control" required>
+              <div class="input-group-text">
+                <input name="charter_keep" id="charter_keep" class="form-check-input" type="checkbox" value="" aria-label="Keep field">
+              </div>
+            </div>
 
+
+            <div class="input-group mb-3">
+              <span class="input-group-text">Difficulty</span>
+              <span class="input-group-text">Kantan</span>
+              <input name="d_kantan" id="d_kantan" type="text" class="form-control" aria-label="Kantan" readonly>
+              <span class="input-group-text">Futsuu</span>
+              <input name="d_futsuu" id="d_futsuu" type="text" class="form-control" aria-label="Futsuu" readonly>
+              <span class="input-group-text">Muzukashii</span>
+              <input name="d_muzukashii" id="d_muzukashii" type="text" class="form-control" aria-label="Muzukashii" readonly>
+              <span class="input-group-text">Oni</span>
+              <input name="d_oni" id="d_oni" type="text" class="form-control" aria-label="Oni" readonly>
+              <span class="input-group-text">Ura</span>
+              <input name="d_ura" id="d_ura" type="text" class="form-control" aria-label="Uri" readonly>
+              <span class="input-group-text">BPM</span>
+              <input name="bpm" id="bpm" type="text" aria-label="BPM" placeholder="BPM" class="form-control" readonly>
+            </div>
+
+
+            <div class="input-group">
+              <span class="input-group-text">Comments</span>
+              <input name="comments" id="comments" type="text" aria-label="Comments" placeholder="Comments" class="form-control">
+              <div class="input-group-text">
+                <input name="comments_keep" id="comments_keep" class="form-check-input" type="checkbox" value="" aria-label="Keep field">
+              </div>
+
+              <span class="input-group-text">Video Link</span>
+              <input name="video_link" id="video_link" type="text" aria-label="Video Link" placeholder="Video Link" class="form-control">
+            </div>
+
+
+            <div class="input-group mb-3">
+              <span class="input-group-text">TJA Created Date</span>
+              <input name="tja_added" id="tja_added" class="form-control" type="date" required />
+
+              <span class="input-group-text">TJA Last Updated</span>
+              <input name="tja_updated" id="tja_updated" class="form-control" type="date" required />
+            </div>
+
+
+            <div class="col-12">
+              <input class="submit" type="submit" value="Submit">
+            </div>
+          </fieldset>
+        </form>
+      </div>
     </div>
   </div>
 
