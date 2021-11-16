@@ -1,0 +1,35 @@
+{% extends 'layouts/master-page' %}
+
+{% block title %}Puchichara{% endblock %}
+{% block content %}
+  <div class="card border-secondary">
+    <div class="card-header">Puchichara</div>
+    <div class="card-body">
+      Los Puchichara son pequeños personajes que bailan junto a tu Don.
+      TaikoCatsCaffe incluye varios puchichara listos para su uso. 
+      Para cargarlos en TCC, solo renombra la imagen a Puchichara.png y déjala en
+      la carpeta 0_Personal. En cualquier otra versión de TJAPlayer3, el archivo debe
+      llamarse 0.png y estar en la carpeta 5_Game\18_Puchichara.
+    </div>
+  </div>
+
+  <div class="card border-secondary">
+    <div class="card-header">Como crear un Puchichara</div>
+    <div class="card-body">
+      <ol>
+        <li>Instala <a href="https://www.getpaint.net/">paint.net</a>.
+            Esto se usará para añadir el efecto de GoGo Time.</li>
+        <li>Encuentra dos imágenes del personaje que quieres usar para tu Puchichara.</li>
+        <li>Coloca tus personajes de una manera similar a esta en un lienzo de 500x500px
+            (Puedes descargar esta imagen y superponer tus personajes.) </br>
+            <img src="/static/imgs/custom/puchichara_example.png" style="width: 200px;"></li>
+        <li>Haz una selección rectangular de los dos personajes de abajo en la imagen y ve
+            a la pestaña "Niveles" dentro de paint.net.</li>
+        <li>Ajusta tus niveles para que la imagen quede asi. </br>
+            <img src="/static/imgs/custom/puchichara_levels.png"></li>
+        <li>Guarda el archivo.</li>
+      </ol>
+    </div>
+  </div>
+</div>
+{% endblock %}
