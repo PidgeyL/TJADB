@@ -1,0 +1,27 @@
+{% extends 'layouts/master-page' %}
+{% block css %}
+  <link href="/static/css/datatables.min.css" rel="stylesheet">
+  <link href="/static/css/songtable.css" rel="stylesheet">
+{% endblock %}
+{% block js %}
+  <script type="text/javascript" src="/static/js/datatables.min.js"></script>
+  <script type="text/javascript" src="/static/js/songtable.js"></script>
+{% endblock %}
+
+{% block title %}Browse{% endblock %}
+{% block content %}
+  <div class="card">
+    <div class="card-body">
+      TJADB es un repositorio de charts .tja personalizados en el que los puedes buscar,
+      filtrar por varios criterios y descargar desde aquí. Puedes descargar cada cancion en
+      su idioma original o en ingles.
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      {% include 'subpages/songtable.html' %}
+    </div>
+  </div>
+
+{% endblock %}
