@@ -1,0 +1,83 @@
+{% extends 'layouts/master-page' %}
+{% block css %}
+  <link href="/static/css/datatables.min.css" rel="stylesheet">
+  <link href="/static/css/songtable.css" rel="stylesheet">
+{% endblock %}
+{% block js %}
+  <script type="text/javascript" src="/static/js/datatables.min.js"></script>
+  <script type="text/javascript" src="/static/js/songtable.js"></script>
+{% endblock %}
+
+{% block title %}Home{% endblock %}
+{% block content %}
+  <div class="card border-secondary">
+    <div class="card-header">Sobre TJADB</div>
+    <div class="card-body">
+      Te damos la bienvenida al lanzamiento de la pagina del repositorio de TJADB. Este sitio
+      es usado por miembros de TJADB para distribuir sus propios charts TJA para compartir
+      la diversion de los juegos al estilo de Taiko no Tatsujin con su gran comunidad en 
+      el mundo. Los charts estan disponibles tanto en su idioma original
+      o traducidos al inglés. Revisa la <a href="/browse">lista de charts</a> para una
+      lista de las canciones disponibles en la pagina de TJADB.
+    </div>
+  </div>
+
+  <div class="card border-secondary">
+    <div class="card-header">Como subo mis TJA?</div>
+    <div class="card-body">
+      Durante la versión alpha, el envio y subida de TJA está limitado a miembros de
+      el servidor de TJADB en Discord. Antes de subir un TJA, pide a alguien en 
+      el canal de <b>#tja-general</b> del servidor de Discord que verifique que tu TJA esté bien hecho.
+      Despues de haber recibido la aprobacion, asegurate de tener la siguiente informacion disponible:
+      <ul>
+        <li>Título de la canción en su idioma y escritura original</li>
+        <li>Título en inglés o Romaji</li>
+        <li>Subtítulo de la canción en su idioma y escritura original</li>
+        <li>Subtítulo de la canción en inglés</li>
+        <li>Nombre del artista en su idioma y escritura original</li>
+        <li>Nombre del artista en inglés o Romaji</li>
+        <li>Fuente de la canción (Videojuego o anime, por ejemplo) en su idioma y escritura original (puede estar en blanco)</li>
+        <li>Fuente de la canción (Videojuego o anime, por ejemplo) en inglés (puede estar en blanco)</li>
+        <li>Genero de la canción (Usando la lista oficial de generos de Taiko no Tatsujin)</li>
+        <li>Tu nombre de charter</li>
+        <li>Un archivo zip que contenga el audio en .ogg y el .tja, o un link de descarga</li>
+      </ul>
+      La siguiente informacion puede ser obtenida desde el TJA, pero es preferible
+      que sea añadida manualmente para evitar errores de organización:
+      <ul>
+        <li>Dificultades (Kantan, Futsuu, Muzukashii, Oni y Ura. Dejar en blanco los que no se apliquen en su caso.)</li>
+        <li>BPM de la canción</li>
+      </ul>
+      La siguiente información es opcional:
+      <ul>
+        <li>Un link a un vídeo del chart</li>
+        <li>La fecha de creación del chart. Si está en blanco, se usará la fecha de ingreso.</li>
+        <li>Información extra (otros charters, links secundarios a videos, etc)</li>
+      </ul>
+      Cuando estes seguro de que tienes toda la información requerida,
+      envia un mensaje a <b>@PidgeyL</b> con una solicitud para incluirlo en la base de
+      datos de TJADB. Este proceso será más ameno en futuras iteraciones de la página.
+    </div>
+  </div>
+
+  <div class="card border-secondary">
+    <div class="card-header">Get involved!</div>
+    <div class="card-body">
+      Quieres participar en el desarrollo de esta página de TJADB? ¡Sí puedes! Puedes contribuir de diversas maneras: Programando, desarrollo web, arte, testeo, caza de bugs,
+      y por supuesto, entregando contenido! <br />
+      Hay muchas formas de proveer contenido, la mas obvia es,
+      por supuesto, el agregar nuevos TJA's (asegúrate que poseas los derechos del chart). Otras formas de ayudar aparecen si tu miras al menú, 
+      allí verás que hay links que actualmente llevan a ninguna parte. Uno de ellos es 
+      "Guías". Si quieres escribir guias sobre un simulador TJA en concreto,
+      charting, etc, ponte en contacto con los <b>moderadores del servidor de Discord de TJADB</b>,
+      Y diles que guías piensas añadir. Una vez que te den la aprobación, puedes hacer tu guía y comunicarte con <b>@Pidgey</b> cuando esté lista. El añadirá
+      tu página al sitio web, once signed off by the mods. <br /> <br />
+      ¿Prefieres hacer arte para la página, como el banner, barra de menú o el fondo de la página?
+      Comunícate con <b>@Pidgey</b> para ver los requerimientos. <br /> <br />
+      Prefieres ayudar programando? Puedes encontrar el repositorio
+      <b><a href="https://github.com/PidgeyL/TJADB">GitHub</a></b>. Debido a que no hay reglas sobre el desarrollo o plan a futuro, 
+      te pedimos que te contactes con el equipo de desarrollo para asegurarte si tu código será aprobado.
+    </div>
+  </div>
+
+{% endblock %}
