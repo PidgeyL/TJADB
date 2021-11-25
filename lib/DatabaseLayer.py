@@ -241,7 +241,7 @@ class Bot():
 
 
     def get_sotd_publish_channels(self):
-        return [904498085495963660]
+        return Settings().bot_sotd_channels
 
 
 

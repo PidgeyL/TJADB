@@ -34,3 +34,4 @@ class Settings(metaclass=Singleton):
     bot_about_color       = 0xff1122
     bot_donate_color      = 0x338929
     bot_api_key           = ''
+    bot_sotd_channels     = []
