@@ -23,6 +23,7 @@ class DatabaseLayer(metaclass=Singleton):
         self.genres   = Genres()
         self.charters = Charters()
         self.tjas     = TJAs()
+        self.bot      = Bot()
 
 
 class Songs():
@@ -232,3 +233,38 @@ class TJAs():
         text += "BPM: %s\n"%song.bpm
         text += "Last update: %s\n\n"%song.updated
         return text
+
+
+class Bot():
+    def __init__(self):
+        self.db = Database.Database()
+
+
+    def get_sotd_publish_channels(self):
+        return Settings().bot_sotd_channels
+
+
+
+class Cache(metaclass=Singleton):
+    def __init__(self):
+        self.songs = []
+        self.refresh()
+
+
+    def refresh(self):
+        self.songs = DatabaseLayer().songs.get_all()
+
+
+    def get_all_songs(self):
+        return self.songs
+
+
+    def search(self, term):
+        def match_song(song, search):
+            for field in ['title_eng', 'title_orig', 'artist_eng', 'artist_orig',
+                          'source_eng', 'source_orig']:
+                if search.lower() in getattr(song, field).lower():
+                    return True
+            return None
+        return [s for s in self.songs if match_song(s, term)]
+

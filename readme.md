@@ -28,3 +28,11 @@ This is free software released under the "GNU Affero General Public License v3.0
 Copyright (c) 2021  Pieter-Jan Moreels - https://github.com/pidgeyl/
 Copyright (c) 2021  TJADB Community - https://discord.com/invite/XHcVYKW
 ````
+
+## Shout-outs
+This section is for people who helped out the project by sponsoring the server that runs the public TJADB website and Discord bot.
+
+````
+@Y2K-x
+And others
+````

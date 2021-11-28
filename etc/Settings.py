@@ -16,6 +16,7 @@ class Settings(metaclass=Singleton):
     # Web server
     port      = 4987
     host      = "127.0.0.1"
+    url       = "https://dev.pidgey.net"
     debug     = True
     # SSL
     ssl       = True
@@ -25,4 +26,12 @@ class Settings(metaclass=Singleton):
     # Database
     file_db   = full_path('./db/files/')
     sqlite_db = full_path('./db/metadata.db')
-    prefix    = 'TJADB'
+
+    # Discord Bot
+    bot_sotd_color        = 0xf3f8fc
+    bot_random_song_color = 0xa3f8fc
+    bot_search_color      = 0x449920
+    bot_about_color       = 0xff1122
+    bot_donate_color      = 0x338929
+    bot_api_key           = ''
+    bot_sotd_channels     = []
