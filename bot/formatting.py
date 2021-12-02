@@ -70,7 +70,7 @@ def embed_searchlist_en(term, songs):
     embed = discord.Embed(title = f"__**Results for: {term}**__",
                           color = conf.bot_search_color)
     for song in songs:
-        embed.add_field( **song_namecard(song, en=True) )
+        embed.add_field( **song_namecard(song, en=True) inline=False)
     return embed
 
 
