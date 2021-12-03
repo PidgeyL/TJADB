@@ -1,0 +1,156 @@
+{% extends 'layouts/master-page' %}
+{% block css %}
+  <link href="/static/css/autocomplete.css" rel="stylesheet">
+{% endblock %}
+{% block js %}
+  <script type="text/javascript" src="/static/js/jquery.validate.min.js"></script>
+  <script type="text/javascript" src="/static/js/autocomplete.js"></script>
+  <script>
+    $(document).ready(function () {
+      var artist_orig = {{ artist_orig | tojson }};
+      var artist_eng  = {{ artist_eng  | tojson }};
+      var source_orig = {{ source_orig | tojson }};
+      var source_eng  = {{ source_eng  | tojson }};
+      var genres      = {{ genres      | tojson }};
+      var charters    = {{ charters    | tojson }};
+
+      autocomplete(document.getElementById("artist_orig"), artist_orig);
+      autocomplete(document.getElementById("artist_eng"),  artist_eng);
+      autocomplete(document.getElementById("source_orig"), source_orig);
+      autocomplete(document.getElementById("source_eng"),  source_eng);
+      autocomplete(document.getElementById("genre"),       genres);
+      autocomplete(document.getElementById("charter"),     charters);
+
+      autocomplete_wrapper("#artist_orig", "#artist_eng", artist_orig, artist_eng);
+      autocomplete_wrapper("#source_orig", "#source_eng", source_orig, source_eng);
+
+      {% for key, value in keep.items() %}
+        $( "#{{key}}" ).val( "{{value}}" );
+        $( "#{{key|keep}}_keep" ).prop( "checked", true );
+      {% endfor %}
+    });
+  </script>
+  <script type="text/javascript" src="/static/js/submit.js"></script>
+
+{% endblock %}
+
+{% block title %}Submit{% endblock %}
+{% block content %}
+  <div class="card border-secondary">
+    <div class="card-header">Subir un nuevo chart</div>
+      <div class="card-body">
+
+        <form id="submit_form" class="needs-validation" novalidate action="/submit" method="post" enctype="multipart/form-data">
+          <fieldset>
+            <div class="input-group">
+              <label class="input-group-text" for="tja_file">Seleccionar TJA</label>
+              <input name="tja_file" type="file" class="form-control" id="tja_file" required>
+              <button id="tja_parse" class="btn btn-outline-secondary" type="button">Parse</button>
+            </div>
+
+            <div class="input-group mb-3">
+              <label class="input-group-text" for="ogg_file">Seleccionar OGG</label>
+              <input name="ogg_file" type="file" class="form-control" id="ogg_file" required>
+            </div>
+
+            <div class="input-group">
+              <span class="input-group-text">Título</span>
+              <input name="title_orig" id="title_orig" type="text" aria-label="Title Original" placeholder="Título original" class="form-control" required>
+              <input name="title_eng"  id="title_eng"  type="text" aria-label="Title English"  placeholder="Título en inglés"  class="form-control" required>
+            </div>
+
+            <div class="input-group">
+              <span class="input-group-text">Artista</span>
+              <input name="artist_orig" id="artist_orig" type="text" aria-label="Artist Original" placeholder="Artista original" class="form-control" required>
+              <input name="artist_eng"  id="artist_eng"  type="text" aria-label="Artist English"  placeholder="Artista en inglés"  class="form-control" required>
+              <div class="input-group-text">
+                <input name="artist_keep" id="artist_keep" class="form-check-input" type="checkbox" value="" aria-label="Keep field">
+              </div>
+            </div>
+
+            <div class="input-group mb-3">
+              <span class="input-group-text">Fuente</span>
+              <input name="source_orig" id="source_orig" type="text" aria-label="Source Original" placeholder="Fuente original" class="form-control">
+              <input name="source_eng"  id="source_eng"  type="text" aria-label="Source English"  placeholder="Fuente en inglés"  class="form-control">
+              <div class="input-group-text">
+                <input name="source_keep" id="source_keep" class="form-check-input" type="checkbox" value="" aria-label="Keep field">
+              </div>
+            </div>
+
+            <div class="input-group">
+              <span class="input-group-text">Subtítulo Sugerido</span>
+              <input id="subtitle_suggest_orig" type="text" aria-label="Subtitle Suggestion Original" placeholder="Subtítulo sugerido original" class="form-control" disabled>
+              <input id="subtitle_suggest_eng"  type="text" aria-label="Subtitle Suggestion English"  placeholder="Subtítulo sugerido en inglés"  class="form-control" disabled>
+              <button id="sub_accept" class="btn btn-outline-secondary" type="button">Aceptar sugerencia</button>
+            </div>
+
+            <div class="input-group mb-3">
+              <span class="input-group-text">Subtítulo</span>
+              <input name="subtitle_orig" id="subtitle_orig" type="text" aria-label="Subtitle Original" placeholder="Subtítulo Original" class="form-control">
+              <input name="subtitle_eng"  id="subtitle_eng"  type="text" aria-label="Subtitle English"  placeholder="Subtítlo en inglés"  class="form-control">
+            </div>
+
+
+            <div class="input-group">
+              <span class="input-group-text">Género</span>
+              <input name="genre" id="genre" type="text" aria-label="Genre" placeholder="Género" class="form-control" required>
+              <div class="input-group-text">
+                <input name="genre_keep" id="genre_keep" class="form-check-input" type="checkbox" value="" aria-label="Keep field">
+              </div>
+
+              <span class="input-group-text">Charter</span>
+              <input name="charter" id="charter" type="text" aria-label="Charter" placeholder="Charter" class="form-control" required>
+              <div class="input-group-text">
+                <input name="charter_keep" id="charter_keep" class="form-check-input" type="checkbox" value="" aria-label="Keep field">
+              </div>
+            </div>
+
+
+            <div class="input-group mb-3">
+              <span class="input-group-text">Dificultad</span>
+              <span class="input-group-text">Kantan</span>
+              <input name="d_kantan" id="d_kantan" type="text" class="form-control" aria-label="Kantan" readonly>
+              <span class="input-group-text">Futsuu</span>
+              <input name="d_futsuu" id="d_futsuu" type="text" class="form-control" aria-label="Futsuu" readonly>
+              <span class="input-group-text">Muzukashii</span>
+              <input name="d_muzukashii" id="d_muzukashii" type="text" class="form-control" aria-label="Muzukashii" readonly>
+              <span class="input-group-text">Oni</span>
+              <input name="d_oni" id="d_oni" type="text" class="form-control" aria-label="Oni" readonly>
+              <span class="input-group-text">Ura</span>
+              <input name="d_ura" id="d_ura" type="text" class="form-control" aria-label="Ura" readonly>
+              <span class="input-group-text">BPM</span>
+              <input name="bpm" id="bpm" type="text" aria-label="BPM" placeholder="BPM" class="form-control" readonly>
+            </div>
+
+
+            <div class="input-group">
+              <span class="input-group-text">Comentarios</span>
+              <input name="comments" id="comments" type="text" aria-label="Comments" placeholder="Comentarios" class="form-control">
+              <div class="input-group-text">
+                <input name="comments_keep" id="comments_keep" class="form-check-input" type="checkbox" value="" aria-label="Keep field">
+              </div>
+
+              <span class="input-group-text">Link al vídeo</span>
+              <input name="video_link" id="video_link" type="text" aria-label="Video Link" placeholder="Link al vídeo" class="form-control">
+            </div>
+
+
+            <div class="input-group mb-3">
+              <span class="input-group-text">Fecha de creacion del TJA</span>
+              <input name="tja_added" id="tja_added" class="form-control" type="date" required />
+
+              <span class="input-group-text">Ultima actualización del TJA</span>
+              <input name="tja_updated" id="tja_updated" class="form-control" type="date" required />
+            </div>
+
+
+            <div class="col-12">
+              <input class="submit" type="submit" value="Submit">
+            </div>
+          </fieldset>
+        </form>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
