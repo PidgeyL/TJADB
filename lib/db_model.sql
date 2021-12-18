@@ -1,0 +1,188 @@
+CREATE SCHEMA IF NOT EXISTS tjadb;
+
+CREATE  TABLE tjadb.artists ( 
+	id                   integer  NOT NULL ,
+	name_orig            text  NOT NULL ,
+	name_eng             text  NOT NULL ,
+	link                 text   ,
+	info                 text   ,
+	CONSTRAINT pk_artists_id PRIMARY KEY ( id ),
+	CONSTRAINT unq_artists_name UNIQUE ( name_orig, name_eng ) 
+ );
+
+CREATE  TABLE tjadb.difficulties ( 
+	id                   integer  NOT NULL ,
+	name_jp              text  NOT NULL ,
+	name_en              text  NOT NULL ,
+	CONSTRAINT pk_difficulties_id PRIMARY KEY ( id )
+ );
+
+CREATE  TABLE tjadb.genres ( 
+	id                   integer  NOT NULL ,
+	title_en             text  NOT NULL ,
+	title_jp             text  NOT NULL ,
+	tja_genre            text  NOT NULL ,
+	CONSTRAINT "Pk_Genres_id" PRIMARY KEY ( id ),
+	CONSTRAINT "Unq_Genres_title_en" UNIQUE ( title_en ) ,
+	CONSTRAINT "Unq_Genres_title_jp" UNIQUE ( title_jp ) ,
+	CONSTRAINT "Unq_Genres_tja_genre" UNIQUE ( tja_genre ) 
+ );
+
+CREATE  TABLE tjadb.languages ( 
+	id                   integer  NOT NULL ,
+	name_orig            text   ,
+	name_en              text   ,
+	CONSTRAINT pk_languages_id PRIMARY KEY ( id )
+ );
+
+CREATE  TABLE tjadb.song_tags ( 
+	id                   integer  NOT NULL ,
+	name_orig            text  NOT NULL ,
+	name_en              text  NOT NULL ,
+	CONSTRAINT pk_tags_for_songs_id PRIMARY KEY ( id )
+ );
+
+CREATE  TABLE tjadb.songlists ( 
+	id                   integer  NOT NULL ,
+	name_orig            text  NOT NULL ,
+	name_eng             text  NOT NULL ,
+	CONSTRAINT pk_songlists_id PRIMARY KEY ( id )
+ );
+
+CREATE  TABLE tjadb.sources ( 
+	id                   integer  NOT NULL ,
+	name_orig            text  NOT NULL ,
+	name_en              text  NOT NULL ,
+	genre_id             integer   ,
+	about                text   ,
+	CONSTRAINT "Pk_Sources_id" PRIMARY KEY ( id )
+ );
+
+CREATE  TABLE tjadb.users ( 
+	id                   integer  NOT NULL ,
+	charter_name         text   ,
+	discord_id           integer   ,
+	email                text   ,
+	"password"           text   ,
+	salt                 text   ,
+	hashcount            integer DEFAULT 4000  ,
+	staff                boolean   ,
+	image_url            text   ,
+	about                text   ,
+	preferred_difficulty_id integer   ,
+	preferred_language_id integer DEFAULT 1 NOT NULL ,
+	CONSTRAINT pk_users_id PRIMARY KEY ( id ),
+	CONSTRAINT unq_users_email UNIQUE ( email ) ,
+	CONSTRAINT unq_users_discord_id UNIQUE ( discord_id ) ,
+	CONSTRAINT unq_users_charter_name UNIQUE ( charter_name ) 
+ );
+
+CREATE  TABLE tjadb.songs ( 
+	id                   integer  NOT NULL ,
+	title_orig           text  NOT NULL ,
+	title_en             text  NOT NULL ,
+	subtitle_orig        text  NOT NULL ,
+	subtitle_en          text  NOT NULL ,
+	artists_id           integer  NOT NULL ,
+	source_id            integer   ,
+	bpm                  decimal  NOT NULL ,
+	genre_id             integer  NOT NULL ,
+	charter_id           integer  NOT NULL ,
+	d_kantan             integer   ,
+	d_kantan_charter_id  integer   ,
+	d_futsuu             integer   ,
+	d_futsuu_charter_id  integer   ,
+	d_muzukashii         integer   ,
+	d_muzukashii_charter_id integer   ,
+	d_oni                integer   ,
+	d_oni_charter_id     integer   ,
+	d_ura                integer   ,
+	d_ura_charter_id     integer   ,
+	downloads            integer DEFAULT 0  ,
+	last_updated         date  NOT NULL ,
+	created              date  NOT NULL ,
+	comments             text   ,
+	video_link           text   ,
+	obj_tja              oid  NOT NULL ,
+	obj_ogg              oid  NOT NULL ,
+	obj_bg_video_picture oid   ,
+	CONSTRAINT pk_songs_id PRIMARY KEY ( id )
+ );
+
+CREATE  TABLE tjadb.songs_in_songlists ( 
+	song_id              integer  NOT NULL ,
+	songlist_id          integer  NOT NULL ,
+	CONSTRAINT pk_songs_in_songlists PRIMARY KEY ( song_id, songlist_id )
+ );
+
+CREATE  TABLE tjadb.tags_per_song ( 
+	tag_id               integer  NOT NULL ,
+	song_id              integer  NOT NULL ,
+	CONSTRAINT pk_tags_per_song PRIMARY KEY ( tag_id, song_id )
+ );
+
+CREATE  TABLE tjadb.artists_per_song ( 
+	song_id              integer  NOT NULL ,
+	artist_id            integer  NOT NULL ,
+	CONSTRAINT pk_artists_per_song PRIMARY KEY ( song_id, artist_id )
+ );
+
+CREATE  TABLE tjadb.song_comments ( 
+	song_id              integer  NOT NULL ,
+	user_id              integer  NOT NULL ,
+	difficulty_id        integer  NOT NULL ,
+	player_score         integer   ,
+	player_cleared       boolean DEFAULT false  ,
+	player_fc            boolean DEFAULT false  ,
+	rating               integer   ,
+	CONSTRAINT pk_song_comments PRIMARY KEY ( song_id, user_id, difficulty_id )
+ );
+
+CREATE  TABLE tjadb.song_of_the_day_history ( 
+	"date"               date DEFAULT CURRENT_DATE NOT NULL ,
+	song_id              integer  NOT NULL ,
+	CONSTRAINT "Pk_Song_of_the_Day_History_date" PRIMARY KEY ( "date" )
+ );
+
+ALTER TABLE tjadb.artists_per_song ADD CONSTRAINT fk_artists_per_song_artists FOREIGN KEY ( artist_id ) REFERENCES tjadb.artists( id ) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+ALTER TABLE tjadb.artists_per_song ADD CONSTRAINT fk_artists_per_song_songs FOREIGN KEY ( song_id ) REFERENCES tjadb.songs( id );
+
+ALTER TABLE tjadb.song_comments ADD CONSTRAINT fk_song_comments_songs FOREIGN KEY ( song_id ) REFERENCES tjadb.songs( id );
+
+ALTER TABLE tjadb.song_comments ADD CONSTRAINT fk_song_comments_users FOREIGN KEY ( user_id ) REFERENCES tjadb.users( id ) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE tjadb.song_comments ADD CONSTRAINT fk_song_comments_difficulties FOREIGN KEY ( difficulty_id ) REFERENCES tjadb.difficulties( id );
+
+ALTER TABLE tjadb.song_of_the_day_history ADD CONSTRAINT fk_song_of_the_day_history FOREIGN KEY ( song_id ) REFERENCES tjadb.songs( id );
+
+ALTER TABLE tjadb.songs ADD CONSTRAINT fk_songs_sources FOREIGN KEY ( source_id ) REFERENCES tjadb.sources( id ) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+ALTER TABLE tjadb.songs ADD CONSTRAINT fk_songs_genres FOREIGN KEY ( genre_id ) REFERENCES tjadb.genres( id );
+
+ALTER TABLE tjadb.songs ADD CONSTRAINT fk_songs_users_charter FOREIGN KEY ( charter_id ) REFERENCES tjadb.users( id );
+
+ALTER TABLE tjadb.songs ADD CONSTRAINT fk_songs_users_kantan FOREIGN KEY ( d_kantan_charter_id ) REFERENCES tjadb.users( id );
+
+ALTER TABLE tjadb.songs ADD CONSTRAINT fk_songs_users_futsuu FOREIGN KEY ( d_futsuu_charter_id ) REFERENCES tjadb.users( id ) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+ALTER TABLE tjadb.songs ADD CONSTRAINT fk_songs_users_muzukashii FOREIGN KEY ( d_muzukashii_charter_id ) REFERENCES tjadb.users( id ) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+ALTER TABLE tjadb.songs ADD CONSTRAINT fk_songs_users_oni FOREIGN KEY ( d_oni_charter_id ) REFERENCES tjadb.users( id ) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+ALTER TABLE tjadb.songs ADD CONSTRAINT fk_songs_users_ura FOREIGN KEY ( d_ura_charter_id ) REFERENCES tjadb.users( id ) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+ALTER TABLE tjadb.songs_in_songlists ADD CONSTRAINT fk_songs_in_songlists FOREIGN KEY ( songlist_id ) REFERENCES tjadb.songlists( id ) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+ALTER TABLE tjadb.songs_in_songlists ADD CONSTRAINT fk_songs_in_songlists_songs FOREIGN KEY ( song_id ) REFERENCES tjadb.songs( id ) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+ALTER TABLE tjadb.sources ADD CONSTRAINT fk_sources_genres FOREIGN KEY ( genre_id ) REFERENCES tjadb.genres( id ) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+ALTER TABLE tjadb.tags_per_song ADD CONSTRAINT fk_tags_per_song_songs FOREIGN KEY ( song_id ) REFERENCES tjadb.songs( id );
+
+ALTER TABLE tjadb.tags_per_song ADD CONSTRAINT fk_tags_per_song_song_tags FOREIGN KEY ( tag_id ) REFERENCES tjadb.song_tags( id );
+
+ALTER TABLE tjadb.users ADD CONSTRAINT fk_users_difficulties FOREIGN KEY ( preferred_difficulty_id ) REFERENCES tjadb.difficulties( id ) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+ALTER TABLE tjadb.users ADD CONSTRAINT fk_users_languages FOREIGN KEY ( preferred_language_id ) REFERENCES tjadb.languages( id ) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
