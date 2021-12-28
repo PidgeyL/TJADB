@@ -1,65 +1,58 @@
 CREATE SCHEMA IF NOT EXISTS tjadb;
 
 CREATE  TABLE tjadb.artists ( 
-	id                   integer  NOT NULL ,
+	id                   serial  PRIMARY KEY ,
 	name_orig            text  NOT NULL ,
-	name_eng             text  NOT NULL ,
+	name_en              text  NOT NULL ,
 	link                 text   ,
 	info                 text   ,
-	CONSTRAINT pk_artists_id PRIMARY KEY ( id ),
-	CONSTRAINT unq_artists_name UNIQUE ( name_orig, name_eng ) 
+	CONSTRAINT unq_artists_name UNIQUE ( name_orig, name_en, info ) 
  );
 
 CREATE  TABLE tjadb.difficulties ( 
-	id                   integer  NOT NULL ,
+	id                   serial  PRIMARY KEY ,
 	name_jp              text  NOT NULL ,
-	name_en              text  NOT NULL ,
-	CONSTRAINT pk_difficulties_id PRIMARY KEY ( id )
+	name_en              text  NOT NULL 
  );
 
 CREATE  TABLE tjadb.genres ( 
-	id                   integer  NOT NULL ,
-	title_en             text  NOT NULL ,
-	title_jp             text  NOT NULL ,
+	id                   serial  PRIMARY KEY ,
+	name_en              text  NOT NULL ,
+	name_jp              text  NOT NULL ,
 	tja_genre            text  NOT NULL ,
-	CONSTRAINT "Pk_Genres_id" PRIMARY KEY ( id ),
-	CONSTRAINT "Unq_Genres_title_en" UNIQUE ( title_en ) ,
-	CONSTRAINT "Unq_Genres_title_jp" UNIQUE ( title_jp ) ,
+	CONSTRAINT "Unq_Genres_title_en" UNIQUE ( name_en ) ,
+	CONSTRAINT "Unq_Genres_title_jp" UNIQUE ( name_jp ) ,
 	CONSTRAINT "Unq_Genres_tja_genre" UNIQUE ( tja_genre ) 
  );
 
 CREATE  TABLE tjadb.languages ( 
-	id                   integer  NOT NULL ,
+	id                   serial  PRIMARY KEY ,
 	name_orig            text   ,
-	name_en              text   ,
-	CONSTRAINT pk_languages_id PRIMARY KEY ( id )
+	name_en              text 
  );
 
 CREATE  TABLE tjadb.song_tags ( 
-	id                   integer  NOT NULL ,
+	id                   serial  PRIMARY KEY ,
 	name_orig            text  NOT NULL ,
-	name_en              text  NOT NULL ,
-	CONSTRAINT pk_tags_for_songs_id PRIMARY KEY ( id )
+	name_en              text  NOT NULL 
  );
 
 CREATE  TABLE tjadb.songlists ( 
-	id                   integer  NOT NULL ,
+	id                   serial  PRIMARY KEY ,
 	name_orig            text  NOT NULL ,
-	name_eng             text  NOT NULL ,
-	CONSTRAINT pk_songlists_id PRIMARY KEY ( id )
+	name_en              text  NOT NULL 
  );
 
 CREATE  TABLE tjadb.sources ( 
-	id                   integer  NOT NULL ,
+	id                   serial  PRIMARY KEY ,
 	name_orig            text  NOT NULL ,
 	name_en              text  NOT NULL ,
 	genre_id             integer   ,
-	about                text   ,
-	CONSTRAINT "Pk_Sources_id" PRIMARY KEY ( id )
+	about                text 
  );
 
 CREATE  TABLE tjadb.users ( 
-	id                   integer  NOT NULL ,
+	id                   serial  PRIMARY KEY ,
 	charter_name         text   ,
 	discord_id           integer   ,
 	email                text   ,
@@ -71,14 +64,13 @@ CREATE  TABLE tjadb.users (
 	about                text   ,
 	preferred_difficulty_id integer   ,
 	preferred_language_id integer DEFAULT 1 NOT NULL ,
-	CONSTRAINT pk_users_id PRIMARY KEY ( id ),
 	CONSTRAINT unq_users_email UNIQUE ( email ) ,
 	CONSTRAINT unq_users_discord_id UNIQUE ( discord_id ) ,
 	CONSTRAINT unq_users_charter_name UNIQUE ( charter_name ) 
  );
 
 CREATE  TABLE tjadb.songs ( 
-	id                   integer  NOT NULL ,
+	id                   serial  PRIMARY KEY ,
 	title_orig           text  NOT NULL ,
 	title_en             text  NOT NULL ,
 	subtitle_orig        text  NOT NULL ,
@@ -105,8 +97,7 @@ CREATE  TABLE tjadb.songs (
 	video_link           text   ,
 	obj_tja              oid  NOT NULL ,
 	obj_ogg              oid  NOT NULL ,
-	obj_bg_video_picture oid   ,
-	CONSTRAINT pk_songs_id PRIMARY KEY ( id )
+	obj_bg_video_picture oid 
  );
 
 CREATE  TABLE tjadb.songs_in_songlists ( 
