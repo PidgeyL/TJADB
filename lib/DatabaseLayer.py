@@ -6,24 +6,113 @@ import sys
 run_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(os.path.join(run_path, ".."))
 
-import lib.SQLiteDB as Database
-from lib.Objects            import Song, Genre, Charter
+#import lib.SQLiteDB as Database
+import lib.PSQLDB as Database
+
+from lib.Config  import Configuration
+from lib.Objects import Song, Genre, Charter
 from lib.ObjectVerification import verify_song, verify_genre, verify_charter
 from lib.Singleton          import Singleton
 from etc.Settings           import Settings
 from lib.TJA                import read_tja, parse_tja, set_tja_metadata, clean_path, write_tja
 
-conf = Settings()
-
-
+cdb  = Configuration().redis_ID_db
 
 class DatabaseLayer(metaclass=Singleton):
     def __init__(self):
+        self.artists  = Artists()
         self.songs    = Songs()
         self.genres   = Genres()
+        self.sources  = Sources()
         self.charters = Charters()
         self.tjas     = TJAs()
         self.bot      = Bot()
+
+
+def cacheid(cname):
+    def wrapper(funct):
+        @functools.wraps(funct)
+        def inner(self, cid):
+            ckey  = f"{cname}_{cid}"
+            cache = cdb.hgetall(ckey)
+            result = funct(self, cid, cval=cache)
+            if cname and not cache:
+                asdict = {k: v for k, v in result.as_dict().items() if v}
+                cdb.hmset(ckey, asdict)
+            return result
+        return inner
+    return wrapper
+
+
+###########
+# UPDATED #
+###########
+class Artists():
+    def __init__(self):
+        from lib.objects import Artist
+        self.db  = Database.Database()
+        self.obj = Artist
+
+    def add(self, artist):
+        artist.verify()
+        return self.db.add_artist(**artist.as_dict())
+
+    @cacheid(cname="artist")
+    def get_by_id(self, id, cval=None, cname="artist"):
+        if cval:
+            return self.obj(**cval)
+        reply = self.db.get_artist_by_id(id)
+        return self.obj(**reply) if reply else None
+
+    def get_all(self):
+        return [self.obj(**x) for x in self.db.get_all_artists()]
+
+
+class Genres():
+    def __init__(self):
+        from lib.objects import Genre
+        self.db  = Database.Database()
+        self.obj = Genre
+
+    def add(self, genre):
+        artist.verify()
+        return self.db.add_genre(**(genre.as_dict()))
+
+    @cacheid(cname="genre")
+    def get_by_id(self, id):
+        reply = self.db.get_genre_by_id(id)
+        if not reply:
+            return None
+        return self.obj(**reply)
+
+    def get_all(self):
+        return [self.obj(**x) for x in self.db.get_all_genres()]
+
+
+class Sources():
+    def __init__(self):
+        from lib.objects import Source
+        self.db  = Database.Database()
+        self.obj = Source
+
+    def add(self, source):
+        source.verify()
+        return self.db.add_source(**(source.as_dict()))
+
+    @cacheid(cname="source")
+    def get_by_id(self, id):
+        reply = self.db.get_source_by_id(id)
+        if not reply:
+            return None
+        return self.obj(**reply)
+
+    def get_all(self):
+        return [self.obj(**x) for x in self.db.get_all_sources()]
+
+
+#########
+# To Do #
+#########
 
 
 class Songs():
@@ -107,41 +196,15 @@ class Songs():
         return os.path.normpath(path)
 
 
-class Genres():
-    def __init__(self):
-        self.db = Database.Database()
+#class Genres():
 
-
-    def add(self, genre):
-        if not verify_genre(genre):
-            sys.exit("Could not verify object!")
-        return self.db.add_genre(genre.name_jp, genre.name_eng, genre.genre)
-
-
-    @functools.lru_cache(maxsize=None)
-    def get_by_id(self, id):
-        g = self.db.get_genre_by_id(id)
-        if len(g) == 0:
-            return None
-        g = g[0]
-        return Genre(g['ID'], g['Title_JP'], g['Title_EN'], g['Genre'])
-
-
-    @functools.lru_cache(maxsize=None)
-    def get_by_genre(self, genre):
-        g = self.db.get_genre_by_genre(genre)
-        if len(g) == 0:
-            return None
-        g = g[0]
-        return Genre(g['ID'], g['Title_JP'], g['Title_EN'], g['Genre'])
-
-
-    def get_all(self):
-        data = []
-        for g in self.db.get_all_genres():
-            x = Genre(g['ID'], g['Title_JP'], g['Title_EN'], g['Genre'])
-            data.append(x)
-        return data
+#    @functools.lru_cache(maxsize=None)
+#    def get_by_genre(self, genre):
+#        g = self.db.get_genre_by_genre(genre)
+#        if len(g) == 0:
+#            return None
+#        g = g[0]
+#        return Genre(g['ID'], g['Title_JP'], g['Title_EN'], g['Genre'])
 
 
 class Charters():
@@ -267,4 +330,5 @@ class Cache(metaclass=Singleton):
                     return True
             return None
         return [s for s in self.songs if match_song(s, term)]
+
 

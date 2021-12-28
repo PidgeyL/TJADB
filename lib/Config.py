@@ -22,7 +22,7 @@ class Configuration():
                          'SongDB':   10,         'UserDB':    11,
                          'SourceDB': 12,         'ArtistDB':  13,
                          'TagDB':    14,         'CommentDB': 15,
-                         'Password':  None,},
+                         'IDDB':     1,          'Password':  None,},
                'Database': {'Host':   'localhost', 'Port':     5432,
                             'User':   'tjadb',     'Password': '',
                             'DBName': 'tjadb'},
@@ -69,6 +69,11 @@ class Configuration():
 
     @classmethod
     @property
+    def redis_ID_db(cls):
+        return cls._genRedisConnection('IDDB')
+
+    @classmethod
+    @property
     def redis_user_db(cls):
         return cls._genRedisConnection('UserDB')
 
@@ -112,5 +117,6 @@ class Configuration():
         try:
             return psycopg2.connect("host='%s' port='%s' dbname=%s user=%s password=%s"%(host, port, db, user, pwd))
         except Exception as e:
-            print("%s\nSome features might be unavailable"%e)
+            print("WARNING: Could not connect to Postgres DB:")
+            print(e)
             return None
