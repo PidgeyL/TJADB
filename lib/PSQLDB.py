@@ -98,6 +98,28 @@ class Database(metaclass=Singleton):
         return self._get_all('artists')
 
 
+    ##############
+    # Difficulty #
+    ##############
+    def get_difficulty_by_id(self, id):
+        return self._get_by_id('difficulties', id)
+
+
+    def get_all_difficulties(self):
+        return self._get_all('difficulties')
+
+
+    ############
+    # Language #
+    ############
+    def get_language_by_id(self, id):
+        return self._get_by_id('languages', id)
+
+
+    def get_all_languages(self):
+        return self._get_all('languages')
+
+
     ##########
     # Genres #
     ##########

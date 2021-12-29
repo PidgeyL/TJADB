@@ -95,6 +95,7 @@ CREATE  TABLE tjadb.songs (
 	created              date  NOT NULL ,
 	comments             text   ,
 	video_link           text   ,
+        state_id             integer  NOT NULL,
 	obj_tja              oid  NOT NULL ,
 	obj_ogg              oid  NOT NULL ,
 	obj_bg_video_picture oid 
@@ -177,3 +178,30 @@ ALTER TABLE tjadb.users ADD CONSTRAINT fk_users_difficulties FOREIGN KEY ( prefe
 
 ALTER TABLE tjadb.users ADD CONSTRAINT fk_users_languages FOREIGN KEY ( preferred_language_id ) REFERENCES tjadb.languages( id ) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
+
+INSERT INTO tjadb.difficulties(name_jp, name_en) VALUES ('かんたん', 'Easy');
+INSERT INTO tjadb.difficulties(name_jp, name_en) VALUES ('ふつう', 'Normal');
+INSERT INTO tjadb.difficulties(name_jp, name_en) VALUES ('むずかしい', 'Hard');
+INSERT INTO tjadb.difficulties(name_jp, name_en) VALUES ('おに', 'Oni');
+INSERT INTO tjadb.difficulties(name_jp, name_en) VALUES ('うら', 'Ura');
+
+INSERT INTO tjadb.genres(name_en, name_jp, tja_genre)
+  VALUES ('J-POP', 'J-Pop', 'J-Pop');
+INSERT INTO tjadb.genres(name_en, name_jp, tja_genre)
+  VALUES ('Anime', 'アニメ', 'アニメ');
+INSERT INTO tjadb.genres(name_en, name_jp, tja_genre)
+  VALUES ('Vocaloid', 'ボーカロイド曲', 'ボーカロイド');
+INSERT INTO tjadb.genres(name_en, name_jp, tja_genre)
+  VALUES ('Children & Folk', 'どうよう', 'どうよう');
+INSERT INTO tjadb.genres(name_en, name_jp, tja_genre)
+  VALUES ('Variety', 'バラエティ', 'バラエティ');
+INSERT INTO tjadb.genres(name_en, name_jp, tja_genre)
+  VALUES ('Classical', 'クラシック', 'クラシック');
+INSERT INTO tjadb.genres(name_en, name_jp, tja_genre)
+  VALUES ('Game Music','ゲームミュージック', 'ゲームミュージック');
+INSERT INTO tjadb.genres(name_en, name_jp, tja_genre)
+  VALUES ('Namco Original', 'ナムコオリジナル', 'ナムコオリジナル');
+
+INSERT INTO tjadb.languages(name_orig, name_en) VALUES ('English', 'English')
+INSERT INTO tjadb.languages(name_orig, name_en) VALUES ('日本語', 'Japanese')
+INSERT INTO tjadb.languages(name_orig, name_en) VALUES ('Español', 'Spanish')
