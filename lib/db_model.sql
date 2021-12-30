@@ -69,6 +69,11 @@ CREATE  TABLE tjadb.users (
 	CONSTRAINT unq_users_charter_name UNIQUE ( charter_name ) 
  );
 
+CREATE  TABLE tjadb.song_states ( 
+        id                   serial  PRIMARY KEY ,
+        name                 text  NOT NULL
+ );
+
 CREATE  TABLE tjadb.songs ( 
 	id                   serial  PRIMARY KEY ,
 	title_orig           text  NOT NULL ,
@@ -164,6 +169,8 @@ ALTER TABLE tjadb.songs ADD CONSTRAINT fk_songs_users_oni FOREIGN KEY ( d_oni_ch
 
 ALTER TABLE tjadb.songs ADD CONSTRAINT fk_songs_users_ura FOREIGN KEY ( d_ura_charter_id ) REFERENCES tjadb.users( id ) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
+ALTER TABLE tjadb.songs ADD CONSTRAINT fk_songs_song_states FOREIGN KEY ( state_id ) REFERENCES tjadb.song_states( id ) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
 ALTER TABLE tjadb.songs_in_songlists ADD CONSTRAINT fk_songs_in_songlists FOREIGN KEY ( songlist_id ) REFERENCES tjadb.songlists( id ) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 ALTER TABLE tjadb.songs_in_songlists ADD CONSTRAINT fk_songs_in_songlists_songs FOREIGN KEY ( song_id ) REFERENCES tjadb.songs( id ) ON DELETE RESTRICT ON UPDATE RESTRICT;
@@ -202,6 +209,14 @@ INSERT INTO tjadb.genres(name_en, name_jp, tja_genre)
 INSERT INTO tjadb.genres(name_en, name_jp, tja_genre)
   VALUES ('Namco Original', 'ナムコオリジナル', 'ナムコオリジナル');
 
-INSERT INTO tjadb.languages(name_orig, name_en) VALUES ('English', 'English')
-INSERT INTO tjadb.languages(name_orig, name_en) VALUES ('日本語', 'Japanese')
-INSERT INTO tjadb.languages(name_orig, name_en) VALUES ('Español', 'Spanish')
+INSERT INTO tjadb.languages(name_orig, name_en) VALUES ('English', 'English');
+INSERT INTO tjadb.languages(name_orig, name_en) VALUES ('日本語', 'Japanese');
+INSERT INTO tjadb.languages(name_orig, name_en) VALUES ('Español', 'Spanish');
+
+INSERT INTO tjadb.song_states(name) VALUES ('Ongoing');
+INSERT INTO tjadb.song_states(name) VALUES ('On Hold');
+INSERT INTO tjadb.song_states(name) VALUES ('Canceled');
+INSERT INTO tjadb.song_states(name) VALUES ('Peer Review');
+INSERT INTO tjadb.song_states(name) VALUES ('Metadata Review');
+INSERT INTO tjadb.song_states(name) VALUES ('Approved');
+INSERT INTO tjadb.song_states(name) VALUES ('Rejected');
