@@ -20,13 +20,18 @@ cdb  = Configuration().redis_ID_db
 
 class DatabaseLayer(metaclass=Singleton):
     def __init__(self):
-        self.artists  = Artists()
-        self.songs    = Songs()
-        self.genres   = Genres()
-        self.sources  = Sources()
-        self.charters = Charters()
-        self.tjas     = TJAs()
-        self.bot      = Bot()
+        self.users        = Users()
+        self.artists      = Artists()
+        self.songs        = Songs()
+        self.genres       = Genres()
+        self.sources      = Sources()
+        self.song_states  = SongStates()
+        self.languages    = Languages()
+        self.difficulties = Difficulties()
+
+        self.charters    = Charters()
+        self.tjas        = TJAs()
+        self.bot         = Bot()
 
 
 def cacheid(cname):
@@ -35,8 +40,11 @@ def cacheid(cname):
         def inner(self, cid):
             ckey  = f"{cname}_{cid}"
             cache = cdb.hgetall(ckey)
-            result = funct(self, cid, cval=cache)
-            if cname and not cache:
+            if cache:
+                return self.obj(**cache)
+            result = funct(self, cid)
+            result = self.obj(**result) if result else None
+            if cname and not cache and result:
                 asdict = {k: v for k, v in result.as_dict().items() if v}
                 cdb.hmset(ckey, asdict)
             return result
@@ -58,11 +66,8 @@ class Artists():
         return self.db.add_artist(**artist.as_dict())
 
     @cacheid(cname="artist")
-    def get_by_id(self, id, cval=None, cname="artist"):
-        if cval:
-            return self.obj(**cval)
-        reply = self.db.get_artist_by_id(id)
-        return self.obj(**reply) if reply else None
+    def get_by_id(self, id):
+        return  self.db.get_artist_by_id(id)
 
     def get_all(self):
         return [self.obj(**x) for x in self.db.get_all_artists()]
@@ -80,10 +85,7 @@ class Genres():
 
     @cacheid(cname="genre")
     def get_by_id(self, id):
-        reply = self.db.get_genre_by_id(id)
-        if not reply:
-            return None
-        return self.obj(**reply)
+        return self.db.get_genre_by_id(id)
 
     def get_all(self):
         return [self.obj(**x) for x in self.db.get_all_genres()]
@@ -101,13 +103,82 @@ class Sources():
 
     @cacheid(cname="source")
     def get_by_id(self, id):
-        reply = self.db.get_source_by_id(id)
-        if not reply:
-            return None
-        return self.obj(**reply)
+        return self.db.get_source_by_id(id)
 
     def get_all(self):
         return [self.obj(**x) for x in self.db.get_all_sources()]
+
+
+class SongStates():
+    def __init__(self):
+        from lib.objects import SongState
+        self.db  = Database.Database()
+        self.obj = SongState
+
+    @cacheid(cname="songstate")
+    def get_by_id(self, id):
+        return self.db.get_song_state_by_id(id)
+
+    def get_all(self):
+        return [self.obj(**x) for x in self.db.get_all_song_states()]
+
+
+class Songs():
+    def __init__(self):
+        from lib.objects import Song
+        self.db  = Database.Database()
+        self.obj = Song
+
+    def add(self, song):
+        song.verify()
+        return self.db.add_song(**(song.as_dict()))
+
+
+class Users():
+    def __init__(self):
+        from lib.objects import User
+        self.db  = Database.Database()
+        self.obj = User
+
+    def add(self, user):
+        user.verify()
+        return self.db.add_user(**(user.as_dict()))
+
+    @cacheid(cname="user")
+    def get_by_id(self, id):
+        return self.db.get_user_by_id(id)
+
+    def get_all(self):
+        return [self.obj(**x) for x in self.db.get_all_users()]
+
+
+class Difficulties():
+    def __init__(self):
+        from lib.objects import Difficulty
+        self.db  = Database.Database()
+        self.obj = Difficulty
+
+    @cacheid(cname="diff")
+    def get_by_id(self, id):
+        return self.db.get_difficulty_by_id(id)
+
+    def get_all(self):
+        return [self.obj(**x) for x in self.db.get_all_difficulties()]
+
+
+class Languages():
+    def __init__(self):
+        from lib.objects import Language
+        self.db  = Database.Database()
+        self.obj = Language
+
+    @cacheid(cname="lang")
+    def get_by_id(self, id):
+        return self.db.get_language_by_id(id)
+
+    def get_all(self):
+        return [self.obj(**x) for x in self.db.get_all_languages()]
+
 
 
 #########
@@ -115,7 +186,7 @@ class Sources():
 #########
 
 
-class Songs():
+class Songs2():
     def __init__(self):
         self.db = Database.Database()
 

@@ -5,7 +5,7 @@
 #
 # Software is free software released under the "GNU Affero General Public License v3.0"
 #
-# Copyright (c) 2021  PidgeyL
+# Copyright (c) 2021-2022  PidgeyL
 
 from copy import copy
 
@@ -16,7 +16,7 @@ from lib.objects.helpers import multi_assert, Object
 class Source(Object):
     def __init__(self, id=None, name_orig=None, name_en=None, genre_id=None,
                  genre=None, about=None):
-        self.id        = id
+        self._id       = id
         self.name_orig = name_orig
         self.name_en   = name_en
         self.about     = about
@@ -29,7 +29,7 @@ class Source(Object):
 
 
     def verify(self):
-        multi_assert(self.id,                      types=( int,   type(None) ))
+        multi_assert(self._id,                     types=( int,   type(None) ))
         multi_assert(self.name_orig, self.name_en, types=  str )
         multi_assert(self.about,                   types=( str,   type(None) ))
         multi_assert(self.genre,                   types=( Genre, type(None) ))
@@ -38,5 +38,7 @@ class Source(Object):
     def as_dict(self):
         d = copy(vars(self))
         d['genre_id'] = d['genre'].id if self.genre else None
+        d['id']       = self._id
         del d['genre']
+        del d['_id']
         return d

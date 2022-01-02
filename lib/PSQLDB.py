@@ -70,6 +70,47 @@ class Database(metaclass=Singleton):
         cur.execute("SELECT * FROM %s WHERE id = %%s"%(table), (value,))
 
 
+    #########
+    # Users #
+    #########
+    @committing
+    def add_user(self, cur, id=None, charter_name=None, discord_id=None,
+                 email=None, password=None, salt=None, hashcount=None, staff=None,
+                 image_url=None, about=None, preferred_difficulty_id=None,
+                 preferred_language_id=None):
+        s = """INSERT INTO users(charter_name, discord_id, email, password,
+                 salt, hashcount, staff, image_url, about,
+                 preferred_difficulty_id, preferred_language_id)
+               VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)  RETURNING id;"""
+        cur.execute(s, (charter_name, discord_id, email, password, salt,
+                        hashcount, staff, image_url, about,
+                        preferred_difficulty_id, preferred_language_id))
+
+
+    @committing
+    def update_user(self, cur, id=None, charter_name=None, discord_id=None,
+                    email=None, password=None, salt=None, hashcount=None,
+                    staff=None, image_url=None, about=None,
+                    preferred_difficulty_id=None, preferred_language_id=None):
+        s = """UPDATE users
+               SET charter_name = %s, discord_id = %s, email = %s, password = %s,
+                 salt = %s, hashcount = %s, staff = %s, image_url = %s,
+                 about = %s, preferred_difficulty_id = %s,
+                 preferred_language_id = %s):
+               WHERE id = %s"""
+        cur.execute(s, (charter_name, discord_id, email, password, salt,
+                        hashcount, staff, image_url, about,
+                        preferred_difficulty_id, preferred_language_id, id))
+
+
+    def get_user_by_id(self, id):
+        return self._get_by_id('users', id)
+
+
+    def get_all_users(self):
+        return self._get_all('users')
+
+
     ##########
     # Artist #
     ##########
@@ -118,6 +159,17 @@ class Database(metaclass=Singleton):
 
     def get_all_languages(self):
         return self._get_all('languages')
+
+
+    ###############
+    # Song_States #
+    ###############
+    def get_song_state_by_id(self, id):
+        return self._get_by_id('song_states', id)
+
+
+    def get_all_song_states(self):
+        return self._get_all('song_states')
 
 
     ##########
@@ -176,3 +228,10 @@ class Database(metaclass=Singleton):
         return self._get_all('sources')
 
 
+    #########
+    # Songs #
+    #########
+    @committing
+    def add_song(self, cur, id=None, ):
+        s = """INSERT INTO """
+        cur.execute(s, ())
