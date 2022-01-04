@@ -102,6 +102,7 @@ class Song(Object):
         d['genre_id']   = d['genre'].id
         d['charter_id'] = d['charter'].id
         d['state_id']   = d['state'].id
+        d['artists']    = [ x.as_dict() for x in d['artists'] ]
 
         for key in ['d_kantan_charter', 'd_futsuu_charter', 'd_muzukashii_charter',
                     'd_oni_charter', 'd_ura_charter']:

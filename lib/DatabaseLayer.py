@@ -129,9 +129,52 @@ class Songs():
         self.db  = Database.Database()
         self.obj = Song
 
-    def add(self, song):
+    def add(self, song, tja=None, ogg=None, bg=None):
         song.verify()
-        return self.db.add_song(**(song.as_dict()))
+        if tja:  song=self.write_tja(song, tja)
+        if ogg:  song=self.write_ogg(song, ogg)
+        if bg:   song=self.write_bg_video_picture(song, bg)
+        as_dict = song.as_dict()
+        artists = as_dict.pop('artists')
+        song_id = self.db.add_song(**as_dict)
+        # Link artists
+        for artist in artists:
+            self.db.add_artist_to_song(song_id, artist['id'])
+        return song_id
+
+    def read_tja(self, song):
+        if song.obj_tja:
+            return self.db.get_obj(song.obj_tja)
+        return None
+
+    def read_ogg(self, song):
+        if song.obj_ogg:
+            return self.db.get_obj(song.obj_ogg)
+        return None
+
+    def read_bg_video_picture(self, song):
+        if song.obj_bg_video_picture:
+            return self.db.get_obj(song.obj_bg_video_picture)
+        return None
+
+    def write_tja(self, song, data):
+        if song.obj_tja:
+            self.db.delete_obj(song.obj_tja)
+        # TODO: TJA parse & set Orig fields
+        song.obj_tja = self.db.add_obj(data)
+        return song
+
+    def write_ogg(self, song, data):
+        if song.obj_ogg:
+            self.db.delete_obj(song.obj_ogg)
+        song.obj_ogg = self.db.add_obj(data)
+        return song
+
+    def write_bg_video_picture(self, song, data):
+        if song.obj_bg_video_picture:
+            self.db.delete_obj(song.obj_bg_video_picture)
+        song.obj_bg_video_picture = self.db.add_obj(data)
+        return song
 
 
 class Users():

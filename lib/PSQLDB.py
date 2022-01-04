@@ -26,12 +26,15 @@ class Database(metaclass=Singleton):
             try:
                 cur    = self.conn.cursor()
                 funct(self, cur, *args, **kwargs)
-                result = cur.fetchone()
+                # Fetch ID if returning, else return True
+                result = cur.fetchone() if cur.description else True
             except Exception as e:
                 self.conn.rollback()
                 raise(e)
             else:
                 self.conn.commit()
+                if result == True:
+                    return True
                 return result[0] if result else None
         return wrapper
 
@@ -231,7 +234,69 @@ class Database(metaclass=Singleton):
     #########
     # Songs #
     #########
+    def add_obj(self, data):
+        obj = self.conn.lobject(mode='wb')
+        obj.write(data)
+        obj.close()
+        self.conn.commit()
+        return obj.oid
+
+
     @committing
-    def add_song(self, cur, id=None, ):
-        s = """INSERT INTO """
-        cur.execute(s, ())
+    def delete_obj(self, cur, oid):
+        cur.execute("SELECT lo_unlink(%s) FROM pg_largeobject_metadata;", (oid,))
+
+
+    # Clearing out old objects to recuperate disk space
+    def vacuum(self):
+        old = self.conn.isolation_level
+        self.conn.set_isolation_level(0) # Move out of transaction block
+        self.conn.cursor().execute("VACUUM FULL")
+        self.conn.commit()
+        self.conn.set_isolation_level(old)
+
+
+    def get_obj(self, oid):
+        try:
+            obj = self.conn.lobject(oid=oid, mode='rb')
+            return obj.read()
+        except:
+            self.conn.rollback()
+        return None
+
+
+    @committing
+    def add_song(self, cur, id=None, title_orig=None, title_en=None,
+                 subtitle_orig=None, subtitle_en=None, source_id=None, bpm=None,
+                 genre_id=None, charter_id=None, d_kantan=None,
+                 d_kantan_charter_id=None, d_futsuu=None, d_futsuu_charter_id=None,
+                 d_muzukashii=None, d_muzukashii_charter_id=None, d_oni=None,
+                 d_oni_charter_id=None, d_ura=None, d_ura_charter_id=None,
+                 downloads=None, last_updated=None, created=None, info=None,
+                 video_link=None, state_id=None, obj_tja=None, obj_ogg=None,
+                 obj_bg_video_picture=None):
+        s = """INSERT INTO songs(title_orig, title_en, subtitle_orig, subtitle_en,
+                 source_id, bpm, genre_id, charter_id, d_kantan,
+                 d_kantan_charter_id, d_futsuu, d_futsuu_charter_id, d_muzukashii,
+                 d_muzukashii_charter_id, d_oni, d_oni_charter_id, d_ura,
+                 d_ura_charter_id, downloads, last_updated, created, info,
+                 video_link, state_id, obj_tja, obj_ogg, obj_bg_video_picture)
+               VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
+                      %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+               RETURNING ID;"""
+        cur.execute(s, (title_orig, title_en, subtitle_orig, subtitle_en,
+                 source_id, bpm, genre_id, charter_id, d_kantan,
+                 d_kantan_charter_id, d_futsuu, d_futsuu_charter_id, d_muzukashii,
+                 d_muzukashii_charter_id, d_oni, d_oni_charter_id, d_ura,
+                 d_ura_charter_id, downloads, last_updated, created, info,
+                 video_link, state_id, obj_tja, obj_ogg, obj_bg_video_picture))
+
+
+    #####################
+    # Artists for Songs #
+    #####################
+    @committing
+    def add_artist_to_song(self, cur, song_id, artist_id):
+        s = """INSERT INTO artists_per_song(song_id, artist_id)
+               VALUES(%s, %s);"""
+        cur.execute(s, (song_id, artist_id))

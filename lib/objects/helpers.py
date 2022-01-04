@@ -39,4 +39,4 @@ class Object:
 
     @id.setter
     def id(self, i):
-        self._id = int(id)
+        self._id = int(i)
