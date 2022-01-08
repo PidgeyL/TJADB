@@ -54,7 +54,7 @@ CREATE  TABLE tjadb.sources (
 CREATE  TABLE tjadb.users ( 
 	id                   serial  PRIMARY KEY ,
 	charter_name         text   ,
-	discord_id           integer   ,
+	discord_id           bigint   ,
 	email                text   ,
 	"password"           text   ,
 	salt                 text   ,
@@ -84,25 +84,30 @@ CREATE  TABLE tjadb.songs (
 	bpm                  decimal  NOT NULL ,
 	genre_id             integer  NOT NULL ,
 	charter_id           integer  NOT NULL ,
-	d_kantan             integer   ,
+	d_kantan             smallint   ,
 	d_kantan_charter_id  integer   ,
-	d_futsuu             integer   ,
+	d_futsuu             smallint   ,
 	d_futsuu_charter_id  integer   ,
-	d_muzukashii         integer   ,
+	d_muzukashii         smallint   ,
 	d_muzukashii_charter_id integer   ,
-	d_oni                integer   ,
+	d_oni                smallint   ,
 	d_oni_charter_id     integer   ,
-	d_ura                integer   ,
+	d_ura                smallint   ,
 	d_ura_charter_id     integer   ,
+	d_tower              smallint   ,
+	d_tower_lives        smallint   ,
 	downloads            integer DEFAULT 0  ,
 	last_updated         date  NOT NULL ,
 	created              date  NOT NULL ,
+	uploaded             date  NOT NULL ,
 	info                 text   ,
 	video_link           text   ,
         state_id             integer  NOT NULL,
 	obj_tja              oid  NOT NULL ,
 	obj_ogg              oid  NOT NULL ,
-	obj_bg_video_picture oid 
+	obj_bg_video_picture oid ,
+        tja_orig_md5         uuid  NOT NULL ,
+        tja_en_md5           uuid  NOT NULL
  );
 
 CREATE  TABLE tjadb.songs_in_songlists ( 
@@ -185,6 +190,8 @@ ALTER TABLE tjadb.users ADD CONSTRAINT fk_users_difficulties FOREIGN KEY ( prefe
 ALTER TABLE tjadb.users ADD CONSTRAINT fk_users_languages FOREIGN KEY ( preferred_language_id ) REFERENCES tjadb.languages( id ) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 
+SELECT pg_catalog.setval('tjadb.songs_id_seq', 9999, true);
+
 INSERT INTO tjadb.difficulties(name_jp, name_en) VALUES ('かんたん', 'Easy');
 INSERT INTO tjadb.difficulties(name_jp, name_en) VALUES ('ふつう', 'Normal');
 INSERT INTO tjadb.difficulties(name_jp, name_en) VALUES ('むずかしい', 'Hard');
@@ -192,7 +199,7 @@ INSERT INTO tjadb.difficulties(name_jp, name_en) VALUES ('おに', 'Oni');
 INSERT INTO tjadb.difficulties(name_jp, name_en) VALUES ('うら', 'Ura');
 
 INSERT INTO tjadb.genres(name_en, name_jp, tja_genre)
-  VALUES ('J-POP', 'J-Pop', 'J-Pop');
+  VALUES ('J-Pop', 'J-Pop', 'J-Pop');
 INSERT INTO tjadb.genres(name_en, name_jp, tja_genre)
   VALUES ('Anime', 'アニメ', 'アニメ');
 INSERT INTO tjadb.genres(name_en, name_jp, tja_genre)

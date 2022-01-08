@@ -272,24 +272,28 @@ class Database(metaclass=Singleton):
                  d_kantan_charter_id=None, d_futsuu=None, d_futsuu_charter_id=None,
                  d_muzukashii=None, d_muzukashii_charter_id=None, d_oni=None,
                  d_oni_charter_id=None, d_ura=None, d_ura_charter_id=None,
-                 downloads=None, last_updated=None, created=None, info=None,
+                 d_tower=None, d_tower_lives=None, downloads=None,
+                 last_updated=None, created=None, uploaded=None, info=None,
                  video_link=None, state_id=None, obj_tja=None, obj_ogg=None,
-                 obj_bg_video_picture=None):
+                 obj_bg_video_picture=None, tja_orig_md5=None, tja_en_md5=None):
         s = """INSERT INTO songs(title_orig, title_en, subtitle_orig, subtitle_en,
                  source_id, bpm, genre_id, charter_id, d_kantan,
                  d_kantan_charter_id, d_futsuu, d_futsuu_charter_id, d_muzukashii,
                  d_muzukashii_charter_id, d_oni, d_oni_charter_id, d_ura,
-                 d_ura_charter_id, downloads, last_updated, created, info,
-                 video_link, state_id, obj_tja, obj_ogg, obj_bg_video_picture)
+                 d_ura_charter_id, d_tower, d_tower_lives, downloads,
+                 last_updated, created, uploaded, info, video_link, state_id,
+                 obj_tja, obj_ogg, obj_bg_video_picture, tja_orig_md5, tja_en_md5)
                VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
-                      %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                      %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
+                      %s, %s)
                RETURNING ID;"""
         cur.execute(s, (title_orig, title_en, subtitle_orig, subtitle_en,
                  source_id, bpm, genre_id, charter_id, d_kantan,
                  d_kantan_charter_id, d_futsuu, d_futsuu_charter_id, d_muzukashii,
                  d_muzukashii_charter_id, d_oni, d_oni_charter_id, d_ura,
-                 d_ura_charter_id, downloads, last_updated, created, info,
-                 video_link, state_id, obj_tja, obj_ogg, obj_bg_video_picture))
+                 d_ura_charter_id, d_tower, d_tower_lives, downloads,
+                 last_updated, created, uploaded, info, video_link, state_id,
+                 obj_tja, obj_ogg, obj_bg_video_picture, tja_orig_md5, tja_en_md5))
 
 
     #####################

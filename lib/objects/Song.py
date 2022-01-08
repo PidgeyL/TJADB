@@ -21,10 +21,11 @@ class Song(Object):
                  d_muzukashii=None, d_muzukashii_charter_id=None,
                  d_muzukashii_charter=None, d_oni=None, d_oni_charter_id=None,
                  d_oni_charter=None, d_ura=None, d_ura_charter_id=None,
-                 d_ura_charter=None, downloads=None, last_updated=None,
-                 created=None, info=None, video_link=None, state=None,
-                 state_id=None, obj_tja=None, obj_ogg=None,
-                 obj_bg_video_picture=None, artists=None):
+                 d_ura_charter=None, d_tower=None, d_tower_lives=None,
+                 downloads=None, last_updated=None, created=None, uploaded=None,
+                 info=None, video_link=None, state=None, state_id=None,
+                 obj_tja=None, obj_ogg=None, obj_bg_video_picture=None,
+                 tja_orig_md5=None, tja_en_md5=None, artists=None):
         self._id           = id
         self.title_orig    = title_orig
         self.title_en      = title_en
@@ -36,13 +37,18 @@ class Song(Object):
         self.d_muzukashii  = d_muzukashii
         self.d_oni         = d_oni
         self.d_ura         = d_ura
+        self.d_tower       = d_tower
+        self.d_tower_lives = d_tower_lives
         self.last_updated  = last_updated
         self.created       = created
+        self.uploaded      = uploaded
         self.info          = info
         self.video_link    = video_link
         self.obj_tja       = obj_tja
         self.obj_ogg       = obj_ogg
         self.obj_bg_video_picture = obj_bg_video_picture
+        self.tja_orig_md5  = tja_orig_md5
+        self.tja_en_md5    = tja_en_md5
         self.artists       = artists
 
         self.source  = source  if source  else dbl().sources.get_by_id(source_id)
