@@ -2,11 +2,20 @@
 # Imports
 import base64
 import hashlib
+import magic
 import os
 import sys
 
 run_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(os.path.join(run_path, ".."))
+
+
+def get_file_type(data):
+    valid_types = {'audio/mpeg': '.mp3', 'video/x-ms-asf': '.wmv',
+                   'video/ogg':  '.ogg', 'audio/ogg':      '.ogg'}
+    mimetype = magic.from_buffer(data, mime=True)
+    print(mimetype)
+    return valid_types.get(mimetype, '')
 
 
 # Functions
@@ -75,7 +84,7 @@ def parse_tja(tja):
 
     meta = {'title': None, 'sub': None, 'bpm': None, 'song': None, 'genre': None,
             'easy': None, 'normal': None, 'hard': None, 'oni': None, 'ura': None,
-            'movie': None, 'maker': None, 'easy_charter': None,
+            'movie': None, 'image': None, 'maker': None, 'easy_charter': None,
             'normal_charter': None, 'hard_charter': None, 'oni_charter': None,
             'ura_charter': None, 'tower_charter': None, 'tower_lives': None}
     d_map = {'0': 'easy', '1': 'normal', '2': 'hard', '3': 'oni', '4': 'ura',
@@ -86,10 +95,11 @@ def parse_tja(tja):
         lline = line.lower()
         if   lline.startswith('title:'):    meta['title']       = lval(line)
         elif lline.startswith('subtitle:'): meta['sub']         = lval(line)
-        elif lline.startswith('bpm:'):      meta['bpm']         = lval(line)
+        elif lline.startswith('bpm:'):      meta['bpm']         = float(lval(line))
         elif lline.startswith('wave:'):     meta['song']        = lval(line)
         elif lline.startswith('genre:'):    meta['genre']       = lval(line)
         elif lline.startswith('bgmovie:'):  meta['movie']       = lval(line)
+        elif lline.startswith('bgimage:'):  meta['image']       = lval(line)
         elif lline.startswith('maker:'):    meta['maker']       = lval(line)
         elif lline.startswith('life:'):     meta['tower_lives'] = lval(line)
         elif lline.startswith('notesdesigner'):
@@ -109,16 +119,31 @@ def parse_tja(tja):
 
 
 def md5(tja):
-    encoded = encode_tja(tja)
-    return hashlib.md5(encoded).hexdigest()
+    if isinstance(tja, str):
+        tja = encode_tja(tja)
+    return hashlib.md5(tja).hexdigest()
 
 
-def generate_md5s(tja, song):
-    # Orig TJA
+def prepare_orig_tja(tja, song, wave):
+    wave = get_file_type(wave)
+    print(wave)
     tja = set_tja_metadata(tja, title=song.title_orig, sub=song.subtitle_orig,
-                           song=clean_path(song.title_orig)+'.ogg')
+                           song=clean_path(song.title_orig)+wave)
+    return tja
+
+
+def prepare_en_tja(tja, song, wave):
+    wave = get_file_type(wave)
+    tja = set_tja_metadata(tja, title=song.title_en, sub=song.subtitle_en,
+                           song=clean_path(song.title_en)+wave)
+    return tja
+
+
+def generate_md5s(tja, song, wave):
+    wave = get_file_type(wave)
+    # Orig TJA
+    tja = prepare_orig_tja(tja, song, wave)
     md5_orig = md5(tja)
     # Eng TJA
-    tja = set_tja_metadata(tja, title=song.title_eng, sub=song.subtitle_eng,
-                           song=clean_path(song.title_eng)+'.ogg')
+    tja = prepare_en_tja(tja, song, wave)
     return md5_orig, md5(tja)

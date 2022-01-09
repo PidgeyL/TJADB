@@ -304,6 +304,15 @@ class Database(metaclass=Singleton):
                  obj_tja, obj_ogg, obj_bg_video_picture, tja_orig_md5, tja_en_md5))
 
 
+    def get_song_by_id(self, id):
+        return self._get_by_id('songs', id)
+
+
+    def get_all_songs(self):
+        return self._get_all('songs')
+
+
+
     #####################
     # Artists for Songs #
     #####################

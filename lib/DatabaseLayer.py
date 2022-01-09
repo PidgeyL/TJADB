@@ -9,12 +9,10 @@ sys.path.append(os.path.join(run_path, ".."))
 #import lib.SQLiteDB as Database
 import lib.PSQLDB as Database
 
-from lib.Config  import Configuration
-from lib.Objects import Song, Genre, Charter
-from lib.ObjectVerification import verify_song, verify_genre, verify_charter
-from lib.Singleton          import Singleton
-from etc.Settings           import Settings
-from lib.TJA                import read_tja, parse_tja, set_tja_metadata, clean_path, write_tja
+from lib.Config     import Configuration
+from lib.Singleton  import Singleton
+from etc.Settings   import Settings
+from lib.TJA        import prepare_orig_tja, generate_md5s
 
 cdb  = Configuration().redis_ID_db
 
@@ -53,7 +51,6 @@ def cacheid(cname):
             result = self.obj(**result) if result else None
             if cname and not cache and result:
                 asdict = {k: redisify(v) for k, v in result.as_dict().items() if v}
-                print(asdict)
                 cdb.hmset(ckey, asdict)
             return result
         return inner
@@ -139,8 +136,11 @@ class Songs():
 
     def add(self, song, tja=None, ogg=None, bg=None):
         song.verify()
-        if tja:  song=self.write_tja(song, tja)
-        if ogg:  song=self.write_ogg(song, ogg)
+        if not all([tja, ogg]):
+            print("TJA or OGG missing")
+            return False
+        song=self.write_tja(song, tja, ogg)
+        song=self.write_ogg(song, ogg)
         if bg:   song=self.write_bg_video_picture(song, bg)
         as_dict = song.as_dict()
         artists = as_dict.pop('artists')
@@ -149,6 +149,13 @@ class Songs():
         for artist in artists:
             self.db.add_artist_to_song(song_id, artist['id'])
         return song_id
+
+    @cacheid(cname="song")
+    def get_by_id(self, id):
+        return self.db.get_song_by_id(id)
+
+    def get_all(self):
+        return  [self.obj(**x) for x in self.db.get_all_songs()]
 
     def read_tja(self, song):
         if song.obj_tja:
@@ -165,11 +172,14 @@ class Songs():
             return self.db.get_obj(song.obj_bg_video_picture)
         return None
 
-    def write_tja(self, song, data):
+    def write_tja(self, song, data, wave):
         if song.obj_tja:
             self.db.delete_obj(song.obj_tja)
-        # TODO: TJA parse & set Orig fields
-        song.obj_tja = self.db.add_obj(data)
+        data = prepare_orig_tja(data, song, wave)
+        md5o, md5e = generate_md5s(data, song, wave)
+        song.obj_tja      = self.db.add_obj(data)
+        song.tja_orig_md5 = md5o
+        song.tja_en_md5   = md5e
         return song
 
     def write_ogg(self, song, data):
@@ -289,33 +299,6 @@ class Charters():
 
 
 class TJAs():
-    def store_tja(self, song, tja, song_path, movie_path=None):
-        path = DatabaseLayer().songs.generate_path(song)[:-4]+'.ogg'
-        tja = set_tja_metadata(tja, title=song.title_orig, sub=song.subtitle_orig,
-                                    song=clean_path(song.title_orig)+'.ogg')
-        if not os.path.exists(os.path.dirname(song.path)):
-            os.makedirs(os.path.dirname(song.path))
-        write_tja(tja, song.path)
-        shutil.move(song_path, path)
-        if movie_path:
-            shutil.move(movie_path, os.path.join(os.path.dirname(path), os.path.basename(movie_path)))
-
-
-    def get_tja(self, song):
-        return open(song.path, "rb").read()
-
-
-    def get_ogg(self, song):
-        return open(song.path[:-3]+"ogg", "rb").read()
-
-
-    def get_mov(self, song):
-        meta = parse_tja(self.get_tja(song))
-        if meta['movie'] in [None, '', False]:
-            return None
-        path = os.path.join(os.path.dirname(song.path), meta['movie'])
-        return open(path, "rb").read()
-
 
     def get_info(self, song):
         def _score(i):
