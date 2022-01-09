@@ -24,7 +24,7 @@ class User(Object):
         self.password     = password
         self.salt         = salt
         self.hashcount    = hashcount
-        self.staff        = staff
+        self.staff        = bool(staff)
         self.image_url    = image_url
         self.about        = about
         if preferred_difficulty:

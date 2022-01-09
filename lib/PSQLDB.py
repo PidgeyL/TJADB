@@ -110,6 +110,14 @@ class Database(metaclass=Singleton):
         return self._get_by_id('users', id)
 
 
+    def get_user_by_charter_name(self, name):
+        return self._get_by_field('users', 'charter_name', name)
+
+
+    def get_user_by_discord_id(self, id):
+        return self._get_by_field('users', 'discord_id', id)
+
+
     def get_all_users(self):
         return self._get_all('users')
 

@@ -33,10 +33,18 @@ class DatabaseLayer(metaclass=Singleton):
         self.tjas        = TJAs()
 
 
+def redisify(value):
+    if isinstance(value, bool):
+        return int(value)
+    return value
+
+
 def cacheid(cname):
     def wrapper(funct):
         @functools.wraps(funct)
         def inner(self, cid):
+            if not cid:
+                return None
             ckey  = f"{cname}_{cid}"
             cache = cdb.hgetall(ckey)
             if cache:
@@ -44,7 +52,8 @@ def cacheid(cname):
             result = funct(self, cid)
             result = self.obj(**result) if result else None
             if cname and not cache and result:
-                asdict = {k: v for k, v in result.as_dict().items() if v}
+                asdict = {k: redisify(v) for k, v in result.as_dict().items() if v}
+                print(asdict)
                 cdb.hmset(ckey, asdict)
             return result
         return inner
@@ -190,6 +199,16 @@ class Users():
     @cacheid(cname="user")
     def get_by_id(self, id):
         return self.db.get_user_by_id(id)
+
+    @cacheid(cname="user_cn")
+    def get_by_charter_name(self, name):
+        user = self.db.get_user_by_charter_name(name)
+        return user[0] if user else None
+
+    @cacheid(cname="user_did")
+    def get_by_discord_id(self, id):
+        user = self.db.get_user_by_discord_id(id)
+        return user[0] if user else None
 
     def get_all(self):
         return [self.obj(**x) for x in self.db.get_all_users()]
