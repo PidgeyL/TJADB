@@ -67,31 +67,43 @@ def set_tja_metadata(tja, title=None, sub=None, song=None):
 
 
 def parse_tja(tja):
+    lval = lambda l:l.split(':')[1]
     return_raw = False
     if isinstance(tja, bytes):
         tja = decode_tja(tja)
         return_raw = True
 
-    meta = {'title': '', 'sub': '', 'bpm': '', 'song': '', 'genre': '',
-            'easy': '', 'normal': '', 'hard': '', 'oni': '', 'ura': '',
-            'movie': ''}
+    meta = {'title': None, 'sub': None, 'bpm': None, 'song': None, 'genre': None,
+            'easy': None, 'normal': None, 'hard': None, 'oni': None, 'ura': None,
+            'movie': None, 'maker': None, 'easy_charter': None,
+            'normal_charter': None, 'hard_charter': None, 'oni_charter': None,
+            'ura_charter': None, 'tower_charter': None, 'tower_lives': None}
+    d_map = {'0': 'easy', '1': 'normal', '2': 'hard', '3': 'oni', '4': 'ura',
+             '5': 'tower'}
+
     difficulty = None
     for line in tja.splitlines():
-        if   line.lower().startswith('title:'):    meta['title'] = line.split(':')[1]
-        elif line.lower().startswith('subtitle:'): meta['sub']   = line.split(':')[1]
-        elif line.lower().startswith('bpm:'):      meta['bpm']   = line.split(':')[1]
-        elif line.lower().startswith('wave:'):     meta['song']  = line.split(':')[1]
-        elif line.lower().startswith('genre:'):    meta['genre'] = line.split(':')[1]
-        elif line.lower().startswith('bgmovie:'):  meta['movie'] = line.split(':')[1]
-        elif line.lower().startswith('course'):
-            difficulty = line.split(':')[1].lower()
-            if difficulty in "01234":
-                difficulty = ['easy', 'normal', 'hard', 'oni', 'ura'][int(difficulty)]
+        lline = line.lower()
+        if   lline.startswith('title:'):    meta['title']       = lval(line)
+        elif lline.startswith('subtitle:'): meta['sub']         = lval(line)
+        elif lline.startswith('bpm:'):      meta['bpm']         = lval(line)
+        elif lline.startswith('wave:'):     meta['song']        = lval(line)
+        elif lline.startswith('genre:'):    meta['genre']       = lval(line)
+        elif lline.startswith('bgmovie:'):  meta['movie']       = lval(line)
+        elif lline.startswith('maker:'):    meta['maker']       = lval(line)
+        elif lline.startswith('life:'):     meta['tower_lives'] = lval(line)
+        elif lline.startswith('notesdesigner'):
+            level, charter = line.split(':')
+            meta[d_map[level[-1]]+'_charter'] = charter
+        elif lline.startswith('course'):
+            difficulty = lval(line)
+            if difficulty in d_map.keys():
+                difficulty = d_map[difficulty]
             if difficulty == 'edit':
                 difficulty = 'ura'
-        elif line.lower().startswith('level:'):
-            meta[difficulty] = line.split(':')[1]
-        if all( [len(x) > 0 for x in meta.values()] ):
+        elif lline.startswith('level:'):
+            meta[difficulty] = int(lval(line))
+        if all(meta.values()):
             return meta
     return meta
 
