@@ -49,7 +49,6 @@ class Song(Object):
         self.obj_bg_video_picture = obj_bg_video_picture
         self.tja_orig_md5  = tja_orig_md5
         self.tja_en_md5    = tja_en_md5
-        self.artists       = artists
 
         self.source  = source  if source  else dbl().sources.get_by_id(source_id)
         self.genre   = genre   if genre   else dbl().genres.get_by_id(genre_id)
@@ -80,6 +79,14 @@ class Song(Object):
             self.d_ura_charter = d_ura_charter
         else:
             self.d_ura_charter =  dbl().users.get_by_id(d_ura_charter_id)
+
+        self.artists = []
+        if artists:
+            for artist in artists:
+                if isinstance(artist, int):
+                    self.artists.append(dbl().artists.get_by_id(artist))
+                else:
+                    self.artists.append(artist)
 
 
     def verify(self):
@@ -120,3 +127,27 @@ class Song(Object):
                     'd_ura_charter', '_id']:
             d.pop(key, None)
         return d
+
+
+    def as_info_string(self):
+        _alt    = lambda orig, alt: orig if orig == alt else "%s (%s)"%(orig, alt)
+        _course = lambda course: str(course) if course else '*'
+
+        diff = [self.d_kantan, self.d_futsuu, self.d_muzukashii, self.d_oni,
+                self.d_ura]
+        diff = '/'.join([_course(d) for d in diff])
+        charters =  [self.charter, self.d_kantan_charter, self.d_futsuu_charter,
+                     self.d_muzukashii_charter, self.d_oni_charter,
+                     self.d_ura_charter]
+        charters = ' & '.join({c.charter_name for c in charters if c})
+
+        text  = "Title:  %s\nArtist(s):  "%_alt(self.title_orig, self.title_en)
+        text += ' & '.join([_alt(a.name_orig, a.name_en) for a in self.artists])
+        if self.source:
+            text += "\nFrom:  %s\n"%_alt(self.source.name_orig, self.source.name_en)
+        text += "Charter(s):  %s\n"%charters
+        text += "Difficulty:  %s\n"%diff
+        text += "Genre:  %s (%s)\n"%(self.genre.name_jp, self.genre.name_en)
+        text += "BPM:  %s\n"%self.bpm
+        text += "Last Update:  %s"%self.last_updated.strftime("%Y-%m-%d")
+        return text
