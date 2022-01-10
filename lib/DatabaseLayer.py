@@ -130,9 +130,10 @@ class SongStates():
 
 class Songs():
     def __init__(self):
-        from lib.objects import Song
+        from lib.objects import Song, Artist
         self.db  = Database.Database()
         self.obj = Song
+        self.artist_obj = Artist
 
     def add(self, song, tja=None, ogg=None, bg=None):
         song.verify()
@@ -150,12 +151,19 @@ class Songs():
             self.db.add_artist_to_song(song_id, artist['id'])
         return song_id
 
+    def _enrich(self, song):
+        artists = self.db.get_artists_for_song_id(song.id)
+        song.artists = [self.artist_obj(**a) for a in artists]
+        return song
+
     @cacheid(cname="song")
     def get_by_id(self, id):
-        return self.db.get_song_by_id(id)
+        song = self.db.get_song_by_id(id)
+        return self._enrich(song)
 
     def get_all(self):
-        return  [self.obj(**x) for x in self.db.get_all_songs()]
+        songs = [self.obj(**x) for x in self.db.get_all_songs()]
+        return [self._enrich(s) for s in songs]
 
     def read_tja(self, song):
         if song.obj_tja:

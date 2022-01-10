@@ -14,7 +14,6 @@ def get_file_type(data):
     valid_types = {'audio/mpeg': '.mp3', 'video/x-ms-asf': '.wmv',
                    'video/ogg':  '.ogg', 'audio/ogg':      '.ogg'}
     mimetype = magic.from_buffer(data, mime=True)
-    print(mimetype)
     return valid_types.get(mimetype, '')
 
 

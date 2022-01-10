@@ -321,3 +321,13 @@ class Database(metaclass=Singleton):
         s = """INSERT INTO artists_per_song(song_id, artist_id)
                VALUES(%s, %s);"""
         cur.execute(s, (song_id, artist_id))
+
+
+    @fetchall
+    def get_artists_for_song_id(self, cur, song_id):
+        s = """SELECT * FROM artists
+               WHERE id IN(
+                 SELECT artist_id FROM artists_per_song
+                 WHERE song_id = %s
+               );"""
+        cur.execute(s, (song_id, ))

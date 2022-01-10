@@ -1,14 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# Database-ready "Source" object
+# Database-ready "Artist" object
 #
 # Software is free software releasedunder the "GNU Affero General Public License v3.0"
 #
 # Copyright (c) 2021-2022  PidgeyL
 
-from lib.DatabaseLayer   import DatabaseLayer as dbl
-from lib.objects.Genre   import Genre
 from lib.objects.helpers import multi_assert, Object
 
 class Artist(Object):
