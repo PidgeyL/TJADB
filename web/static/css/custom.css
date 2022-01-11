@@ -30,3 +30,7 @@ body{
 .error{
   border-color:red;
 }
+
+.small-pill{
+  font-size: 11px;
+}

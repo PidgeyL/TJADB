@@ -7,7 +7,9 @@
 #
 # Copyright (c) 2021-2022  PidgeyL
 
-from copy import copy
+import json
+from copy     import copy
+from datetime import date
 
 from lib.DatabaseLayer   import DatabaseLayer as dbl
 from lib.objects.helpers import multi_assert, Object
@@ -31,7 +33,7 @@ class Song(Object):
         self.title_en      = title_en
         self.subtitle_orig = subtitle_orig
         self.subtitle_en   = subtitle_en
-        self.bpm           = bpm
+        self.bpm           = float(bpm)
         self.d_kantan      = d_kantan
         self.d_futsuu      = d_futsuu
         self.d_muzukashii  = d_muzukashii
@@ -82,6 +84,8 @@ class Song(Object):
 
         self.artists = []
         if artists:
+            if isinstance(artists, str):
+                artists = json.loads(artists)
             for artist in artists:
                 if isinstance(artist, int):
                     self.artists.append(dbl().artists.get_by_id(artist))
@@ -116,6 +120,9 @@ class Song(Object):
         d['charter_id'] = d['charter'].id
         d['state_id']   = d['state'].id
         d['artists']    = [ x.as_dict() for x in d['artists'] ]
+        d['created']      = self.created.strftime('%Y-%m-%d')
+        d['uploaded']     = self.uploaded.strftime('%Y-%m-%d')
+        d['last_updated'] = self.last_updated.strftime('%Y-%m-%d')
 
         for key in ['d_kantan_charter', 'd_futsuu_charter', 'd_muzukashii_charter',
                     'd_oni_charter', 'd_ura_charter']:
@@ -126,6 +133,26 @@ class Song(Object):
                     'd_futsuu_charter', 'd_muzukashii_charter', 'd_oni_charter',
                     'd_ura_charter', '_id']:
             d.pop(key, None)
+        return d
+
+
+    def as_api_dict(self):
+        from lib.objects import Genre, User, Source, SongState, Artist
+        d = copy(vars(self))
+        del d['obj_ogg']
+        del d['obj_tja']
+        d['custom_bg'] = True if self.obj_bg_video_picture else False
+        d['state']     = self.state.name
+        del d['obj_bg_video_picture']
+        for k, v in d.items():
+            if isinstance(v, (User)):
+                d[k] = v.as_api_dict(limited=True)
+            elif isinstance(v, (Genre, User, Source, SongState, Artist)):
+                d[k] = v.as_dict()
+            elif isinstance(v, list) and v and isinstance(v[0], Artist):
+                d[k] = [a.as_dict() for a in v]
+            elif isinstance(v, date):
+                d[k] = v.strftime('%Y-%m-%d')
         return d
 
 

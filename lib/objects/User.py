@@ -48,6 +48,7 @@ class User(Object):
         multi_assert(self.preferred_language,    types=( Language,   type(None) ))
         multi_assert(self.preferred_difficulty,  types=( Difficulty, type(None) ))
 
+
     def as_dict(self):
         d = copy(vars(self))
         d['id'] = self._id
@@ -61,3 +62,14 @@ class User(Object):
         for k in ['_id', 'preferred_difficulty', 'preferred_language']:
             del d[k]
         return d
+
+
+    def as_api_dict(self, limited=False):
+        data = {'id':           self._id,
+                'charter_name': self.charter_name}
+        if not limited:
+            data.update({
+                'staff':        self.staff,
+                'image_url':    self.image_url,
+                'about':        self.about})
+        return data

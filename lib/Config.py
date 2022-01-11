@@ -25,15 +25,13 @@ class Configuration():
                          'IDDB':     1,          'Password':  None,},
                'Database': {'Host':   'localhost', 'Port':     5432,
                             'User':   'tjadb',     'Password': '',
-                            'DBName': 'tjadb'},
+                            'DBName': 'tjadb',     'Pepper':   ''},
                'BotColors': {'SOTD':   0xf3f8fc, 'RandomSong': 0xa3f8fc,
                              'Search': 0x449920, 'About':      0xff1122,
                              'Donate': 0x338929,},
                'Bot': {'API': '', },
                'Web': {'Host': 'localhost', 'Port':  4987,
-                       'URL':  'change.me', 'Debug': True, 'SSL':   False,
-                       'CertFile': './ssl/tjadb.crt',
-                       'KeyFile':  './ssl/tjadb.key',}}
+                       'URL':  'change.me', 'Debug': True,}}
 
 
     @classmethod
@@ -50,6 +48,29 @@ class Configuration():
             pass
         return result
 
+
+    ###############
+    # Web Server  #
+    ###############
+    @classmethod
+    @property
+    def web_host(cls):
+        return cls.readSetting("Web", 'Host')
+
+    @classmethod
+    @property
+    def web_port(cls):
+        return cls.readSetting("Web", 'Port')
+
+    @classmethod
+    @property
+    def web_url(cls):
+        return cls.readSetting("Web", 'URL')
+
+    @classmethod
+    @property
+    def web_debug(cls):
+        return cls.readSetting("Web", 'Debug')
 
     #########
     # Redis #

@@ -40,54 +40,63 @@
   </thead>
   <tbody>
     {% for song in songlist %}
-      {% if song['genre_eng']   == 'J-Pop' %}
+      {% if song.genre.name_en   == 'J-Pop' %}
         {% set class = 'jpop' %}
-      {% elif song['genre_eng'] == 'Anime' %}
+      {% elif song.genre.name_en == 'Anime' %}
         {% set class = 'anime' %}
-      {% elif song['genre_eng'] == 'Vocaloid' %}
+      {% elif song.genre.name_en == 'Vocaloid' %}
         {% set class = 'vocaloid' %}
-      {% elif song['genre_eng'] == 'Children & Folk' %}
+      {% elif song.genre.name_en == 'Children & Folk' %}
         {% set class = 'folk' %}
-      {% elif song['genre_eng'] == 'Variety' %}
+      {% elif song.genre.name_en == 'Variety' %}
         {% set class = 'variety' %}
-      {% elif song['genre_eng'] == 'Classical' %}
+      {% elif song.genre.name_en == 'Classical' %}
         {% set class = 'classical' %}
-      {% elif song['genre_eng'] == 'Game Music' %}
+      {% elif song.genre.name_en == 'Game Music' %}
         {% set class = 'gamemusic' %}
-      {% elif song['genre_eng'] == 'Namco Original' %}
+      {% elif song.genre.name_en == 'Namco Original' %}
         {% set class = 'namcooriginal' %}
       {% endif %}
-      {% set tooltip = "Genre: \n" + song['genre_eng'] + '\n(' + song['genre_jp'] + ')\n\n' %}
-      {% set tooltip = tooltip + "Song ID: " + song['id']|string + "\n\n" %}
-      {% if song['comments'] != "" %}
-        {% set tooltip = tooltip + "Extra info: " + song['comments'] %}
+      {% set tooltip = "Genre: \n" + song.genre.name_en + '\n(' + song.genre.name_jp + ')\n\n' %}
+      {% set tooltip = tooltip + "Song ID: " + song.id|string + "\n\n" %}
+      {% if song.info != "" %}
+        {% set tooltip = tooltip + "Extra info: " + song.info %}
       {% endif %}
       <tr data-html="true" class="{{class}}" data-toggle="tooltip" data-placement="top" title="{{tooltip}}">
-        <td> {{ song['title_eng'] }}
-             {% if song['title_eng'] != song['title_orig'] %}
-               <br /> ({{ song['title_orig'] }})
+        <td> {{ song.title_en }}
+             {% if song.title_en != song.title_orig %}
+               <br /> ({{ song.title_orig }})
              {% endif %}
         </td>
-        <td> {{ song['artist_eng'] }}
-             {% if song['artist_eng'] != song['artist_orig'] %}
-               <br /> ({{ song['artist_orig'] }})
-             {% endif %}
+        <td>{% for artist in song.artists %}
+            <span class="badge rounded-pill bg-dark small-pill">
+              {{ artist.name_en }}
+              {% if artist.name_en != artist.name_orig %}
+                <br /> ({{ artist.name_orig }})
+              {% endif %}
+            </span>
+          {% endfor %}
         </td>
-        <td> {{ song['source_eng'] }}
-             {% if song['source_eng'] != song['source_orig'] %}
-               <br /> ({{ song['source_orig'] }})
-             {% endif %}
+        <td>
+          {% if song.source.name_en %}
+            <span class="badge rounded-pill bg-dark small-pill">
+              {{ song.source.name_en }}
+              {% if song.source.name_en != song.source.name_orig %}
+                <br /> ({{ song.source.name_orig }})
+              {% endif %}
+            </span>
+          {% endif %}
         </td>
-        <td> {{ song['bpm'] | number_format }} </td>
-        <td> {{ song['difficulty']['kantan'] | number_format }}     </td>
-        <td> {{ song['difficulty']['futsuu'] | number_format }}     </td>
-        <td> {{ song['difficulty']['muzukashii'] | number_format }} </td>
-        <td> {{ song['difficulty']['oni'] | number_format }}        </td>
-        <td> {{ song['difficulty']['ura'] | number_format }}        </td>
-        <td> {{ song['charter'] }} </td>
-        <td> {{ song['genre_eng'] }} </br> ({{song['genre_jp']}}) </td>
-        <td> {{ song['updated'] }} </td>
-        <td> <a href="javascript:download({{song['id']}})"><i class="bi bi-cloud-download"></i></a></td>
+        <td> {{ song.bpm | number_format }} </td>
+        <td> {{ song.d_kantan | number_format }}     </td>
+        <td> {{ song.d_futsuu | number_format }}     </td>
+        <td> {{ song.d_muzukashii | number_format }} </td>
+        <td> {{ song.d_oni | number_format }}        </td>
+        <td> {{ song.d_ura | number_format }}        </td>
+        <td> {{ song.charter.charter_name }} </td>
+        <td> {{ song.genre.name_en }} </br> ({{song.genre.name_jp}}) </td>
+        <td> {{ song.last_updated }} </td>
+        <td> <a href="javascript:download({{song.id}})"><i class="bi bi-cloud-download"></i></a></td>
       </tr>
     {% endfor %}
   </tbody>

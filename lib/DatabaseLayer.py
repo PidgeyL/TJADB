@@ -1,4 +1,5 @@
 import functools
+import json
 import os
 import shutil
 import sys
@@ -34,6 +35,8 @@ class DatabaseLayer(metaclass=Singleton):
 def redisify(value):
     if isinstance(value, bool):
         return int(value)
+    if isinstance(value, list):
+        return json.dumps(value)
     return value
 
 
@@ -152,8 +155,12 @@ class Songs():
         return song_id
 
     def _enrich(self, song):
-        artists = self.db.get_artists_for_song_id(song.id)
-        song.artists = [self.artist_obj(**a) for a in artists]
+        if isinstance(song, self.obj):
+            artists = self.db.get_artists_for_song_id(song.id)
+            song.artists = [self.artist_obj(**a) for a in artists]
+        else:
+            artists = self.db.get_artists_for_song_id(song['id'])
+            song['artists'] = [a['id'] for a in artists]
         return song
 
     @cacheid(cname="song")
@@ -170,7 +177,7 @@ class Songs():
             return self.db.get_obj(song.obj_tja)
         return None
 
-    def read_ogg(self, song):
+    def read_wave(self, song):
         if song.obj_ogg:
             return self.db.get_obj(song.obj_ogg)
         return None
