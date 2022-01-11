@@ -12,7 +12,8 @@ sys.path.append(os.path.join(run_path, ".."))
 
 def get_file_type(data):
     valid_types = {'audio/mpeg': '.mp3', 'video/x-ms-asf': '.wmv',
-                   'video/ogg':  '.ogg', 'audio/ogg':      '.ogg'}
+                   'video/ogg':  '.ogg', 'audio/ogg':      '.ogg',
+                   'video/mp4':  '.mp4', }
     mimetype = magic.from_buffer(data, mime=True)
     return valid_types.get(mimetype, '')
 
@@ -54,7 +55,7 @@ def write_tja(data, path):
     open(path, 'wb').write(data)
 
 
-def set_tja_metadata(tja, title=None, sub=None, song=None):
+def set_tja_metadata(tja, title=None, sub=None, song=None, movie=None, image=None):
     return_raw = False
     if isinstance(tja, bytes):
         tja = decode_tja(tja)
@@ -62,12 +63,17 @@ def set_tja_metadata(tja, title=None, sub=None, song=None):
 
     new_tja = ''
     for line in tja.splitlines():
-        if title and line.lower().startswith('title:'):
+        lline = line.lower()
+        if title and lline.startswith('title:'):
             line = line.split(':')[0] + ':' + title
-        if sub   and line.lower().startswith('subtitle:'):
+        if sub   and lline.startswith('subtitle:'):
             line = line.split(':')[0] + ':' + sub
-        if song  and line.lower().startswith('wave:'):
+        if song  and lline.startswith('wave:'):
             line = line.split(':')[0] + ':' + song
+        if movie and lline.startswith('bgmovie:'):
+            line = line.split(':')[0] + ':' + video
+        if image and lline.startswith('bgimage:'):
+            line = line.split(':')[0] + ':' + image
         new_tja = new_tja + line + '\r\n'
     if return_raw:
         return encode_tja(new_tja)
@@ -123,19 +129,30 @@ def md5(tja):
     return hashlib.md5(tja).hexdigest()
 
 
-def prepare_orig_tja(tja, song, wave):
+def prepare_orig_tja(tja, song, wave, bg=None):
+    return _prepare_tja(tja, song.title_orig, song.subtitle_orig, wave, bg)
+
+
+def prepare_en_tja(tja, song, wave, bg=None):
+    return _prepare_tja(tja, song.title_en, song.subtitle_en, wave, bg)
+
+
+def _prepare_tja(tja, title, sub, wave, bg=None):
+    movie = None
+    image = None
     wave = get_file_type(wave)
-    print(wave)
-    tja = set_tja_metadata(tja, title=song.title_orig, sub=song.subtitle_orig,
-                           song=clean_path(song.title_orig)+wave)
+    name = clean_path(title)
+    if bg:
+        bg = get_file_type(bg)
+        if bg in ('.wmv', '.mp4'):
+            movie = name+bg
+        else:
+            image = name+bg
+    tja = set_tja_metadata(tja, title=title, sub=sub, song =name+wave,
+                           movie=movie, image=image)
     return tja
 
 
-def prepare_en_tja(tja, song, wave):
-    wave = get_file_type(wave)
-    tja = set_tja_metadata(tja, title=song.title_en, sub=song.subtitle_en,
-                           song=clean_path(song.title_en)+wave)
-    return tja
 
 
 def generate_md5s(tja, song, wave):
