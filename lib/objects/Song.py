@@ -14,6 +14,8 @@ from datetime import date
 from lib.DatabaseLayer   import DatabaseLayer as dbl
 from lib.objects.helpers import multi_assert, Object
 
+_int = lambda x: int(x) if x else x
+
 class Song(Object):
     def __init__(self, id=None, title_orig=None, title_en=None, subtitle_orig=None,
                  subtitle_en=None, source_id=None, source=None, bpm=None,
@@ -46,9 +48,9 @@ class Song(Object):
         self.uploaded      = uploaded
         self.info          = info
         self.video_link    = video_link
-        self.obj_tja       = obj_tja
-        self.obj_ogg       = obj_ogg
-        self.obj_bg_video_picture = obj_bg_video_picture
+        self.obj_tja       = _int(obj_tja)
+        self.obj_ogg       = _int(obj_ogg)
+        self.obj_bg_video_picture = _int(obj_bg_video_picture)
         self.tja_orig_md5  = tja_orig_md5
         self.tja_en_md5    = tja_en_md5
 
