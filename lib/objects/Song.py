@@ -9,7 +9,7 @@
 
 import json
 from copy     import copy
-from datetime import date
+from datetime import date, datetime
 
 from lib.DatabaseLayer   import DatabaseLayer as dbl
 from lib.objects.helpers import multi_assert, Object
@@ -91,8 +91,15 @@ class Song(Object):
             for artist in artists:
                 if isinstance(artist, int):
                     self.artists.append(dbl().artists.get_by_id(artist))
+                elif isinstance(artist, dict):
+                    from lib.objects import Artist
+                    self.artists.append(Artist(**artist))
                 else:
                     self.artists.append(artist)
+        for field in ['last_updated', 'created', 'uploaded']:
+            d = getattr(self, field)
+            if isinstance(d, str):
+                setattr(self, field, datetime.strptime(d, "%Y-%m-%d").date())
 
 
     def verify(self):
@@ -158,7 +165,7 @@ class Song(Object):
         return d
 
 
-    def as_info_string(self):
+    def as_info_string(self, as_bytes=False):
         _alt    = lambda orig, alt: orig if orig == alt else "%s (%s)"%(orig, alt)
         _course = lambda course: str(course) if course else '*'
 
@@ -170,13 +177,16 @@ class Song(Object):
                      self.d_ura_charter]
         charters = ' & '.join({c.charter_name for c in charters if c})
 
-        text  = "Title:  %s\nArtist(s):  "%_alt(self.title_orig, self.title_en)
+        text  = "Title:       %s\nArtist(s):   "%_alt(self.title_orig, self.title_en)
         text += ' & '.join([_alt(a.name_orig, a.name_en) for a in self.artists])
         if self.source:
-            text += "\nFrom:  %s\n"%_alt(self.source.name_orig, self.source.name_en)
+            text += "\nFrom:        %s\n"%_alt(self.source.name_orig, self.source.name_en)
         text += "Charter(s):  %s\n"%charters
         text += "Difficulty:  %s\n"%diff
-        text += "Genre:  %s (%s)\n"%(self.genre.name_jp, self.genre.name_en)
-        text += "BPM:  %s\n"%self.bpm
-        text += "Last Update:  %s"%self.last_updated.strftime("%Y-%m-%d")
+        text += "Genre:       %s (%s)\n"%(self.genre.name_jp, self.genre.name_en)
+        text += "BPM:         %s\n"%self.bpm
+        text += "TJADB ID:    %s\n"%str(self.id)
+        text += "Last Update: %s"%self.last_updated.strftime("%Y-%m-%d")
+        if bytes:
+            text = text.encode("utf-8")
         return text
