@@ -1,8 +1,6 @@
 flask
-click
-itsdangerous
-tornado
-
-Jinja2
+psycopg2-binary
+python-magic
+redis
+simplejson
 Werkzeug
-MarkupSafe

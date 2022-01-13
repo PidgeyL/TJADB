@@ -5,7 +5,7 @@ import sys
 run_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(os.path.join(run_path, ".."))
 
-from flask   import render_template, abort
+from flask   import render_template, abort, send_from_directory
 from web.api import conf, dbl, app
 
 import web.api as api

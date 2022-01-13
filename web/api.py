@@ -3,7 +3,7 @@ import io
 import os
 import zipfile
 from datetime            import date
-from flask               import Flask, request, Response, send_file, send_from_directory, render_template, abort
+from flask               import Flask, request, Response, send_file, render_template, abort
 from functools           import wraps
 from werkzeug.exceptions import NotFound
 
