@@ -111,7 +111,7 @@ def parse_tja(tja):
             level, charter = line.split(':')
             meta[d_map[level[-1]]+'_charter'] = charter
         elif lline.startswith('course'):
-            difficulty = lval(line)
+            difficulty = lval(lline)
             if difficulty in d_map.keys():
                 difficulty = d_map[difficulty]
             if difficulty == 'edit':
