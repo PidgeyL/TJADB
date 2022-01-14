@@ -69,17 +69,19 @@
              {% endif %}
         </td>
         <td>{% for artist in song.artists %}
-            <span class="badge rounded-pill bg-dark small-pill">
-              {{ artist.name_en }}
-              {% if artist.name_en != artist.name_orig %}
-                <br /> ({{ artist.name_orig }})
-              {% endif %}
+            <span class="badge rounded-pill bg-light small-pill">
+              <a href="/browse_artist/{{artist.id}}">
+                  {{ artist.name_en }}
+                  {% if artist.name_en != artist.name_orig %}
+                    <br /> ({{ artist.name_orig }})
+                  {% endif %}
+              </a>
             </span>
           {% endfor %}
         </td>
         <td>
           {% if song.source.name_en %}
-            <span class="badge rounded-pill bg-dark small-pill">
+            <span class="badge rounded-pill bg-secondary small-pill">
               {{ song.source.name_en }}
               {% if song.source.name_en != song.source.name_orig %}
                 <br /> ({{ song.source.name_orig }})
@@ -93,7 +95,16 @@
         <td> {{ song.d_muzukashii | number_format }} </td>
         <td> {{ song.d_oni | number_format }}        </td>
         <td> {{ song.d_ura | number_format }}        </td>
-        <td> {{ song.charter.charter_name }} </td>
+        <td>
+            {% for c in [song.charter,
+                         song.d_kantan_charter, song.d_futsuu_charter,
+                         song.d_muzukashii_charter, song.d_oni_charter,
+                         song.d_ura_charter]|uniq %}
+              <span class="badge rounded-pill bg-secondary small-pill">
+                {{ c.charter_name }}
+              </span>
+            {% endfor %}
+        </td>
         <td> {{ song.genre.name_en }} </br> ({{song.genre.name_jp}}) </td>
         <td> {{ song.last_updated }} </td>
         <td> <a href="javascript:download({{song.id}})"><i class="bi bi-cloud-download"></i></a></td>

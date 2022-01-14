@@ -73,3 +73,24 @@ class User(Object):
                 'image_url':    self.image_url,
                 'about':        self.about})
         return data
+
+
+    def __str__(self):
+        return f"<User {self.charter_name} ({self.id})>"
+
+
+    def __eq__(self, other):
+        if not isinstance(other, User):
+            return False
+        return (self.id           == other.id and
+                self.charter_name == other.charter_name and
+                self.discord_id   == other.discord_id and
+                self.email        == other.email)
+
+
+    def __lt__(self, other):
+        return str(order) < str(other)
+
+
+    def __hash__(self):
+        return hash(str(self))

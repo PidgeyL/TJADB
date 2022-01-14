@@ -1,0 +1,19 @@
+[Web]
+Host: 127.0.0.1
+Port: 4987
+URL: 
+Debug: True
+
+[Database]
+Host: 127.0.0.1
+Port: 5432
+User: tjadb
+Password: CHANGEME
+DBName: tjadb
+Pepper: CHANGEME
+
+[Redis]
+Host: 127.0.0.1
+Port: 6379
+Password: 
+IDDB: 1

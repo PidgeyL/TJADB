@@ -116,6 +116,12 @@ def api_browse():
     return dbl.songs.get_all()
 
 
+@app.route('/api/browse_artist/<id>', methods=['GET'])
+@api_reply
+def api_browse_artist(id):
+    return dbl.songs.get_by_artist_id(id)
+
+
 @app.route('/api/sources', methods=['GET'])
 @api_reply
 def api_sources():

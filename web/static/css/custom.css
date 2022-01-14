@@ -34,3 +34,8 @@ body{
 .small-pill{
   font-size: 11px;
 }
+
+.small-pill > a{
+  color: white;
+  text-decoration: none;
+}

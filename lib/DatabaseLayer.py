@@ -168,6 +168,12 @@ class Songs():
         song = self.db.get_song_by_id(id)
         return self._enrich(song)
 
+    def get_by_artist_id(self, id):
+        if isinstance(id, self.artist_obj):
+            id = id.id
+        songs = [self.obj(**x) for x in self.db.get_song_by_artist_id(id)]
+        return [self._enrich(s) for s in songs]
+
     def get_all(self):
         songs = [self.obj(**x) for x in self.db.get_all_songs()]
         return [self._enrich(s) for s in songs]
