@@ -89,7 +89,7 @@ class User(Object):
 
 
     def __lt__(self, other):
-        return str(order) < str(other)
+        return str(self) < str(other)
 
 
     def __hash__(self):

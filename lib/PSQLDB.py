@@ -252,7 +252,8 @@ class Database(metaclass=Singleton):
 
     @committing
     def delete_obj(self, cur, oid):
-        cur.execute("SELECT lo_unlink(%s) FROM pg_largeobject_metadata;", (oid,))
+        obj = self.conn.lobject(oid=oid, mode='rb')
+        obj.unlink()
 
 
     # Clearing out old objects to recuperate disk space
