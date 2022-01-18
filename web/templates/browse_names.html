@@ -17,7 +17,7 @@
       $("#pag_content").html('<ul class="paginator">');
       $.each(items, function(index) {
         var obj = items[index];
-        var line = "<li><a href='/browse_artist/"+obj['id']+"'>"+obj['name_en'];
+        var line = "<li><a href='{{link}}"+obj['id']+"'>"+obj['name_en'];
         if (obj['name_en'] != obj['name_orig']){
           line += " (" + obj['name_orig'] + ")";
         }

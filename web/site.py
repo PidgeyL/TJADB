@@ -12,6 +12,22 @@ from web.api       import conf, dbl, app
 
 import web.api as api
 
+###################
+# Logic Functions #
+###################
+# Works on any obj with .name_orig and name_en
+def pager_prepare(obj_list):
+    pdict = defaultdict(list)
+    for obj in obj_list:
+        if obj.name_en[0] in string.ascii_letters:
+            pdict[obj.name_en[0].upper()].append(obj.as_dict())
+        else:
+            pdict['...'].append(obj.as_dict())
+    for key, val in pdict.items():
+        pdict[key] = sorted(val, key=lambda x: x['name_en'].lower())
+    return pdict
+
+
 ##################
 # ROUTE HANDLERS #
 ##################
@@ -22,16 +38,14 @@ def index():
 
 @app.route('/artists', methods=['GET'])
 def artists():
-    data = api.api_artists()
-    adict = defaultdict(list)
-    for artist in data:
-        if artist.name_en[0] in string.ascii_letters:
-            adict[artist.name_en[0].upper()].append(artist.as_dict())
-        else:
-            adict['...'].append(artist.as_dict())
-    for key, val in adict.items():
-        adict[key] = sorted(val, key=lambda x: x['name_en'].lower())
-    return render_template('browse_names.html', names=adict)
+    data = pager_prepare( api.api_artists() )
+    return render_template('browse_names.html', names=data, link="/browse_artist/")
+
+
+@app.route('/sources', methods=['GET'])
+def sources():
+    data = pager_prepare( api.api_sources() )
+    return render_template('browse_names.html', names=data, link="/browse_source/")
 
 
 @app.route('/browse', methods=['GET'])
@@ -45,6 +59,13 @@ def browse_artist(id):
     data   = api.api_browse_artist(id)
     artist = dbl.artists.get_by_id(id)
     return render_template('artist.html', songlist=data, artist=artist)
+
+
+@app.route('/browse_source/<id>', methods=['GET'])
+def browse_source(id):
+    data   = api.api_browse_source(id)
+    source = dbl.sources.get_by_id(id)
+    return render_template('source.html', songlist=data, source=source)
 
 
 @app.route('/custom/nameplates', methods=['GET'])

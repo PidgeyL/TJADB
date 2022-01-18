@@ -310,13 +310,17 @@ class Database(metaclass=Singleton):
 
 
     @fetchall
-    def get_song_by_artist_id(self, cur,artist_id):
+    def get_song_by_artist_id(self, cur, artist_id):
         s = """SELECT * FROM songs
                WHERE id IN(
                  SELECT song_id FROM artists_per_song
                  WHERE artist_id = %s
                );"""
         cur.execute(s, (artist_id, ))
+
+
+    def get_song_by_source_id(self, id):
+        return self._get_by_field('songs', 'source_id', id)
 
 
     def get_all_songs(self):
