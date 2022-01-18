@@ -68,12 +68,12 @@
                <br /> ({{ song.title_orig }})
              {% endif %}
         </td>
-        <td>{% for artist in song.artists %}
+        <td>{% for art in song.artists %}
             <span class="badge rounded-pill bg-light small-pill">
-              <a href="/browse_artist/{{artist.id}}">
-                  {{ artist.name_en }}
-                  {% if artist.name_en != artist.name_orig %}
-                    <br /> ({{ artist.name_orig }})
+              <a href="/browse_artist/{{art.id}}">
+                  {{ art.name_en }}
+                  {% if art.name_en != art.name_orig %}
+                    <br /> ({{ art.name_orig }})
                   {% endif %}
               </a>
             </span>
