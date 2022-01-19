@@ -28,9 +28,6 @@ class DatabaseLayer(metaclass=Singleton):
         self.languages    = Languages()
         self.difficulties = Difficulties()
 
-        self.charters    = Charters()
-        self.tjas        = TJAs()
-
 
 def redisify(value):
     if isinstance(value, bool):
@@ -280,72 +277,3 @@ class Languages():
     def get_all(self):
         return [self.obj(**x) for x in self.db.get_all_languages()]
 
-
-
-#########
-# To Do #
-#########
-
-
-class Charters():
-    def __init__(self):
-        self.db = Database.Database()
-
-
-    def add(self, charter):
-        if not verify_charter(charter):
-            sys.exit("Could not verify object!")
-        return self.db.add_charter(charter.name, charter.image, charter.about,
-                                   charter.staff )
-
-
-    @functools.lru_cache(maxsize=None)
-    def get_by_id(self, id):
-        c = self.db.get_charter_by_id(id)
-        if len(c) == 0:
-            return None
-        c = c[0]
-        return Charter(c['ID'], c['Name'], c['Image'], c['About'], bool(c['Staff']))
-
-
-    @functools.lru_cache(maxsize=None)
-    def get_by_name(self, name):
-        c = self.db.get_charter_by_name(name)
-        if len(c) == 0:
-            return None
-        c = c[0]
-        return Charter(c['ID'], c['Name'], c['Image'], c['About'], bool(c['Staff']))
-
-
-    def get_all(self):
-        data = []
-        for c in self.db.get_all_charters():
-            x = Charter(c['ID'], c['Name'], c['Image'], c['About'], bool(c['Staff']))
-            data.append(x)
-        return data
-
-
-class TJAs():
-
-    def get_info(self, song):
-        def _score(i):
-            if i == None:
-                return '*'
-            return str(i)
-        def _alt(orig, alt):
-            if orig != alt:
-                return " (%s)\n"%alt
-            return '\n'
-        def _difficulty(song):
-            scores = [song.d_kantan, song.d_futsuu, song.d_muzukashii, song.d_oni, song.d_ura]
-            return '/'.join([_score(i) for i in scores])
-
-        text =  "Title: " + song.title_orig + _alt(song.title_orig, song.title_eng)
-        text += "Artist: " + song.artist_orig + _alt(song.artist_orig, song.artist_eng)
-        text += "From: " + song.source_orig + _alt(song.source_orig, song.source_eng)
-        text += "Charter: " + song.charter.name + "\n"
-        text += "Difficulty: " + _difficulty(song) + "\n"
-        text += "Genre: %s (%s)\n"%(song.genre.name_jp, song.genre.name_eng)
-        text += "BPM: %s\n"%song.bpm
-        text += "Last update: %s\n\n"%song.updated
-        return text
