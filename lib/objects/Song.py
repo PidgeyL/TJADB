@@ -12,6 +12,7 @@ from copy     import copy
 from datetime import date, datetime
 
 from lib.DatabaseLayer   import DatabaseLayer as dbl
+from lib.objects         import Artist
 from lib.objects.helpers import multi_assert, Object
 
 _int = lambda x: int(x) if x else x
@@ -92,7 +93,6 @@ class Song(Object):
                 if isinstance(artist, int):
                     self.artists.append(dbl().artists.get_by_id(artist))
                 elif isinstance(artist, dict):
-                    from lib.objects import Artist
                     self.artists.append(Artist(**artist))
                 else:
                     self.artists.append(artist)

@@ -1,14 +1,19 @@
 import simplejson as json
 import io
 import os
+import sys
 import zipfile
 from datetime            import date
 from flask               import Flask, request, Response, send_file, render_template, abort
 from functools           import wraps
 from werkzeug.exceptions import NotFound
 
+run_path = os.path.dirname(os.path.realpath(__file__))
+sys.path.append(os.path.join(run_path, ".."))
+
 from lib.Config        import Configuration
 from lib.DatabaseLayer import DatabaseLayer
+from lib.functions     import simify
 from lib.objects       import Artist, Song, Source
 from lib.TJA           import prepare_en_tja, get_file_type, clean_path, parse_tja
 
@@ -16,9 +21,7 @@ app  = Flask(__name__, static_folder='static',static_url_path='/static')
 conf = Configuration()
 dbl  = DatabaseLayer()
 
-run_path = os.path.dirname(os.path.realpath(__file__))
 app.config['ASSETS'] = os.path.join(run_path, 'assets')
-
 
 
 def archive(song, orig=True):
@@ -88,6 +91,8 @@ def api_reply(funct):
             data = funct(*args, **kwargs)
             if request.url_rule.rule.lower().startswith('/api/'):
                 data = dictify(data)
+                if request.headers.get('User-Agent', '').startswith('opentaiko-'):
+                    data = simify(data)
                 data = json.dumps(data)
                 return Response(data, mimetype='application/json'), 200
             else:
