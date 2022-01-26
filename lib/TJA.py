@@ -97,6 +97,7 @@ def parse_tja(tja):
 
     difficulty = None
     for line in tja.splitlines():
+        line  = line.strip()
         lline = line.lower()
         if   lline.startswith('title:'):    meta['title']       = lval(line)
         elif lline.startswith('subtitle:'): meta['sub']         = lval(line)
