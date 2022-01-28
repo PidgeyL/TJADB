@@ -18,7 +18,8 @@ runPath = os.path.dirname(os.path.realpath(__file__))
 class Configuration():
     ConfigParser = configparser.ConfigParser()
     ConfigParser.read(os.path.join(runPath, "../etc/configuration.ini"))
-    default = {'Redis': {'Host':    'localhost', 'Port':      6379,
+    default = {'Cache': {'DBType':  'local'},
+               'Redis': {'Host':    'localhost', 'Port':      6379,
                          'SongDB':   10,         'UserDB':    11,
                          'SourceDB': 12,         'ArtistDB':  13,
                          'TagDB':    14,         'CommentDB': 15,
@@ -71,6 +72,20 @@ class Configuration():
     @property
     def web_debug(cls):
         return cls.readSetting("Web", 'Debug')
+
+    ###############
+    # Get CacheDB #
+    ###############
+    @classmethod
+    @property
+    def cache_db(cls):
+        t = cls.readSetting("Cache", "DBType")
+        if t.lower() in ('redis', 'remote', 'server', 'redis-cache'):
+            import lib.CacheRedis
+            return lib.CacheRedis.CacheDB()
+        else:
+            import lib.CachePy
+            return lib.CachePy.CacheDB()
 
     #########
     # Redis #

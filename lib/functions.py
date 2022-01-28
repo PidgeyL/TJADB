@@ -1,4 +1,7 @@
 import decimal
+from collections import Mapping, Container
+from sys         import getsizeof
+
 
 def number_format(number):
     if isinstance(number, type(None)):
@@ -39,3 +42,21 @@ def simify(data):
         for key, val in data.items():
             data[key] = simify(val)
     return data
+
+
+def deep_getsizeof(o, ids = None):
+    if ids == None:
+        ids = set()
+    d = deep_getsizeof
+    if id(o) in ids:
+        return 0
+
+    r = getsizeof(o)
+    ids.add(id(o))
+    if isinstance(o, str):
+        return r
+    if isinstance(o, Mapping):
+        return r + sum(d(k, ids) + d(v, ids) for k, v in o.items())
+    if isinstance(o, Container):
+        return r + sum(d(x, ids) for x in o)
+    return r

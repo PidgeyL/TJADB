@@ -1,9 +1,11 @@
 import functools
 import json
 import os
+import random
 import shutil
 import sys
 
+from datetime import date
 run_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(os.path.join(run_path, ".."))
 
@@ -15,7 +17,7 @@ from lib.Singleton  import Singleton
 from etc.Settings   import Settings
 from lib.TJA        import prepare_orig_tja, generate_md5s
 
-cdb  = Configuration().redis_ID_db
+cdb  = Configuration().cache_db
 
 class DatabaseLayer(metaclass=Singleton):
     def __init__(self):
@@ -27,37 +29,32 @@ class DatabaseLayer(metaclass=Singleton):
         self.song_states  = SongStates()
         self.languages    = Languages()
         self.difficulties = Difficulties()
+        self.bot          = Bot()
+        self.cache        = cdb
 
 
-def redisify(value):
-    if isinstance(value, bool):
-        return int(value)
-    if isinstance(value, list):
-        return json.dumps(value)
-    return value
-
-
+############
+# Wrappers #
+############
 def cacheid(cname):
     def wrapper(funct):
         @functools.wraps(funct)
         def inner(self, cid):
-            if not cid:
-                return None
-            ckey  = f"{cname}_{cid}"
-            cache = cdb.hgetall(ckey)
+            cache = cdb.get_id(cname, cid, self.obj)
             if cache:
-                return self.obj(**cache)
+                return cache
             result = funct(self, cid)
             result = self.obj(**result) if result else None
             if cname and not cache and result:
-                asdict = {k: redisify(v) for k, v in result.as_dict().items() if v}
-                cdb.hmset(ckey, asdict)
+                cdb.set_id(cname, cid, result)
             return result
         return inner
     return wrapper
 
 
-
+###############
+# Collections #
+###############
 class Artists():
     def __init__(self):
         from lib.objects import Artist
@@ -134,6 +131,12 @@ class Songs():
         self.db  = Database.Database()
         self.obj = Song
         self.artist_obj = Artist
+
+    def _cache_all(self, songs):
+       with cdb.pipeline() as pipe:
+           for song in songs:
+               pipe.hmset('song_'+song.id, song.as_dict())
+           pipe.execute()
 
     def add(self, song, tja=None, ogg=None, bg=None):
         song.verify()
@@ -218,6 +221,14 @@ class Songs():
         song.obj_bg_video_picture = self.db.add_obj(data)
         return song
 
+    def get_sotd(self):
+        td   = date.today()
+        sotd = self.db.get_song_of_the_day(td)
+        if not sotd:
+            sotd = random.choice(self.get_all())
+            self.db.set_song_of_the_day(sotd.id)
+            return sotd
+        return self.obj(**sotd)
 
 
 class Users():
@@ -277,3 +288,7 @@ class Languages():
     def get_all(self):
         return [self.obj(**x) for x in self.db.get_all_languages()]
 
+
+class Bot():
+    def __init__(self):
+        self.db  = Database.Database()

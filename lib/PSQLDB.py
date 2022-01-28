@@ -343,6 +343,24 @@ class Database(metaclass=Singleton):
         s = """SELECT * FROM artists
                WHERE id IN(
                  SELECT artist_id FROM artists_per_song
-                 WHERE song_id = %s
-               );"""
+                 WHERE song_id = %s );"""
+        cur.execute(s, (song_id, ))
+
+
+    ###################
+    # Song of the Day #
+    ###################
+    @fetchone
+    def get_song_of_the_day(self, cur, day):
+        s = """SELECT * FROM songs
+               WHERE id IN(
+                 SELECT song_id FROM song_of_the_day_history
+                 WHERE "date" = %s );"""
+        cur.execute(s, (day, ))
+
+
+    @committing
+    def set_song_of_the_day(self, cur, song_id):
+        s = """INSERT INTO song_of_the_day_history(song_id)
+               VALUES(%s)""";
         cur.execute(s, (song_id, ))
