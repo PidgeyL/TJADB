@@ -6,6 +6,7 @@ import shutil
 import sys
 
 from datetime import date
+from threading import Thread
 run_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(os.path.join(run_path, ".."))
 
@@ -31,6 +32,15 @@ class DatabaseLayer(metaclass=Singleton):
         self.difficulties = Difficulties()
         self.bot          = Bot()
         self.cache        = cdb
+        # Fill cache in separate thread, to avoid recursion due to imports in the
+        # objects. When the __init__ does not finish, the obj does not exist in the
+        # Singleton.
+        Thread(target = self.fill_cache).start()
+
+    def fill_cache(self):
+        # TODO: save downloads once implemented
+        cdb.clear_collection('song')
+        self.songs.get_all()
 
 
 ############
@@ -47,6 +57,22 @@ def cacheid(cname):
             result = self.obj(**result) if result else None
             if cname and not cache and result:
                 cdb.set_id(cname, cid, result)
+            return result
+        return inner
+    return wrapper
+
+
+def cacheall(cname):
+    def wrapper(funct):
+        @functools.wraps(funct)
+        def inner(self):
+            cache = cdb.get_all(cname, self.obj)
+            if cache:
+                return cache
+            result = funct(self)
+            result = [self.obj(**item) for item in result]
+            if cname and not cache and result:
+                cdb.multi_set_id(cname, result)
             return result
         return inner
     return wrapper
@@ -132,12 +158,6 @@ class Songs():
         self.obj = Song
         self.artist_obj = Artist
 
-    def _cache_all(self, songs):
-       with cdb.pipeline() as pipe:
-           for song in songs:
-               pipe.hmset('song_'+song.id, song.as_dict())
-           pipe.execute()
-
     def add(self, song, tja=None, ogg=None, bg=None):
         song.verify()
         if not all([tja, ogg]):
@@ -180,9 +200,9 @@ class Songs():
         songs = [self.obj(**x) for x in self.db.get_song_by_source_id(id)]
         return [self._enrich(s) for s in songs]
 
+    @cacheall(cname="song")
     def get_all(self):
-        songs = [self.obj(**x) for x in self.db.get_all_songs()]
-        return [self._enrich(s) for s in songs]
+        return [self._enrich(s) for s in self.db.get_all_songs()]
 
     def read_tja(self, song):
         if song.obj_tja:
