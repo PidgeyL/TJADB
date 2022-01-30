@@ -43,7 +43,7 @@ class CacheDB(metaclass=Singleton):
 
     def get_all_keys(self, cname=None):
         if cname:
-            return self.id_db[cname].keys()
+            return list(self.id_db[cname].keys())
         keys = [[f"{cname}_{id}" for id in col.keys()]
                   for cname, col in self.id_db.items()]
         return [item for sublist in keys for item in sublist]

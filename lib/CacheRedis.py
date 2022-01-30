@@ -69,7 +69,8 @@ class CacheDB(metaclass=Singleton):
 
     def get_all_keys(self, cname=None):
         if cname:
-            return list(self.id_db.scan_iter(f"{cname}_*"))
+            return [int(x.removeprefix(f'{cname}_'))
+                    for x in self.id_db.scan_iter(f"{cname}_*")]
         return list(self.id_db.scan_iter())
 
 
