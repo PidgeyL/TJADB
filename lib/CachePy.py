@@ -52,7 +52,7 @@ class CacheDB(metaclass=Singleton):
     def get_all(self, cname, obj_type):
         if not isinstance(cname, str):
             return []
-        return self.id_db[cname].items()
+        return list(self.id_db[cname].values())
 
 
     def clear_key(self, cname, obj_id):
