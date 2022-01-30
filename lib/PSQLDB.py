@@ -364,3 +364,36 @@ class Database(metaclass=Singleton):
         s = """INSERT INTO song_of_the_day_history(song_id)
                VALUES(%s)""";
         cur.execute(s, (song_id, ))
+
+
+    #####################
+    # Database Settings #
+    #####################
+    @committing
+    def save_setting(self, cur, name, type, value):
+        s = """INSERT INTO tjadb_settings(name, type, value)
+               VALUES(%s, %s, %s)
+               ON CONFLICT (name) DO UPDATE
+                 SET type  = excluded.type,
+                     value = excluded.value;""";
+        cur.execute(s, (name, type, value))
+
+
+    @fetchone
+    def get_setting(self, cur, name):
+        s = """SELECT * FROM tjadb_settings WHERE name = %s;"""
+        cur.execute(s, (name, ))
+
+    @committing
+    def add_to_list_setting(self, cur, name, value):
+        s = """UPDATE tjadb_settings
+               SET value = value::jsonb || '[%s]'::jsonb
+               WHERE name = %s;"""
+        cur.execute(s, (value, name))
+
+    @committing
+    def remove_from_list_setting(self, cur, name, value):
+        s = """UPDATE tjadb_settings
+               SET value = value::jsonb - %s::jsonb
+               WHERE name = %s;"""
+        cur.execute(s, (value, name))

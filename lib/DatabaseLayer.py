@@ -1,11 +1,12 @@
 import functools
 import json
 import os
+import pydoc
 import random
 import shutil
 import sys
 
-from datetime import date
+from datetime  import date
 from threading import Thread
 run_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(os.path.join(run_path, ".."))
@@ -30,8 +31,10 @@ class DatabaseLayer(metaclass=Singleton):
         self.song_states  = SongStates()
         self.languages    = Languages()
         self.difficulties = Difficulties()
-        self.bot          = Bot()
+        self.bot          = Bot(self)
+        self.settings     = Settings()
         self.cache        = cdb
+
         # Fill cache in separate thread, to avoid recursion due to imports in the
         # objects. When the __init__ does not finish, the obj does not exist in the
         # Singleton.
@@ -245,7 +248,8 @@ class Songs():
         td   = date.today()
         sotd = self.db.get_song_of_the_day(td)
         if not sotd:
-            sotd = random.choice(self.get_all())
+            sotd = random.choice( cdb.get_all_keys('song') )
+            sotd = self.get_by_id(sotd)
             self.db.set_song_of_the_day(sotd.id)
             return sotd
         return self.obj(**sotd)
@@ -310,5 +314,51 @@ class Languages():
 
 
 class Bot():
+    def __init__(self, dbl):
+        self.db  = Database.Database()
+        self.dbl = dbl
+
+    def get_sotd_channels(self):
+        chans = self.dbl.settings.read('sotd_channels')
+        return chans or []
+
+    def add_sotd_channel(self, channel):
+        self.dbl.settings.append('sotd_channels', channel)
+
+
+class Settings():
     def __init__(self):
         self.db  = Database.Database()
+
+    def save(self, name, value):
+        _type = type(value).__name__
+        value = json.dumps(value)
+        self.db.save_setting(name, _type, value)
+
+    def read(self, name):
+        setting = self.db.get_setting(name)
+        if not setting:
+            return None
+        return setting['value']
+
+    def append(self, name, value):
+        setting = self.read(name)
+        if not setting:
+            self.save(name, [value])
+        else:
+            if not isinstance(setting, list):
+                return False
+            self.db.add_to_list_setting(name, value)
+            return True
+
+    def remove(self, name, value):
+        setting = self.read(name)
+        if not setting:
+            return
+        if not isinstance(setting, list):
+            return False
+        # PSQL only is able to remove str from arrays, hence:
+        if value in setting:
+            setting.remove(value)
+            self.save(name, setting)
+        return True

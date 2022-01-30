@@ -145,6 +145,14 @@ CREATE  TABLE tjadb.song_of_the_day_history (
 	CONSTRAINT "Pk_Song_of_the_Day_History_date" PRIMARY KEY ( "date" )
  );
 
+CREATE  TABLE tjadb.tjadb_settings (
+        name      text  NOT NULL ,
+        type      text  NOT NULL ,
+        value     json   ,
+        CONSTRAINT pk_tjadb_settings_id PRIMARY KEY ( name ),
+ );
+
+
 ALTER TABLE tjadb.artists_per_song ADD CONSTRAINT fk_artists_per_song_artists FOREIGN KEY ( artist_id ) REFERENCES tjadb.artists( id ) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 ALTER TABLE tjadb.artists_per_song ADD CONSTRAINT fk_artists_per_song_songs FOREIGN KEY ( song_id ) REFERENCES tjadb.songs( id );
