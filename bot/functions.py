@@ -7,45 +7,46 @@ run_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(os.path.join(run_path, ".."))
 
 from etc.Settings      import Settings
-from lib.DatabaseLayer import Cache, DatabaseLayer
+from lib.DatabaseLayer import DatabaseLayer
 from bot.formatting    import embed_searchlist_en, embed_random_song_en, embed_sotd_en, embed_error, embed_website_en
 
+dbl = DatabaseLayer()
 
-##
-# Variables
-##
-_SOTD_ = None
+
+def search_songs(term, songlist):
+    return [song for song in songlist if match_song(song)]
 
 
 def get_website():
     url    = Settings().url
-    count  = str(len(Cache().get_all_songs()))
+    count  = str(len(dbl.cache.get_all_keys('song')))
     return embed_website_en(url, count)
 
 
 def search_songs(term):
-    songs = Cache().search(term)
+    def match_song(song, search):
+        fields = ['title_orig', 'title_en']
+        values = [getattr(song, f) for f in fields]
+        values.extend([a.name_orig for a in song.artists])
+        values.extend([a.name_en   for a in song.artists])
+        if song.source:
+            values.extend([song.source.name_en, song.source.name_orig])
+        for field in values:
+            if search.lower() in field.lower():
+                return True
+        return False
+
+    songs = [song for song in dbl.songs.get_all() if match_song(song, term)]
     return embed_searchlist_en(term, songs)
 
 
 def random_song():
-    rand = random.choice(Cache().get_all_songs())
-    return embed_random_song_en(rand)
+    rand = random.choice(dbl.cache.get_all_keys('song'))
+    return embed_random_song_en(dbl.songs.get_by_id(rand))
 
 
 def get_sotd():
-    if _SOTD_:
-        return embed_sotd_en(_SOTD_)
-    return embed_error("Song of the Day not set",
-                       "Seems like for some reason, the bot has not selected a SotD. Please contact the bot admin.")
-
-
-def update_sotd():
-    try:
-        global _SOTD_
-        _SOTD_ = random.choice(Cache().get_all_songs())
-    except:
-        pass
+    return embed_sotd_en( dbl.songs.get_sotd() )
 
 
 def publish_sotd(bot):
@@ -55,7 +56,7 @@ def publish_sotd(bot):
 
     embed = get_sotd()
     try:
-        for channel_id in DatabaseLayer().bot.get_sotd_publish_channels():
+        for channel_id in dbl.bot.get_sotd_channels():
             bot.loop.create_task(_send_to_channel(channel_id, embed))
     except Exception as e:
         print("Could not publish SotD")

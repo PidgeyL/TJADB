@@ -1,8 +1,10 @@
 import discord
+from random            import randrange
+from lib.DatabaseLayer import DatabaseLayer
+from lib.Config        import Configuration
 
-from etc.Settings import Settings
-conf = Settings()
-
+conf = Configuration()
+dbl  = DatabaseLayer()
 
 ################################
 # General Formatting Functions #
@@ -17,19 +19,28 @@ def difficulty(song):
     return result[:-1]
 
 
+def get_color(setting):
+    setting = "bot_color_"+setting
+    color = dbl.settings.read(setting)
+    if not color:
+        color = randrange(int('ffffff', 16))
+        dbl.settings.save(setting, color)
+    return color
+
+
 ##########################
 # Embed return functions #
 ##########################
 def embed_error(error, message):
     embed = discord.Embed(title = f"__**Whoops...**__",
-                          color = conf.bot_sotd_color)
+                          color = get_color('error'))
     embed.add_field( name = error, value = message )
     return embed
 
 
 def embed_website_en(url, count):
     embed = discord.Embed(title = f"__**TJADB-Web (%s)**__"%url, url = url,
-                          color = conf.bot_about_color,
+                          color = get_color('about'),
                           description = "Custom TJA database, filled with TJA's from the **TJADB** community.\n Website and bot made by <@567430051168256012>")
     embed.set_footer(text="Database song count: %s"%count)
     return embed
@@ -44,7 +55,7 @@ If we reach a point where we have a large excess of donations, we will notify an
 Once you make a donation, ping <@567430051168256012>. Certain donation tiers get rewarded with a small thank you, and every donation is noted down for full transparancy."""
 
     embed = discord.Embed(title = f"__**TJADB Donations**__",
-                          color = conf.bot_donate_color,
+                          color = get_color('donate'),
                           description = desc)
     embed.add_field( name = "SubscribeStar",   value = "https://www.subscribestar.com/pidgey" , inline=False)
     embed.add_field( name = "GitHub Sponsors", value = "https://github.com/sponsors/PidgeyL" , inline=False)
@@ -54,23 +65,23 @@ Once you make a donation, ping <@567430051168256012>. Certain donation tiers get
 
 def embed_sotd_en(song):
     embed = discord.Embed(title = f"__**Song of the Day**__",
-                          color = conf.bot_sotd_color)
+                          color = get_color('sotd'))
     embed.add_field( **song_namecard(song, en=True) )
     return embed
 
 
 def embed_random_song_en(song):
     embed = discord.Embed(title = f"__**Random Song**__",
-                          color = conf.bot_random_song_color)
+                          color = get_color('rand_song'))
     embed.add_field( **song_namecard(song, en=True) )
     return embed
 
 
 def embed_searchlist_en(term, songs):
     embed = discord.Embed(title = f"__**Results for: {term}**__",
-                          color = conf.bot_search_color)
+                          color = get_color('search_song'))
     for song in songs:
-        embed.add_field( **song_namecard(song, en=True) inline=False)
+        embed.add_field( **song_namecard(song, en=True), inline=False)
     return embed
 
 
@@ -78,13 +89,18 @@ def embed_searchlist_en(term, songs):
 # Embed build functions #
 #########################
 def song_namecard(song, en=True):
-    title   = song.title_eng      if en else song.title_orig
-    artist  = song.artist_eng     if en else song.artist_orig
-    genre   = song.genre.name_eng if en else song.genre.name_jp
-    charter = song.charter.name
+    title   = song.title_en      if en else song.title_orig
+    genre   = song.genre.name_en if en else song.genre.name_jp
+    charter = song.charter.charter_name
 
-    name  = f"**{title}** by {artist} ({genre})"
+    artists = []
+    for a in song.artists:
+        if en: artists.append(a.name_en)
+        else:  artists.append(a.name_orig)
+    artists = " & ".join(sorted(artists))
+
+    name  = f"**{title}** by {artists} ({genre})"
     body  = f"> Charter: {charter} | {song.bpm}bpm | {difficulty(song)}\n"
-    body += f"> DL: [Original]({conf.url}/download/orig/{song._id})"
-    body += f"  -  [English]({conf.url}/download/eng/{song._id})"
+    body += f"> DL: [Original]({conf.web_url}/download/orig/{song._id})"
+    body += f"  -  [English]({conf.web_url}/download/eng/{song._id})"
     return {'name': name, 'value': body}

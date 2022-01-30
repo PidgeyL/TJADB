@@ -27,6 +27,7 @@ class Configuration():
                'Database': {'Host':   'localhost', 'Port':     5432,
                             'User':   'tjadb',     'Password': '',
                             'DBName': 'tjadb',     'Pepper':   ''},
+               'DiscordBot': {'Key': ''},
                'BotColors': {'SOTD':   0xf3f8fc, 'RandomSong': 0xa3f8fc,
                              'Search': 0x449920, 'About':      0xff1122,
                              'Donate': 0x338929,},
@@ -156,3 +157,11 @@ class Configuration():
             print("WARNING: Could not connect to Postgres DB:")
             print(e)
             return None
+
+    ###############
+    # Discord Bot #
+    ###############
+    @classmethod
+    @property
+    def discord_bot_key(cls):
+        return cls.readSetting('DiscordBot', 'Key')

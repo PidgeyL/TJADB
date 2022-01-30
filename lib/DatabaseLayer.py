@@ -325,6 +325,9 @@ class Bot():
     def add_sotd_channel(self, channel):
         self.dbl.settings.append('sotd_channels', channel)
 
+    def remove_sotd_channel(self, channel):
+        self.dbl.settings.remove('sotd_channels', channel)
+
 
 class Settings():
     def __init__(self):
