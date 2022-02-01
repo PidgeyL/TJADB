@@ -27,7 +27,7 @@ class Configuration():
                'Database': {'Host':   'localhost', 'Port':     5432,
                             'User':   'tjadb',     'Password': '',
                             'DBName': 'tjadb',     'Pepper':   ''},
-               'DiscordBot': {'Key': ''},
+               'DiscordBot': {'Key': '', 'Prefix': '$'},
                'BotColors': {'SOTD':   0xf3f8fc, 'RandomSong': 0xa3f8fc,
                              'Search': 0x449920, 'About':      0xff1122,
                              'Donate': 0x338929,},
@@ -165,3 +165,8 @@ class Configuration():
     @property
     def discord_bot_key(cls):
         return cls.readSetting('DiscordBot', 'Key')
+
+    @classmethod
+    @property
+    def discord_bot_prefix(cls):
+        return cls.readSetting('DiscordBot', 'Prefix')

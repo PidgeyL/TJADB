@@ -100,5 +100,6 @@ class TJADB_Bot(commands.Bot):
 
 
 if __name__ == "__main__":
-    bot = TJADB_Bot(command_prefix="~", self_bot=False)
-    bot.run( Configuration().discord_bot_key )
+    conf = Configuration()
+    bot = TJADB_Bot(command_prefix=conf.discord_bot_prefix, self_bot=False)
+    bot.run( conf.discord_bot_key )
