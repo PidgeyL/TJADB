@@ -85,6 +85,16 @@ def embed_searchlist_en(term, songs):
     return embed
 
 
+def embed_settings(colors):
+    embed = discord.Embed(title = f"__**Current Settings**__",
+                          color = get_color('settings'))
+    body  = ""
+    for c in sorted(colors, key=lambda x: x['name']):
+        body += f"**{c['name'][10:]}**: #{hex(c['value'])[2:].upper()}"+"\n"
+    embed.add_field( name="Colors", value=body, inline=False)
+    return embed
+
+
 #########################
 # Embed build functions #
 #########################

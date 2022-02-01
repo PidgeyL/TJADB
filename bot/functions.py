@@ -8,7 +8,7 @@ sys.path.append(os.path.join(run_path, ".."))
 
 from etc.Settings      import Settings
 from lib.DatabaseLayer import DatabaseLayer
-from bot.formatting    import embed_searchlist_en, embed_random_song_en, embed_sotd_en, embed_error, embed_website_en
+from bot.formatting    import embed_searchlist_en, embed_random_song_en, embed_sotd_en, embed_error, embed_website_en, embed_settings
 
 dbl = DatabaseLayer()
 
@@ -61,3 +61,27 @@ def publish_sotd(bot):
     except Exception as e:
         print("Could not publish SotD")
         print(e)
+
+
+def set_setting(setting, value):
+    settings = dbl.settings.get_all()
+    if 'bot_color_' + setting.lower() in [x['name'] for x in settings]:
+        setting = 'bot_color_'+setting
+        try:
+            if value.startswith("#"):
+                value = value[1:]
+            value = int(value, 16)
+        except Exception as e:
+            return "Invalid hex code"
+    if setting.lower() not in [x['name'] for x in settings]:
+        return "Unknown setting"
+    dbl.settings.save(setting.lower(), value)
+    return f'Setting "{setting}" set to "{value}"'
+
+
+def get_current_settings():
+    bot_settings = ['sotd_channels']
+    settings = dbl.settings.get_all()
+    colors = [s for s in settings if s['name'].startswith('bot_color_')]
+    return embed_settings(colors)
+

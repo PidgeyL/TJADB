@@ -282,6 +282,8 @@ class Users():
     def get_all(self):
         return [self.obj(**x) for x in self.db.get_all_users()]
 
+    def get_staff(self):
+        return [self.obj(**x) for x in self.db.get_staff_users()]
 
 
 class Difficulties():
@@ -353,6 +355,9 @@ class Settings():
                 return False
             self.db.add_to_list_setting(name, value)
             return True
+
+    def get_all(self):
+        return self.db.get_settings()
 
     def remove(self, name, value):
         setting = self.read(name)

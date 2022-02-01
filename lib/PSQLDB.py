@@ -118,6 +118,10 @@ class Database(metaclass=Singleton):
         return self._get_by_field('users', 'discord_id', id)
 
 
+    def get_staff_users(self):
+        return self._get_by_field('users', 'staff', True)
+
+
     def get_all_users(self):
         return self._get_all('users')
 
@@ -378,11 +382,15 @@ class Database(metaclass=Singleton):
                      value = excluded.value;""";
         cur.execute(s, (name, type, value))
 
-
     @fetchone
     def get_setting(self, cur, name):
         s = """SELECT * FROM tjadb_settings WHERE name = %s;"""
         cur.execute(s, (name, ))
+
+    @fetchall
+    def get_settings(self, cur):
+        s = """SELECT * FROM tjadb_settings;"""
+        cur.execute(s)
 
     @committing
     def add_to_list_setting(self, cur, name, value):
