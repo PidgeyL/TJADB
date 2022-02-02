@@ -7,7 +7,7 @@ sys.path.append(os.path.join(run_path, ".."))
 
 from collections   import defaultdict
 from flask         import render_template, abort, send_from_directory
-from lib.functions import number_format, uniq
+from lib.functions import number_format, uniq, DictObj
 from web.api       import conf, dbl, app
 
 import web.api as api
@@ -42,6 +42,14 @@ def artists():
     return render_template('browse_names.html', names=data, link="/browse_artist/")
 
 
+@app.route('/charters', methods=['GET'])
+def charters():
+    data = [DictObj({'name_en': x.charter_name, 'name_orig': x.charter_name,
+             'id': x.id}) for x in api.api_charters() ]
+    data = pager_prepare( data )
+    return render_template('browse_names.html', names=data, link="/browse_charter/")
+
+
 @app.route('/sources', methods=['GET'])
 def sources():
     data = pager_prepare( api.api_sources() )
@@ -59,6 +67,13 @@ def browse_artist(id):
     data   = api.api_browse_artist(id)
     artist = dbl.artists.get_by_id(id)
     return render_template('artist.html', songlist=data, artist=artist)
+
+
+@app.route('/browse_charter/<id>', methods=['GET'])
+def browse_charter(id):
+    data = api.api_browse_charter(id)
+    user = dbl.users.get_by_id(id)
+    return render_template('charter.html', songlist=data, charter=user)
 
 
 @app.route('/browse_source/<id>', methods=['GET'])

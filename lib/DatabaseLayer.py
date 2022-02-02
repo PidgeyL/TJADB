@@ -156,10 +156,11 @@ class SongStates():
 
 class Songs():
     def __init__(self):
-        from lib.objects import Song, Artist
+        from lib.objects import Song, Artist, User
         self.db  = Database.Database()
         self.obj = Song
         self.artist_obj = Artist
+        self.user_obj = User
 
     def add(self, song, tja=None, ogg=None, bg=None):
         song.verify()
@@ -195,6 +196,12 @@ class Songs():
         if isinstance(id, self.artist_obj):
             id = id.id
         songs = [self.obj(**x) for x in self.db.get_song_by_artist_id(id)]
+        return [self._enrich(s) for s in songs]
+
+    def get_by_charter_id(self, id):
+        if isinstance(id, self.user_obj):
+            id = id.id
+        songs = [self.obj(**x) for x in self.db.get_song_by_charter_id(id)]
         return [self._enrich(s) for s in songs]
 
     def get_by_source_id(self, id):
@@ -285,6 +292,8 @@ class Users():
     def get_staff(self):
         return [self.obj(**x) for x in self.db.get_staff_users()]
 
+    def get_charters(self):
+        return [self.obj(**x) for x in self.db.get_charters()]
 
 class Difficulties():
     def __init__(self):

@@ -126,6 +126,12 @@ class Database(metaclass=Singleton):
         return self._get_all('users')
 
 
+    @fetchall
+    def get_charters(self, cur):
+        s = """SELECT * FROM users WHERE id IN (
+                   SELECT charter_id FROM songs);"""
+        cur.execute(s)
+
     ##########
     # Artist #
     ##########
@@ -321,6 +327,10 @@ class Database(metaclass=Singleton):
                  WHERE artist_id = %s
                );"""
         cur.execute(s, (artist_id, ))
+
+
+    def get_song_by_charter_id(self, id):
+        return self._get_by_field('songs', 'charter_id', id)
 
 
     def get_song_by_source_id(self, id):

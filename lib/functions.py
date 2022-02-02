@@ -60,3 +60,12 @@ def deep_getsizeof(o, ids = None):
     if isinstance(o, Container):
         return r + sum(d(x, ids) for x in o)
     return r
+
+
+class DictObj(dict):
+    def __getattr__(self, attr):
+        return self[attr]
+    def __setattr__(self, attr, value):
+        self[attr] = value
+    def as_dict(self):
+        return self

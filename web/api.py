@@ -14,7 +14,7 @@ sys.path.append(os.path.join(run_path, ".."))
 from lib.Config        import Configuration
 from lib.DatabaseLayer import DatabaseLayer
 from lib.functions     import simify
-from lib.objects       import Artist, Song, Source
+from lib.objects       import Artist, Song, Source, User
 from lib.TJA           import prepare_en_tja, get_file_type, clean_path, parse_tja
 
 app  = Flask(__name__, static_folder='static',static_url_path='/static')
@@ -58,8 +58,6 @@ def archive(song, orig=True):
     return (blob, folder+'.zip')
 
 
-
-
 ####################
 # Helper Functions #
 ####################
@@ -74,7 +72,7 @@ def dictify(data):
             data[key] = dictify(val)
     elif isinstance(data, (Artist, Source)):
         return data.as_dict()
-    elif isinstance(data, (Song)):
+    elif isinstance(data, (Song, User)):
         return data.as_api_dict()
     elif isinstance(data, date):
         return data.strftime('%Y-%m-%d')
@@ -127,10 +125,31 @@ def api_browse_artist(id):
     return dbl.songs.get_by_artist_id(id)
 
 
+@app.route('/api/browse_charter/<id>', methods=['GET'])
+@api_reply
+def api_browse_charter(id):
+    return dbl.songs.get_by_charter_id(id)
+
+
 @app.route('/api/browse_source/<id>', methods=['GET'])
 @api_reply
 def api_browse_source(id):
     return dbl.songs.get_by_source_id(id)
+
+
+@app.route('/api/charters', methods=['GET'])
+@api_reply
+def api_charters():
+    return dbl.users.get_charters()
+
+
+@app.route('/api/charter/<id>', methods=['GET'])
+@api_reply
+def api_charter(id):
+    user = dbl.users.get_by_id(id)
+    if user.id in [u.id for u in dbl.users.get_charters()]:
+        return user
+    return None
 
 
 @app.route('/api/sources', methods=['GET'])
