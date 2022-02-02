@@ -149,7 +149,7 @@ CREATE  TABLE tjadb.tjadb_settings (
         name      text  NOT NULL ,
         type      text  NOT NULL ,
         value     json   ,
-        CONSTRAINT pk_tjadb_settings_id PRIMARY KEY ( name ),
+        CONSTRAINT pk_tjadb_settings_id PRIMARY KEY ( name )
  );
 
 

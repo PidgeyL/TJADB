@@ -12,15 +12,13 @@ from bot.formatting    import embed_searchlist_en, embed_random_song_en, embed_s
 
 dbl = DatabaseLayer()
 
-
 def search_songs(term, songlist):
     return [song for song in songlist if match_song(song)]
 
 
 def get_website():
-    url    = Settings().url
     count  = str(len(dbl.cache.get_all_keys('song')))
-    return embed_website_en(url, count)
+    return embed_website_en(count)
 
 
 def search_songs(term):

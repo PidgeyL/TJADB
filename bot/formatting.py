@@ -38,8 +38,9 @@ def embed_error(error, message):
     return embed
 
 
-def embed_website_en(url, count):
-    embed = discord.Embed(title = f"__**TJADB-Web (%s)**__"%url, url = url,
+def embed_website_en(count):
+    embed = discord.Embed(title = f"__**TJADB-Web ({conf.web_url})**__",
+                          url = conf.web_url,
                           color = get_color('about'),
                           description = "Custom TJA database, filled with TJA's from the **TJADB** community.\n Website and bot made by <@567430051168256012>")
     embed.set_footer(text="Database song count: %s"%count)
