@@ -106,6 +106,11 @@ def assets(asset):
         abort(404)
 
 
+@app.route('/donate', methods=['GET'])
+def donate():
+    return render_template('donate.html')
+
+
 ###########
 # Filters #
 ###########
