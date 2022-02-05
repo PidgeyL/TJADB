@@ -36,7 +36,6 @@ body{
 }
 
 .small-pill > a{
-  color: white;
   text-decoration: none;
 }
 
@@ -49,6 +48,7 @@ body{
   -moz-column-gap: 20px;
   list-style-type: none;
 }
+
 #pag_content > li{
   padding: 7px;
 }

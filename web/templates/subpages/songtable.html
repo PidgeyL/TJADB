@@ -84,10 +84,12 @@
         <td>
           {% if song.source.name_en %}
             <span class="badge rounded-pill bg-secondary small-pill">
-              {{ song.source.name_en }}
-              {% if song.source.name_en != song.source.name_orig %}
-                <br /> ({{ song.source.name_orig }})
-              {% endif %}
+              <a href="/browse_source/{{song.source.id}}" style="color:white;">
+                {{ song.source.name_en }}
+                {% if song.source.name_en != song.source.name_orig %}
+                  <br /> ({{ song.source.name_orig }})
+                {% endif %}
+              </a>
             </span>
           {% endif %}
         </td>
@@ -103,7 +105,9 @@
                          song.d_muzukashii_charter, song.d_oni_charter,
                          song.d_ura_charter]|uniq %}
               <span class="badge rounded-pill bg-secondary small-pill">
-                {{ c.charter_name }}
+                <a href="/browse_charter/{{c.id}}" style="color:white;">
+                  {{ c.charter_name }}
+                </a>
               </span>
             {% endfor %}
         </td>
