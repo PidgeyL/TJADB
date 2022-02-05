@@ -107,7 +107,9 @@
               </span>
             {% endfor %}
         </td>
-        <td> {{ song.genre.name_en }} </br> ({{song.genre.name_jp}}) </td>
+        <td data-order="{{song.genre.id}}">
+           {{ song.genre.name_en }} </br> ({{song.genre.name_jp}})
+        </td>
         <td> {{ song.last_updated }} </td>
         <td> {{ song.uploaded }} </td>
         <td> <a href="javascript:download({{song.id}})"><i class="bi bi-cloud-download"></i></a></td>
