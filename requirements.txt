@@ -1,4 +1,6 @@
+discord
 flask
+flask-Babel
 psycopg2-binary
 python-magic
 redis

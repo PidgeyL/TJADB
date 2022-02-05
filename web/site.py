@@ -6,11 +6,17 @@ run_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(os.path.join(run_path, ".."))
 
 from collections   import defaultdict
-from flask         import render_template, abort, send_from_directory
+from flask         import render_template, abort, send_from_directory, request
+from flask_babel   import Babel
 from lib.functions import number_format, uniq, DictObj
 from web.api       import conf, dbl, app
 
 import web.api as api
+
+app.config['LANGUAGES'] = { 'en': 'English', 'es': 'Español'}
+app.config['BABEL_DEFAULT_LOCALE'] = 'en'
+
+babel = Babel(app)
 
 ###################
 # Logic Functions #
@@ -31,6 +37,10 @@ def pager_prepare(obj_list):
 ##################
 # ROUTE HANDLERS #
 ##################
+@babel.localeselector
+def get_locale():
+    return request.accept_languages.best_match(app.config['LANGUAGES'].keys())
+
 @app.route('/', methods=['GET'])
 def index():
     return render_template('index.html')
