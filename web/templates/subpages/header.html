@@ -2,7 +2,6 @@
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <div class="container-fluid">
-        <a class="navbar-brand" href="/">TJADB</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -12,18 +11,31 @@
               <a class="nav-link active" aria-current="page" href="/">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/browse">Browse charts</a>
+              <a class="nav-link" href="/browse">Charts</a>
             </li>
+
             <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <a class="nav-link dropdown-toggle" href="#" id="searchDrop" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Browse More
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="searchDrop">
+                <li><a class="dropdown-item" href="/artists"> Artists</a></li>
+                <li><a class="dropdown-item" href="/sources"> Sources</a></li>
+                <li><a class="dropdown-item" href="/charters">Charters</a></li>
+              </ul>
+            </li>
+
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="customDrop" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Customization
               </a>
-              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <ul class="dropdown-menu" aria-labelledby="customDrop">
                 <li><a class="dropdown-item" href="/custom/nameplates">Nameplates</a></li>
                 <li><a class="dropdown-item" href="/custom/dons">      Dons</a></li>
                 <li><a class="dropdown-item" href="/custom/puchichara">Puchichara</a></li>
               </ul>
             </li>
+
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Guides
@@ -32,6 +44,9 @@
                 <li><a class="dropdown-item" href="#">TJAPlayer3</a></li>
                 <li><a class="dropdown-item" href="#">TaikoCatsCafe</a></li>
               </ul>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="/donate">Donate!</a>
             </li>
           </ul>
         </div>

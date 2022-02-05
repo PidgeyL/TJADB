@@ -30,3 +30,25 @@ body{
 .error{
   border-color:red;
 }
+
+.small-pill{
+  font-size: 11px;
+}
+
+.small-pill > a{
+  color: white;
+  text-decoration: none;
+}
+
+#pag_content{
+  columns: 3;
+  -webkit-columns: 3;
+  -moz-columns: 3;
+  column-gap: 20px;
+  -webkit-column-gap: 20px;
+  -moz-column-gap: 20px;
+  list-style-type: none;
+}
+#pag_content > li{
+  padding: 7px;
+}

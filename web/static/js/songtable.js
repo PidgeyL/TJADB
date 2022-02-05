@@ -9,18 +9,22 @@ function download(ID) {
 
 $(document).ready(function () {
     var table = $('#dtSongTable').DataTable({
-        "order": [[ 11, "desc" ]],
+        "order": [[ 12, "desc" ]],
         "columnDefs": [
             { width: 27, targets: 4 },
             { width: 27, targets: 5 },
             { width: 27, targets: 6 },
             { width: 27, targets: 7 },
             { width: 27, targets: 8 },
+            { visible: false, targets: 3 },
             { visible: false, targets: 9 },
-            { visible: false, targets: 10 }
+            { visible: false, targets: 10 },
+            { visible: false, targets: 11 }
         ],
         "autoWidth": false,
-        "fixedColumns": true
+        "fixedColumns": true,
+        "lengthMenu": [[25, 50, 100, 200, -1], [25, 50, 100, 200, "All"]],
+        "pageLength" : 100,
     });
     $('.dataTables_length').addClass('bs-select');
 

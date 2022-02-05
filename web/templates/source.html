@@ -1,0 +1,29 @@
+{% extends 'layouts/master-page' %}
+{% block css %}
+  <link href="/static/css/datatables.min.css" rel="stylesheet">
+  <link href="/static/css/songtable.css" rel="stylesheet">
+{% endblock %}
+{% block js %}
+  <script type="text/javascript" src="/static/js/datatables.min.js"></script>
+  <script type="text/javascript" src="/static/js/songtable.js"></script>
+{% endblock %}
+
+{% block title %}Browse “{{source.name_en}}”{% endblock %}
+{% block content %}
+  <div class="card">
+    <div class="card-body">
+      Songs from
+      {{ source.name_en }}
+      {% if source.name_en != source.name_orig %}
+        <br /> ({{ source.name_orig }})
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      {% include 'subpages/songtable.html' %}
+    </div>
+  </div>
+
+{% endblock %}
