@@ -374,10 +374,10 @@ class Database(metaclass=Singleton):
 
 
     @committing
-    def set_song_of_the_day(self, cur, song_id):
-        s = """INSERT INTO song_of_the_day_history(song_id)
-               VALUES(%s)""";
-        cur.execute(s, (song_id, ))
+    def set_song_of_the_day(self, cur, day, song_id):
+        s = """INSERT INTO song_of_the_day_history(date, song_id)
+               VALUES(%s, %s)""";
+        cur.execute(s, (day, song_id, ))
 
 
     #####################

@@ -6,7 +6,6 @@ import sys
 run_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(os.path.join(run_path, ".."))
 
-from etc.Settings      import Settings
 from lib.DatabaseLayer import DatabaseLayer
 from bot.formatting    import embed_searchlist_en, embed_random_song_en, embed_sotd_en, embed_error, embed_website_en, embed_settings
 

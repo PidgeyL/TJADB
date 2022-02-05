@@ -116,7 +116,7 @@ def api_artist(id):
 @app.route('/api/browse', methods=['GET'])
 @api_reply
 def api_browse():
-    return sorted(dbl.songs.get_all(), key=lambda x: x.uploaded)
+    return dbl.songs.get_all()
 
 
 @app.route('/api/browse_artist/<id>', methods=['GET'])

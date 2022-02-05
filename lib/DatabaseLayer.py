@@ -11,12 +11,10 @@ from threading import Thread
 run_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(os.path.join(run_path, ".."))
 
-#import lib.SQLiteDB as Database
 import lib.PSQLDB as Database
 
 from lib.Config     import Configuration
 from lib.Singleton  import Singleton
-from etc.Settings   import Settings
 from lib.TJA        import prepare_orig_tja, generate_md5s
 
 cdb  = Configuration().cache_db
@@ -257,7 +255,7 @@ class Songs():
         if not sotd:
             sotd = random.choice( cdb.get_all_keys('song') )
             sotd = self.get_by_id(sotd)
-            self.db.set_song_of_the_day(sotd.id)
+            self.db.set_song_of_the_day(td, sotd.id)
             return sotd
         return self.obj(**sotd)
 

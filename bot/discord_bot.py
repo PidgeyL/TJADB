@@ -10,7 +10,6 @@ sys.path.append(os.path.join(run_path, ".."))
 import bot.formatting as forms
 
 from bot.functions     import search_songs, random_song, get_sotd, publish_sotd, get_website, get_current_settings, set_setting
-from etc.Settings      import Settings
 from lib.DatabaseLayer import DatabaseLayer
 from lib.Config        import Configuration
 from lib.Scheduler     import Scheduler
