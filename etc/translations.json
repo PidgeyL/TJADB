@@ -73,6 +73,96 @@
         {"en": ["English"],
          "es": []},
 
+    "index.title":
+        {"en": ["Home"],
+         "es": []},
+    "index.about.h":
+        {"en": ["About TJADB"],
+         "es": []},
+    "index.about.text1":
+        {"en": ["Welcome to the alpha release of the TJADB inventory website.",
+                " This website is used by TJADB members to upload their custom",
+                " TJA charts, to share the enjoyment of Taiko no Tatsujin style",
+                " games with the wider community and world. Charts are available",
+                " in the original language, as well as with English translations.",
+                " Check out the"],
+         "es": []},
+    "index.about.a":
+        {"en": ["browse page"],
+         "es": []},
+    "index.about.text2":
+        {"en": [" for a list of the songs currently hosted on the TJADB website."],
+         "es": []},
+    "index.donate.h":
+        {"en": ["Help us out!"],
+         "es": []},
+    "index.donate.p1":
+        {"en": ["This website and accompaning Discord bot is currently running",
+                " off a low-resource, personal, development server. We would like",
+                " to rent a dedicated server, so that the development server can",
+                " again be used for development, the website can run on good",
+                " hardware with a stable Internet connection, and we will have",
+                " more resources available to bring you better features!"],
+         "es": []},
+    "index.donate.p2":
+        {"en": ["We also appreciate everyone who helps us out! While we want to",
+                " keep the majority of the features available to everyone, we do",
+                " offer some small benefits to our supporters. You can check them",
+                " out on the"],
+         "es": []},
+    "index.donate.a":
+        {"en": ["donation page"],
+         "es": []},
+    "index.submit.h":
+        {"en": ["How do I submit TJA's?"],
+         "es": []},
+    "index.submit.text":
+        {"en": ["During the first release, TJA submisions are limited to members",
+                " of the TJADB Discord server. Before submitting a TJA, please",
+                " have someone in the <b>#tja-general</b> channel of the Discord",
+                " server verify if the TJA is properly made. Once you received",
+                " confirmation, fill out the spreadsheet, pinned in",
+                " <b> #tja-publishing </b>, and send it to <b> Pidgey#8387 </b>,",
+                " with a request to insert it into the TJADB database. This",
+                " process will be smoother in future iterations of the website."],
+         "es": []},
+    "index.involved.h":
+        {"en": ["Get involved!"],
+         "es": []},
+    "index.involved.text1":
+        {"en": ["Want to get involved in the development of the TJADB website?",
+                " You can! You can contribute in many ways: Coding, Web",
+                " development, Art, Testing, Bug hunting, and of-course,",
+                " providing content! <br />",
+                "You can provide content in different ways as well. The most",
+                " obvious one is, of course, the addition of new TJA's (make sure",
+                " you own the rights to the chart). But you can help in different",
+                " ways as well. If you look at the menu bar, you will see some",
+                " links that currently lead nowhere. One of which is \"Guides\".",
+                " If you feel like writing some guides on certain TJA players,",
+                " charting, etc, get in touch with the <b> moderators of the",
+                " TJADB Discord</b>, and tell them what guides you would like to",
+                " add. Once they give the green-light, make your guides and get",
+                " in touch with <b>@Pidgey</b> once ready. He will add your page",
+                " to the website, once signed off by the mods.<br /> <br />",
+                "Would you rather make assets for the website or Discord bot,",
+                " such as the banner, menu bar, background or profile picture?",
+                " Get in touch with <b>@Pidgey</b> for the requirements. <br />",
+                "<br /> Would you rather help out with coding? You can find the",
+                " repository on"],
+         "es": []},
+    "index.involved.text2":
+        {"en": ["Since no fixed rules around the development or roadmap are set",
+                " in stone, please touch base with the dev team to make sure your",
+                " code will be approved later down the road."],
+         "es": []},
+    "index.":
+        {"en": [],
+         "es": []},
+
+
+
+
     "browse.title":
         {"en": ["Browse"],
          "es": ["Explorar"]},
@@ -84,6 +174,100 @@
                 " los puedes buscar, filtrar por varios criterios y descargar",
                 " desde aquí. Puedes descargar cada canción en su idioma original",
                 " o en inglés."]},
+
+    "artist.title":
+        {"en": ["Browse"],
+         "es": ["Explorar"]},
+    "artist.text":
+        {"en": ["Songs by "],
+         "es": [""]},
+
+    "charter.title":
+        {"en": ["Browse"],
+         "es": ["Explorar"]},
+    "charter.text":
+        {"en": ["Songs charted by "],
+         "es": [""]},
+
+    "source.title":
+        {"en": ["Browse"],
+         "es": ["Explorar"]},
+    "source.text":
+        {"en": ["Songs from "],
+         "es": [""]},
+
+    "browse_names.title":
+        {"en": ["Browse"],
+         "es": [""]},
+
+    "donate.title":
+        {"en": ["Donate"],
+         "es": [""]},
+    "donate.thanks.h":
+        {"en": ["Thank you for considering donating to the TJADB project!"],
+         "es": []},
+    "donate.thanks.text1":
+        {"en": ["Donations are used to keep the website, discord bot, domain and",
+                " ESE project alive.<br /> Excess donations will be stored",
+                " separately, to keep a buffer for months with fewer donations.",
+                " If we reach a point where we have a large excess of donations,",
+                " we will notify any donors. For any questions, contact the staff",
+                " of the"],
+         "es": []},
+    "donate.thanks.a":
+        {"en": ["TJADB Discord group"],
+         "es": [""]},
+    "donate.thanks.text2":
+        {"en": ["Once you make a donation, ping <b>Pidgey#8387</b> on Discord, or",
+                " send a mail to <b>tjadb-donations [at] pidgey.net</b>. Certain",
+                " donation tiers get rewarded with a small thank you, and every",
+                " donation is noted down for full transparancy."],
+         "es": [""]},
+    "donate.options.h":
+        {"en": ["Donation options"],
+         "es": []},
+    "donate.options.text":
+        {"en": ["There are a couple of ways you can donate to the project."],
+         "es": []},
+    "donate.benefits.h":
+        {"en": ["Benefits"],
+         "es": []},
+    "donate.benefits.monthly":
+        {"en": ["Monthly donations"],
+         "es": []},
+    "donate.benefits.month":
+        {"en": ["month"],
+         "es": []},
+    "donate.benefits.2m":
+        {"en": ["Sponsor badge on GitHub"],
+         "es": []},
+    "donate.benefits.5m":
+        {"en": ["Early release access to features of hosted projects <br />",
+                "Participate in polls that decide the directions of ongoing",
+                " projects <br /> Get the \"Sponsor\" role on Discord"],
+         "es": []},
+    "donate.benefits.10m":
+        {"en": ["Logo or name in the repository README"],
+         "es": []},
+    "donate.benefits.20m":
+        {"en": ["Logo or name on the website"],
+         "es": []},
+
+    "donate.benefits.onetime":
+        {"en": ["One-time donations"],
+         "es": []},
+    "donate.benefits.20o":
+        {"en": ["Get a sponsor role on the TJADB Discord server"],
+         "es": []},
+    "donate.benefits.50o":
+        {"en": ["Logo or name on the project README"],
+         "es": []},
+    "donate.benefits.100o":
+        {"en": ["Logo or name on the website"],
+         "es": []},
+    "donate.benefits.150o":
+        {"en": ["High-priority feature requests (to be discussed what is do-able)"],
+         "es": []},
 
     "nameplates.title":
         {"en": ["Nameplates"],
@@ -126,12 +310,68 @@
         {"en": ["Dons"],
          "es": ["Dons"]},
     "dons.disclaimer":
-        {"en": [],
+        {"en": ["These Dons are for TaikoCatsCaffe (TCC) ONLY."],
          "es": ["Estos Dons son solo para su uso en TaikoCatsCaffe (TCC)."]},
     "dons.instructions":
-        {"en": [],
+        {"en": ["Download by clicking the image, then place and extract the zip",
+                " file in System\\Base."],
          "es": ["Descargalos presionando la imagen, luego extrae el archivo en",
                 " System\\Base."]},
+    "puchichara.title":
+        {"en": ["Puchichara"],
+         "es": ["Puchichara"]},
+    "puchichara.intro.h":
+        {"en": ["Puchichara"],
+         "es": ["Puchichara"]},
+    "puchichara.intro.text":
+        {"en": ["Puchichara are small characters that dance alongside your Don.",
+                " TaikoCatsCaffe includes many of these puchichara ready to be",
+                " used. To load them in TCC, simply rename the image",
+                " Puchichara.png and leave in in the 0_Personal folder. For any",
+                " other version of TJAPlayer3, the file must be called 0.png and",
+                " stored in 5_Game\\18_Puchichara."],
+         "es": ["Los Puchichara son pequeños personajes que bailan junto a tu",
+                " Don. TaikoCatsCaffe (TCC) incluye varios puchichara listos",
+                " para su uso. Para cargarlos en TCC, solo renombra la imagen a",
+                " Puchichara.png y déjala en la carpeta 0_Personal. En cualquier",
+                " otra versión de TJAPlayer3, el archivo debe llamarse 0.png y",
+                " estar en la carpeta 5_Game\\18_Puchichara."]},
+    "puchichara.howto.h":
+        {"en": ["How to create Puchichara"],
+         "es": ["Como crear un Puchichara"]},
+    "puchichara.howto.li1a":
+        {"en": ["Install"],
+         "es": ["Instala"]},
+    "puchichara.howto.li1b":
+        {"en": ["This will be used to add the gogo time effect."],
+         "es": ["Esto se usará para añadir el efecto de GoGo Time."]},
+    "puchichara.howto.li2":
+        {"en": ["Find two images of the character you want to turn into a",
+                " puchichara."],
+         "es": ["Encuentra dos imágenes del personaje que quieres usar para tu",
+                " Puchichara."]},
+    "puchichara.howto.li3":
+        {"en": ["Arrange your characters in a fashion similar to this within a",
+                " 500x500px canvas. (Feel free to download and overlay your",
+                " characters.)"],
+         "es": ["Coloca tus personajes de una manera similar a esta en un lienzo",
+                " de 500x500px (Puedes descargar esta imagen para superponer tus",
+                " personajes)."]},
+    "puchichara.howto.li4":
+        {"en": ["Rectangle Select the two characters at the bottom of the image",
+                " and go to the \"Levels\" tab within paint.net."],
+         "es": ["Haz una selección rectangular (Rectangle Select) de los dos",
+                " personajes de abajo en la imagen y ve a la pestaña \"Niveles\"",
+                " (Levels) dentro de paint.net."]},
+    "puchichara.howto.li5":
+        {"en": ["Set your levels to look like this."],
+         "es": ["Ajusta tus niveles para que la imagen quede asi."]},
+    "puchichara.howto.li6":
+        {"en": ["Save the file."],
+         "es": ["Guarda el archivo."]},
+    ".":
+        {"en": [],
+         "es": []},
     ".":
         {"en": [],
          "es": []}
