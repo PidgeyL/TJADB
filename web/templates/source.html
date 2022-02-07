@@ -8,11 +8,11 @@
   <script type="text/javascript" src="/static/js/songtable.js"></script>
 {% endblock %}
 
-{% block title %}Browse “{{source.name_en}}”{% endblock %}
+{% block title %}{{_('source.title')}} “{{source.name_en}}”{% endblock %}
 {% block content %}
   <div class="card">
     <div class="card-body">
-      Songs from
+      {{_('source.text')}}
       {{ source.name_en }}
       {% if source.name_en != source.name_orig %}
         <br /> ({{ source.name_orig }})

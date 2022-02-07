@@ -8,100 +8,39 @@
   <script type="text/javascript" src="/static/js/songtable.js"></script>
 {% endblock %}
 
-{% block title %}Home{% endblock %}
+{% block title %}{{_('index.title')}}{% endblock %}
 {% block content %}
   <div class="card border-secondary">
-    <div class="card-header">About TJADB</div>
+    <div class="card-header">{{_('index.about.h')}}</div>
     <div class="card-body">
-      Welcome to the alpha release of the TJADB inventory website. This
-      website is used by TJADB members to upload their custom TJA charts, to share
-      the enjoyment of Taiko no Tatsujin style games with the wider community and
-      world. Charts are available in the original language, as well as with English
-      translations. Check out the <a href="/browse">browse page</a> for a list of
-      the songs currently hosted on the TJADB website.
+      {{_('index.about.text1')}} <a href="/browse">{{_('index.about.a')}}</a>
+      {{_('index.about.text2')}}
     </div>
   </div>
 
   <div class="card border-primary">
-    <div class="card-header">Help us out!</div>
+    <div class="card-header"> {{_('Help us out!')}}</div>
     <div class="card-body">
+      <p> {{_('index.donate.p1')}} </p>
       <p>
-        This website and accompaning Discord bot is currently running off a
-        low-resource, personal, development server. We would like to rent a
-        dedicated server, so that the development server can again be used for
-        development, the website can run on good hardware with a stable Internet
-        connection, and we will have more resources available to bring you better
-        features!
-      </p>
-      <p>
-        We also appreciate everyone who helps us out! While we want to keep the
-        majority of the features available to everyone, we do offer some small
-        benefits to our supporters. You can check them out on the
-        <a href="/donate"> donation page </a>
+        {{_('index.donate.p2')}} <a href="/donate"> {{_('index.donate.a')}} </a>
       </p>
     </div>
   </div>
 
   <div class="card border-secondary">
-    <div class="card-header">How do I submit TJA's?</div>
+    <div class="card-header"> {{_('txt_index_submit_H')}} </div>
     <div class="card-body">
-      During the first release, TJA submisions are limited to members of the
-      TJADB Discord server. Before submitting a TJA, please have someone in the
-      <b>#tja-general</b> channel of the Discord server verify if the TJA is
-      properly made. Once you received confirmation, make sure you have the
-      following information available:
-      <ul>
-        <li>Song Title in the original language and spelling</li>
-        <li>Song Title in English or Romaji</li>
-        <li>Song Subtitle in the original language and spelling</li>
-        <li>Song Subtitle in English</li>
-        <li>Artist name in the original language and spelling</li>
-        <li>Artist name in English or Romaji</li>
-        <li>Song Source (e.g game, anime, etc) in the original language and spelling (may be blank)</li>
-        <li>Song Source (e.g game, anime, etc) in English (may be blank)</li>
-        <li>Song Genre (Using the official Taiko no Tatsujin genre list)</li>
-        <li>Your preferred Charter name</li>
-        <li>A zip file containing the TJA and OGG files, or a download link </li>
-      </ul>
-      The following information should be extractable from the TJA, but is preferred
-      to be added manually for good measure:
-      <ul>
-        <li>Difficulty (kantan, futsuu, muzukashii, oni and ura. Leave blank if not applicable)</li>
-        <li>BPM of the song</li>
-      </ul>
-      The following information is optional:
-      <ul>
-        <li>A video link to the chart</li>
-        <li>The creation date of the chart. If blank, the date of ingestion will be used.</li>
-        <li>Extra information (co-charters, secondary video links, etc)</li>
-      </ul>
-      When you have verified that all this information is available and correct,
-      send a message to <b>@PidgeyL</b> with a request to insert it into the TJADB
-      database. This process will be smoother in future iterations of the website.
+      {{index.submit.text')}}
     </div>
   </div>
 
   <div class="card border-secondary">
-    <div class="card-header">Get involved!</div>
+    <div class="card-header">{{_('index.involved.h')}}</div>
     <div class="card-body">
-      Want to get involved in the development of the TJADB website? You can! You can
-      contribute in many ways: Coding, Web development, Art, Testing, Bug hunting,
-      and of-course, providing content! <br />
-      You can provide content in different ways as well. The most obvious one is,
-      of course, the addition of new TJA's (make sure you own the rights to the
-      chart). But you can help in different ways as well. If you look at the menu
-      bar, you will see some links that currently lead nowhere. One of which is
-      "Guides". If you feel like writing some guides on certain TJA players,
-      charting, etc, get in touch with the <b>moderators of the TJADB Discord</b>, and
-      tell them what guides you would like to add. Once they give the green-light,
-      make your guides and get in touch with <b>@Pidgey</b> once ready. He will add
-      your page to the website, once signed off by the mods. <br /> <br />
-      Would you rather make assets for the website, such as the banner, menu bar or
-      background? Get in touch with <b>@Pidgey</b> for the requirements. <br /> <br />
-      Would you rather help out with coding? You can find the repository on
-      <b><a href="https://github.com/PidgeyL/TJADB">GitHub</a></b>. Since no fixed
-      rules around the development or roadmap are set in stone, please touch base 
-      with the dev team to make sure your code will be approved later down the road.
+      {{_('index.involved.text1')}}
+      <b><a href="https://github.com/PidgeyL/TJADB">GitHub</a></b>.
+      {{_('index.involved.text2')}}
     </div>
   </div>
 

@@ -8,13 +8,11 @@
   <script type="text/javascript" src="/static/js/songtable.js"></script>
 {% endblock %}
 
-{% block title %}Browse{% endblock %}
+{% block title %}{{_('browse.title')}}{% endblock %}
 {% block content %}
   <div class="card">
     <div class="card-body">
-      TJADB offers a range of custom .tja charts that can be searched, sorted,
-      and downloaded here. You have the option to download each song in its
-      original language or in English.
+      {{ _('browse.text')}}
     </div>
   </div>
 

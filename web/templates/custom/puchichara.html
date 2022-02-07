@@ -1,33 +1,28 @@
 {% extends 'layouts/master-page' %}
 
-{% block title %}Puchichara{% endblock %}
+{% block title %}{{_('puchichara.title')}}{% endblock %}
 {% block content %}
   <div class="card border-secondary">
-    <div class="card-header">Puchichara</div>
+    <div class="card-header">{{_('puchichara.intro.h')}}</div>
     <div class="card-body">
-      Puchichara are small characters that dance alongside your Don. 
-      TaikoCatsCaffe includes many of these puchichara ready to be used. To load
-      them in TCC, simply rename the image Puchichara.png and leave in in the
-      0_Personal folder. For any other version of TJAPlayer3, the file must be
-      called 0.png and stored in 5_Game\18_Puchichara.
+      {{_('puchichara.intro.text')}}
     </div>
   </div>
 
   <div class="card border-secondary">
-    <div class="card-header">How to create Puchichara</div>
+    <div class="card-header">{{_('puchichara.howto.h')}}</div>
     <div class="card-body">
       <ol>
-        <li>Install <a href="https://www.getpaint.net/">paint.net</a>.
-            This will be used to add the gogo time effect.</li>
-        <li>Find two images of the character you want to turn into a puchichara.</li>
-        <li>Arrange your characters in a fashion similar to this within a 500x500px
-            canvas. (Feel free to download and overlay your characters.) </br>
+        <li>{{_('puchichara.howto.li1a')}}
+            <a href="https://www.getpaint.net/">paint.net</a>.
+            {{_('puchichara.howto.li1b')}}</li>
+        <li>{{_('puchichara.howto.li2)}}</li>
+        <li>{{_('puchichara.howto.li3')}} </br>
             <img src="/static/imgs/custom/puchichara_example.png" style="width: 200px;"></li>
-        <li>Rectangle Select the two characters at the bottom of the image and go
-            to the "Levels" tab within paint.net.</li>
-        <li>Set your levels to look like this. </br>
+        <li>{{_('puchichara.howto.li4')}}</li>
+        <li>{{_('puchichara.howto.li5')}}</br>
             <img src="/static/imgs/custom/puchichara_levels.png"></li>
-        <li>Save the file.</li>
+        <li>{{_('puchichara.howto.li6')}}</li>
       </ol>
     </div>
   </div>

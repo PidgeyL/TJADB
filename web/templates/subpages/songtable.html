@@ -1,42 +1,42 @@
 <div>
     Show/Hide: 
-    <a class="toggle-vis" data-column="0">Name</a> -
-    <a class="toggle-vis" data-column="1">Artist</a> -
-    <a class="toggle-vis" data-column="2">Source</a> -
-    <a class="toggle-vis" data-column="3">BPM</a> -
-    <a class="toggle-dif" data-column="4">Difficulty</a> -
-    <a class="toggle-vis" data-column="9">Charter</a> -
-    <a class="toggle-vis" data-column="10">Genre</a> -
-    <a class="toggle-vis" data-column="11">Last Updated</a> -
-    <a class="toggle-vis" data-column="12">Uploaded</a>
+    <a class="toggle-vis" data-column="0">{{_('table.name')}}</a> -
+    <a class="toggle-vis" data-column="1">{{_('table.artist')}}</a> -
+    <a class="toggle-vis" data-column="2">{{_('table.source')}}</a> -
+    <a class="toggle-vis" data-column="3">{{_('table.bpm')}}</a> -
+    <a class="toggle-dif" data-column="4">{{_('table.difficulty')}}</a> -
+    <a class="toggle-vis" data-column="9">{{_('table.charter')}}</a> -
+    <a class="toggle-vis" data-column="10">{{_('table.genre')}}</a> -
+    <a class="toggle-vis" data-column="11">{{_('table.updated')}}</a> -
+    <a class="toggle-vis" data-column="12">{{_('table.uploaded')}}</a>
     <div style="float:right">
-      Download: 
+      {{_('table.download')}}: 
       <div class="form-check form-check-inline">
         <input class="form-check-input" type="radio" name="download" id="orig" checked>
-        <label class="form-check-label" for="orig"> Original </label>
+        <label class="form-check-label" for="orig"> {{_('table.orig')}}< </label>
       </div>
       <div class="form-check form-check-inline">
         <input class="form-check-input" type="radio" name="download" id="eng">
-        <label class="form-check-label" for="trans"> English </label>
+        <label class="form-check-label" for="trans"> {{_('table.eng')}}< </label>
       </div>
     </div>
 </div>
 <table id="dtSongTable" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
   <thead>
     <tr>
-      <th class="th-sm"> Name   </th>
-      <th class="th-sm"> Artist </th>
-      <th class="th-sm"> Source </th>
-      <th class="th-sm fit"> BPM    </th>
+      <th class="th-sm"> {{_('table.name')}}    </th>
+      <th class="th-sm"> {{_('table.artist')}}  </th>
+      <th class="th-sm"> {{_('table.source')}}  </th>
+      <th class="th-sm fit"> {{_('table.bpm')}} </th>
       <th class="th-sm">  <img src="/static/imgs/kantan.png"     alt="かんたん(easy)">        </th>
       <th class="th-sm">  <img src="/static/imgs/futsuu.png"     alt="ふつう(Normal)">        </th>
       <th class="th-sm">  <img src="/static/imgs/muzukashii.png" alt="むずかしい(Difficult)"> </th>
       <th class="th-sm">  <img src="/static/imgs/oni.png"        alt="おに(Extreme)">         </th>
       <th class="th-sm">  <img src="/static/imgs/ura.png"        alt="うら(Extreme Alt.)">    </th>
-      <th class="th-sm"> Charter </th>
-      <th class="th-sm"> Genre </th>
-      <th class="th-sm"> Last Updated </th>
-      <th class="th-sm"> Uploaded </th>
+      <th class="th-sm"> {{_('table.charter')}}  </th>
+      <th class="th-sm"> {{_('table.genre')}}    </th>
+      <th class="th-sm"> {{_('table.updated')}}  </th>
+      <th class="th-sm"> {{_('table.uploaded')}} </th>
       <th class="th-sm"> </th>
     </tr>
   </thead>

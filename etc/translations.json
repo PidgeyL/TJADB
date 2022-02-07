@@ -1,0 +1,138 @@
+{
+    "nav.home":
+        {"en": ["Home"],
+         "es": ["Inicio"]},
+    "nav.charts":
+        {"en": ["Charts"],
+         "es": ["Charts"]},
+    "nav.browse":
+        {"en": ["Browse More"],
+         "es": ["Explorar más"]},
+    "nav.artists":
+        {"en": ["Artists"],
+         "es": ["Artistas"]},
+    "nav.sources":
+        {"en": ["Sources"],
+         "es": ["Fuentes"]},
+    "nav.charters":
+        {"en": ["Charters"],
+         "es": ["Charters"]},
+    "nav.custom":
+        {"en": ["Customization"],
+         "es": ["Customización"]},
+    "nav.nameplates":
+        {"en": ["Nameplates"],
+         "es": ["Nameplates"]},
+    "nav.dons":
+        {"en": ["Dons"],
+         "es": ["Dons"]},
+    "nav.puchichara":
+        {"en": ["Puchichara"],
+         "es": ["Puchichara"]},
+    "nav.guides":
+        {"en": ["Guides"],
+         "es": ["Guías"]},
+    "nav.donate":
+        {"en": ["Donate!"],
+         "es": ["Donar!"]},
+
+    "table.name":
+        {"en": ["Name"],
+         "es": []},
+    "table.artist":
+        {"en": ["Artist"],
+         "es": []},
+    "table.source":
+        {"en": ["Source"],
+         "es": []},
+    "table.bpm":
+        {"en": ["BPM"],
+         "es": ["BPM"]},
+    "table.difficulty":
+        {"en": ["Difficulty"],
+         "es": []},
+    "table.charter":
+        {"en": ["Charter"],
+         "es": []},
+    "table.genre":
+        {"en": ["Genre"],
+         "es": []},
+    "table.updated":
+        {"en": ["Last Updated"],
+         "es": []},
+    "table.uploaded":
+        {"en": ["Uploaded"],
+         "es": []},
+    "table.download":
+        {"en": ["Download"],
+         "es": []},
+    "table.orig":
+        {"en": ["Original"],
+         "es": []},
+    "table.eng":
+        {"en": ["English"],
+         "es": []},
+
+    "browse.title":
+        {"en": ["Browse"],
+         "es": ["Explorar"]},
+    "browse.text":
+        {"en": ["TJADB offers a range of custom .tja charts that can be searched,",
+                " sorted, and downloaded here. You have the option to download",
+                " each song in its original language or in English."],
+         "es": ["TJADB es un repositorio de charts .tja personalizados en el que",
+                " los puedes buscar, filtrar por varios criterios y descargar",
+                " desde aquí. Puedes descargar cada canción en su idioma original",
+                " o en inglés."]},
+
+    "nameplates.title":
+        {"en": ["Nameplates"],
+         "es": ["Nameplates"]},
+    "nameplates.h":
+        {"en": ["Custom Nameplates"],
+         "es": []},
+    "nameplates.p1":
+        {"en": ["Custom Nameplates can be created thanks to CRCR's nameplate",
+                " program, which can be downloaded"],
+         "es": ["Nameplates personalizadas pueden ser creadas gracias al programa",
+                " de nameplates de CRCR, que se puede descargar"]},
+    "nameplates.here":
+        {"en": ["here"],
+         "es": ["aquí"]},
+    "nameplates.p2":
+        {"en": ["This is an example name plate. Your title (usually gained from",
+                " completing certain challenges) goes in the top box, and your",
+                " username in the bottom."],
+         "es": ["Esta es una nameplate de ejemplo. Tu título (comúnmente obtenido",
+                " por completar ciertos desafíos) va en el cuadro de arriba, y tu",
+                " nombre de usuario en el cuadro de abajo."]},
+    "nameplates.p3":
+        {"en": ["The \"Full\" button switches between the full and standard",
+                " nameplate. You must hit \"Save\" twice to receive both",
+                " nameplates."],
+         "es": ["El boton \"Full\" cambia entre el diseño completo y el estandar",
+                " de una nameplate. Debes presionar \"Save\" dos veces para",
+                " guardar las dos nameplates."]},
+    "nameplates.p4":
+        {"en": ["The \"P\" button switches between the 1P and 2P design."],
+         "es": ["El boton \"P\" cambia entre el diseño de 1P y 2P."]},
+    "nameplates.p5":
+        {"en": ["The \"On / Off\" button switches the dan design on and off. Dans",
+                " are a way to measure your skill. Find more information in the"],
+         "es": ["El boton \"On / Off\" alterna el diseño del icono del Dan. Los",
+                " Dans son una manera de medir tu habilidad. Encuentra mas",
+                " información en el"]},
+    "dons.title":
+        {"en": ["Dons"],
+         "es": ["Dons"]},
+    "dons.disclaimer":
+        {"en": [],
+         "es": ["Estos Dons son solo para su uso en TaikoCatsCaffe (TCC)."]},
+    "dons.instructions":
+        {"en": [],
+         "es": ["Descargalos presionando la imagen, luego extrae el archivo en",
+                " System\\Base."]},
+    ".":
+        {"en": [],
+         "es": []}
+}

@@ -8,12 +8,11 @@
   <script type="text/javascript" src="/static/js/songtable.js"></script>
 {% endblock %}
 
-{% block title %} Browse “{{  charter.charter_name }}” {% endblock %}
+{% block title %} {{_('charter.title')}} “{{  charter.charter_name }}” {% endblock %}
 {% block content %}
   <div class="card">
     <div class="card-body">
-      Songs charted by
-      {{ charter.charter_name }}
+      {{_('charter.text')}} {{ charter.charter_name }}
     </div>
   </div>
 
