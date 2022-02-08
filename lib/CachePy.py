@@ -37,7 +37,7 @@ class CacheDB(metaclass=Singleton):
         if not isinstance(cname, str):
             return False
         for obj in objects:
-            self.set_id(cname, obj.id, obj)
+            self.set_id(cname, int(obj.id), obj)
         return True
 
 

@@ -51,6 +51,7 @@ def cacheid(cname):
     def wrapper(funct):
         @functools.wraps(funct)
         def inner(self, cid):
+            cid = int(cid) # Ensure cid is an int
             cache = cdb.get_id(cname, cid, self.obj)
             if cache:
                 return cache
