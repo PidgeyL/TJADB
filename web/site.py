@@ -13,7 +13,7 @@ from web.api       import conf, dbl, app
 
 import web.api as api
 
-app.config['LANGUAGES'] = { 'en': 'English', 'es': 'Español'}
+app.config['LANGUAGES'] = { 'en': 'English', 'es': 'Español', 'ja': '日本語'}
 app.config['BABEL_DEFAULT_LOCALE'] = 'en'
 
 babel = Babel(app)

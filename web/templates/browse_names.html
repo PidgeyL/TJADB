@@ -35,18 +35,22 @@
 {% block title %}{{_('browse_names.title')}}{% endblock %}
 {% block content %}
 
-<nav aria-label="...">
-  <ul class="pagination pagination-sm justify-content-center">
-    <li class="page-item">
-      <a class="page-link" href="javascript:show('')">All</a>
-    </li>
-    {% for letter in names|sort %}
-      <li class="page-item">
-        <a class="page-link" href="javascript:show('{{letter}}')">{{ letter }}</a>
-      </li>
-    {% endfor %}
-  </ul>
-</nav>
+<div class="card border-secondary">
+  <div class="card-body">
+    <nav aria-label="...">
+      <ul class="pagination pagination-sm justify-content-center">
+        <li class="page-item">
+          <a class="page-link" href="javascript:show('')">All</a>
+        </li>
+        {% for letter in names|sort %}
+          <li class="page-item">
+            <a class="page-link" href="javascript:show('{{letter}}')">{{ letter }}</a>
+          </li>
+        {% endfor %}
+      </ul>
+    </nav>
 
-<div id="pag_content"> </div>
+    <div id="pag_content"> </div>
+  </div>
+</div>
 {% endblock %}
