@@ -11,7 +11,7 @@
 #dtSongTable>tbody>tr>td, #dtSongTable>tbody>tr>th,
 #dtSongTable>tfoot>tr>td, #dtSongTable>tfoot>tr>th,
 #dtSongTable>thead>tr>td, #dtSongTable>thead>tr>th {
-    padding: 4px;
+    padding: 8px 4px;
 }
 
 #dtSongTable a{
@@ -48,4 +48,44 @@
 
 .namcooriginal td {
     background-color: #ff6a29B0;
+}
+
+.new-song {
+    position: absolute;
+    right: -20px;
+    top: -15px;
+    font-size: 10px;
+}
+
+.song-name {
+    position: relative;
+}
+
+.ribbon-new {
+    position: absolute;
+    left: 7px;
+    top: -3px;
+}
+.content {
+    opacity: 1;
+    transition-property: opacity;
+    transition-duration: 0.5s;
+
+    color: white;
+    font-size: 11px;
+    text-align: center;
+    background: linear-gradient(90deg, #ad0000, #db0202);
+    box-shadow: 0px 0px 8px 2px black;
+    padding: 8px 2px 4px;
+    width: 28px;
+    min-height: 36px;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 50% calc(100% - 8px), 0 100%);
+}
+.content:hover {
+    opacity: 0.2;
+    transition-property: opacity;
+    transition-duration: 0.5s;
+}
+.content div{
+    transform: rotate(45deg);
 }

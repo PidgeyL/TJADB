@@ -1,0 +1,83 @@
+<nav id="sidebar" class="sidebar-wrapper">
+  <div class="sidebar-content">
+    <div class="sidebar-brand">
+      <a href="/"> </a>
+      <div id="close-sidebar">
+        <i class="fas fa-times"></i>
+      </div>
+    </div>
+    <!-- sidebar-header  -->
+    <div class="sidebar-menu">
+      <ul>
+        <!-- Browse -->
+        <li class="header-menu">
+          <span> {{_('nav.browse')}}</span>
+        </li>
+        <li>
+          <a href="/browse">
+            <i class="fa bi-music-note-list"></i>
+            <span>{{_('nav.charts')}}</span>
+          </a>
+        </li>
+
+        <li>
+          <a href="/artists">
+            <i class="fa bi-headphones"></i>
+            <span>{{_('nav.artists')}}</span>
+          </a>
+        </li>
+        <li>
+          <a href="/sources">
+            <i class="fa bi-controller"></i>
+            <span>{{_('nav.sources')}}</span>
+          </a>
+        </li>
+        <li>
+          <a href="/charters">
+            <i class="fa bi-pencil-square"></i>
+            <span>{{_('nav.charters')}}</span>
+          </a>
+        </li>
+        <li class="header-menu">
+          <span>{{_('nav.custom')}}</span>
+        </li>
+        <li>
+          <a href="/custom/nameplates">
+            <i class="fa bi-wrench"></i>
+            <span>{{_('nav.nameplates')}}</span>
+          </a>
+        </li>
+        <li>
+          <a href="/custom/dons">
+            <i class="fa bi-wrench"></i>
+            <span>{{_('nav.dons')}}</span>
+          </a>
+        </li>
+        <li>
+          <a href="/custom/puchichara">
+            <i class="fa bi-wrench"></i>
+            <span>{{_('nav.puchichara')}}</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <!-- sidebar-menu  -->
+  </div>
+
+  <!-- sidebar-content  -->
+  <div class="sidebar-footer">
+    <a href="/" title="{{_('nav.home')}}">
+      <i class="fa bi-house-door-fill"></i>
+    </a>
+    <a href="/donate" title="{{_('nav.donate')}}">
+      <i class="fa bi bi-heart-fill"></i>
+      <span class="badge-sonar"></span>
+    </a>
+    <a href="https://discord.com/invite/XHcVYKW" title="TJADB Discord">
+      <i class="fa bi-discord"></i>
+    </a>
+    <a href="#" title="Coming soon!">
+      <i class="fa bi-person-circle"></i>
+    </a>
+  </div>
+</nav>
