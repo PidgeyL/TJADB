@@ -1,6 +1,5 @@
 <div>
     Show/Hide: 
-    <a class="toggle-vis" data-column="0">{{_('table.name')}}</a> -
     <a class="toggle-vis" data-column="1">{{_('table.artist')}}</a> -
     <a class="toggle-vis" data-column="2">{{_('table.source')}}</a> -
     <a class="toggle-vis" data-column="3">{{_('table.bpm')}}</a> -
@@ -13,11 +12,11 @@
       {{_('table.download')}}: 
       <div class="form-check form-check-inline">
         <input class="form-check-input" type="radio" name="download" id="orig" checked>
-        <label class="form-check-label" for="orig"> {{_('table.orig')}}< </label>
+        <label class="form-check-label" for="orig"> {{_('table.orig')}} </label>
       </div>
       <div class="form-check form-check-inline">
         <input class="form-check-input" type="radio" name="download" id="eng">
-        <label class="form-check-label" for="trans"> {{_('table.eng')}}< </label>
+        <label class="form-check-label" for="trans"> {{_('table.eng')}} </label>
       </div>
     </div>
 </div>
@@ -65,10 +64,16 @@
         {% set tooltip = tooltip + "Extra info: " + song.info %}
       {% endif %}
       <tr data-html="true" class="{{class}}" data-toggle="tooltip" data-placement="top" title="{{tooltip}}">
-        <td> {{ song.title_en }}
-             {% if song.title_en != song.title_orig %}
-               <br /> ({{ song.title_orig }})
-             {% endif %}
+        <td class="song-name">
+          {{ song.title_en }}
+          {% if song.title_en != song.title_orig %}
+            <br /> ({{ song.title_orig }})
+          {% endif %}
+          {% if song.uploaded|isnew %}
+            <div class="ribbon-new">
+              <div class="content"> <div>New</div> </div>
+            </div>
+          {% endif %}
         </td>
         <td>{% for art in song.artists %}
             <span class="badge rounded-pill bg-light small-pill">

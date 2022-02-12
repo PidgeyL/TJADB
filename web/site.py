@@ -6,6 +6,7 @@ run_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(os.path.join(run_path, ".."))
 
 from collections   import defaultdict
+from datetime      import date
 from flask         import render_template, abort, send_from_directory, request
 from flask_babel   import Babel
 from lib.functions import number_format, uniq, DictObj
@@ -131,6 +132,11 @@ def number_format_filter(number):
 @app.template_filter('uniq')
 def uniq_filter(args):
     return uniq(*args)
+
+@app.template_filter('isnew')
+def new_filter(day):
+    td = date.today()
+    return ( (td - day).days < 7 )
 
 
 
