@@ -207,7 +207,7 @@ INSERT INTO tjadb.difficulties(name_jp, name_en) VALUES ('おに', 'Oni');
 INSERT INTO tjadb.difficulties(name_jp, name_en) VALUES ('うら', 'Ura');
 
 INSERT INTO tjadb.genres(name_en, name_jp, tja_genre)
-  VALUES ('J-Pop', 'J-Pop', 'J-Pop');
+  VALUES ('Pop', 'Pop', 'J-Pop');
 INSERT INTO tjadb.genres(name_en, name_jp, tja_genre)
   VALUES ('Anime', 'アニメ', 'アニメ');
 INSERT INTO tjadb.genres(name_en, name_jp, tja_genre)
