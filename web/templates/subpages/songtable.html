@@ -122,7 +122,10 @@
             {% endfor %}
         </td>
         <td data-order="{{song.genre.id}}">
-           {{ song.genre.name_en }} </br> ({{song.genre.name_jp}})
+           {{ song.genre.name_en }}
+           {% if song.genre.name_en != song.genre.name_jp %}
+             </br> ({{song.genre.name_jp}})
+           {% endif %}
         </td>
         <td> {{ song.last_updated }} </td>
         <td> {{ song.uploaded }} </td>
