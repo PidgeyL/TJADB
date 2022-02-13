@@ -17,9 +17,9 @@ $(document).ready(function () {
             { width: 27, targets: 7 },
             { width: 27, targets: 8 },
             { visible: false, targets: 3 },
-            { visible: false, targets: 9 },
             { visible: false, targets: 10 },
             { visible: false, targets: 11 }
+            { visible: false, targets: 12 }
         ],
         "autoWidth": false,
         "fixedColumns": true,
