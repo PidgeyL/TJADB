@@ -69,9 +69,14 @@
           {% if song.title_en != song.title_orig %}
             <br /> ({{ song.title_orig }})
           {% endif %}
+          {% if song.obj_bg_video_picture %}
+            <div class="ribbon-vid">
+              <div class="ribbon-vid-content"> <span class="bi bi-play-btn-fill"></span> </div>
+            </div>
+          {% endif %}
           {% if song.uploaded|isnew %}
             <div class="ribbon-new">
-              <div class="content"> <div>New</div> </div>
+              <div class="ribbon-new-content"> <div> New </div> </div>
             </div>
           {% endif %}
         </td>

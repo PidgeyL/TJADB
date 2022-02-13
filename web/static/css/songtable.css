@@ -63,29 +63,46 @@
 
 .ribbon-new {
     position: absolute;
-    left: 7px;
+    left: 5px;
     top: -3px;
 }
-.content {
+.ribbon-vid {
+    position: absolute;
+    left: 35px;
+    top: -3px;
+}
+
+.ribbon-vid-content,
+.ribbon-new-content {
     opacity: 1;
     transition-property: opacity;
     transition-duration: 0.5s;
 
-    color: white;
-    font-size: 11px;
     text-align: center;
-    background: linear-gradient(90deg, #ad0000, #db0202);
     box-shadow: 0px 0px 8px 2px black;
     padding: 8px 2px 4px;
     width: 28px;
     min-height: 36px;
     clip-path: polygon(0 0, 100% 0, 100% 100%, 50% calc(100% - 8px), 0 100%);
 }
-.content:hover {
+
+.ribbon-new-content {
+    color: white;
+    background: linear-gradient(90deg, #ad0000, #db0202);
+    font-size: 11px;
+}
+.ribbon-vid-content {
+    color: #555;
+    background: linear-gradient(90deg, #00ad00, #02db02);
+    font-size: 14px;
+}
+
+.ribbon-new-content:hover,
+.ribbon-vid-content:hover {
     opacity: 0.2;
     transition-property: opacity;
     transition-duration: 0.5s;
 }
-.content div{
+.ribbon-new-content div{
     transform: rotate(45deg);
 }
