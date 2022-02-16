@@ -7,17 +7,32 @@ sys.path.append(os.path.join(run_path, ".."))
 
 from collections   import defaultdict
 from datetime      import date
-from flask         import render_template, abort, send_from_directory, request
+from flask         import render_template, abort, send_from_directory, request, redirect
 from flask_babel   import Babel
-from lib.functions import number_format, uniq, DictObj
-from web.api       import conf, dbl, app
+from flask_login   import LoginManager, current_user, login_required
+from lib.functions   import number_format, uniq, DictObj
+from web.api         import conf, dbl, app
+from web.blueprints  import app_auth, load_user, app_profile
 
 import web.api as api
 
+# Babel Config
 app.config['LANGUAGES'] = { 'en': 'English', 'es': 'Español', 'ja': '日本語'}
 app.config['BABEL_DEFAULT_LOCALE'] = 'en'
-
 babel = Babel(app)
+
+# Load site pieces
+app.register_blueprint(app_profile) # Profile routes
+app.register_blueprint(app_auth)    # User auth (Discord oauth)
+
+# Discord OATH Config
+app.config['SECRET_KEY'] = "Secret_Key"
+
+# Auth config
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.user_loader(load_user)
+
 
 ###################
 # Logic Functions #

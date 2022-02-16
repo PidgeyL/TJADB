@@ -1,0 +1,53 @@
+{% extends 'layouts/master-page' %}
+
+{% block title %}{{_('profile.title')}}{% endblock %}
+{% block content %}
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <div class="card bg-primary">
+        <div class="card-body">
+          {% for message in messages %}
+            {{ message }}<br />
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  <div class="card">
+    <div class="card-body">
+      <div class="container">
+        <form class="row" action="/profile/update" method="post">
+          <div class="col-3 bg-dark">
+            {% if user.image_url  %}
+              <img id="p_pfp" src="{{user.image_url}}" class="rounded-circle">
+            {% else %}
+              <img id="p_pfp" src="/static/imgs/pfp.png" class="rounded-circle">
+            {% endif %}
+          </div>
+          <div class="col-9 bg-secondary pt-3 pb-3">
+            <div>
+              <input name="p_c_name" type="text" class="form-control mb-1" placeholder="Charter Name" value="{{user.charter_name if user.charter_name}}">
+              <input name="p_email" type="text" class="form-control mb-1" placeholder="E-Mail address (optional)" value="{{user.email if user.email}}">
+              <textarea name="p_bio" class="form-control mb-1" placeholder="Biography">{{user.about if user.about}}</textarea>
+              <input name="p_image" type="text" class="form-control mb-1" placeholder="Profile Picture" value="{{user.image_url if user.image_url}}">
+              <button class="btn btn-primary" type="submit">Save</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"> Your charts </div>
+    <div class="card-body">
+      <ul>
+        {% for song in songs %}
+          <li> {{ song.name_orig}} </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+{% endblock %}

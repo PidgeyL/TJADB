@@ -27,11 +27,11 @@ class Configuration():
                'Database': {'Host':   'localhost', 'Port':     5432,
                             'User':   'tjadb',     'Password': '',
                             'DBName': 'tjadb',     'Pepper':   ''},
-               'DiscordBot': {'Key': '', 'Prefix': '$'},
+               'DiscordBot': {'ID': '', 'Key': '', 'Prefix': '$'},
                'BotColors': {'SOTD':   0xf3f8fc, 'RandomSong': 0xa3f8fc,
                              'Search': 0x449920, 'About':      0xff1122,
                              'Donate': 0x338929,},
-               'Bot': {'API': '', },
+               'Bot': {'API': '', 'Secret': ''},
                'Web': {'Host': 'localhost', 'Port':  4987,
                        'URL':  'change.me', 'Debug': True,}}
 
@@ -163,8 +163,18 @@ class Configuration():
     ###############
     @classmethod
     @property
+    def discord_bot_id(cls):
+        return cls.readSetting('DiscordBot', 'ID')
+
+    @classmethod
+    @property
     def discord_bot_key(cls):
         return cls.readSetting('DiscordBot', 'Key')
+
+    @classmethod
+    @property
+    def discord_bot_secret(cls):
+        return cls.readSetting('DiscordBot', 'Secret')
 
     @classmethod
     @property

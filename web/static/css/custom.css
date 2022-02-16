@@ -28,6 +28,12 @@
   text-decoration: none;
 }
 
+#p_pfp {
+    width: 150px;
+    margin: 40px auto;
+    display: block;
+}
+
 #pag_content{
   columns: 3;
   -webkit-columns: 3;
