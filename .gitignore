@@ -1,7 +1,9 @@
 __pycache__
 data/
-songlist.csv
 db/
+etc/
 test/
+songlist.csv
 songlist.csv*
 web/assets/
+web/translations/

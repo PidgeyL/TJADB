@@ -50,15 +50,15 @@
 
     "table.name":
         {"en": ["Name"],
-         "es": [],
+         "es": ["Nombre"],
          "ja": ["曲名"]},
     "table.artist":
         {"en": ["Artist"],
-         "es": [],
+         "es": ["Artista"],
          "ja": ["アーティスト"]},
     "table.source":
         {"en": ["Source"],
-         "es": [],
+         "es": ["Fuente"],
          "ja": ["元ネタ"]},
     "table.bpm":
         {"en": ["BPM"],
@@ -66,44 +66,44 @@
          "ja": ["BPM"]},
     "table.difficulty":
         {"en": ["Difficulty"],
-         "es": [],
+         "es": ["Dificultad"],
          "ja": ["難易度"]},
     "table.charter":
         {"en": ["Charter"],
-         "es": [],
+         "es": ["Charter"],
          "ja": ["譜面制作者"]},
     "table.genre":
         {"en": ["Genre"],
-         "es": [],
+         "es": ["Género"],
          "ja": ["ジャンル"]},
     "table.updated":
         {"en": ["Last Updated"],
-         "es": [],
+         "es": ["Ultima actualización"],
          "ja": ["最終更新日"]},
     "table.uploaded":
         {"en": ["Uploaded"],
-         "es": [],
+         "es": ["Fecha de subida"],
          "ja": ["アップロード日"]},
     "table.download":
         {"en": ["Download"],
-         "es": [],
+         "es": ["Descargar"],
          "ja": ["ダウンロード"]},
     "table.orig":
         {"en": ["Original"],
-         "es": [],
+         "es": ["Original"],
          "ja": ["原語版"]},
     "table.eng":
         {"en": ["English"],
-         "es": [],
+         "es": ["Inglés"],
          "ja": ["英語版"]},
 
     "index.title":
         {"en": ["Home"],
-         "es": [],
+         "es": ["Inicio"],
          "ja": ["ホーム"]},
     "index.about.h":
         {"en": ["About TJADB"],
-         "es": [],
+         "es": ["Sobre TJADB"],
          "ja": ["TJADBについて"]},
     "index.about.text1":
         {"en": ["Welcome to the alpha release of the TJADB inventory website.",
@@ -112,7 +112,12 @@
                 " games with the wider community and world. Charts are available",
                 " in the original language, as well as with English translations.",
                 " Check out the"],
-         "es": [],
+         "es": ["Te damos la bienvenida al lanzamiento de la página del",
+                " repositorio de TJADB. Este sitio, es usado por miembros de",
+                " TJADB para distribuir sus propios charts TJA para compartir",
+                " la diversión de los juegos al estilo de Taiko no Tatsujin con",
+                " su gran comunidad en el mundo. Los charts están disponibles",
+                " tanto en su idioma original o traducidos al inglés. Revisa la"],
          "ja": ["TJADBのアルファリリース版ウェブサイトへようこそ!",
                 " このウェブサイトはTJADBのメンバーが創作譜面をアップロードし、",
                 "「太鼓の達人」スタイルのゲームの楽しさをより大きなコミュニティや",
@@ -120,15 +125,15 @@
                 "現在、TJADBのウェブサイトに掲載されている曲のリストは、"]},
     "index.about.a":
         {"en": ["browse page"],
-         "es": [],
+         "es": ["lista de charts"],
          "ja": ["譜面一覧"]},
     "index.about.text2":
         {"en": [" for a list of the songs currently hosted on the TJADB website."],
-         "es": [],
+         "es": [" para una lista de las canciones disponibles en la página de TJADB."],
          "ja": ["をご覧ください。"]},
     "index.donate.h":
         {"en": ["Help us out!"],
-         "es": [],
+         "es": ["Ayudanos!"],
          "ja": ["寄付のお願い"]},
     "index.donate.p1":
         {"en": ["This website and accompaning Discord bot is currently running",
@@ -137,7 +142,12 @@
                 " again be used for development, the website can run on good",
                 " hardware with a stable Internet connection, and we will have",
                 " more resources available to bring you better features!"],
-         "es": [],
+         "es": ["Este sitio web junto con el bot de Discord se ejecutan desde un",
+                " servidor personal, de desarrollo con bajos recursos. Nos",
+                "  gustaria rentar un servidor dedicado para que el servidor de",
+                " desarrollo pueda volver a ser usado para desarrollar, que el",
+                " sitio web pueda ejecutarse en buen hardware con una conexión",
+                " estable, y tener mas recursos para poder traer más funciones!"],
          "ja": ["現在、このウェブサイトとDiscord上のボットはリソースの乏しい個人の",
                 "開発用サーバーで動いています。そのため、TJADB用に専用サーバーを",
                 "借りたいと考えています。そうすることによって開発用サーバーを再び",
@@ -149,14 +159,17 @@
                 " keep the majority of the features available to everyone, we do",
                 " offer some small benefits to our supporters. You can check them",
                 " out on the"],
-         "es": [],
+         "es": ["Tambien agradecimos a cualquiera que nos ayude! Aunque queremos",
+                " que la mayoria de funciones estén disponibles para todos, aun",
+                "  así ofrecemos pequeños beneficios para las personas que nos",
+                "  apoyen. Puedes revisarlos en la"],
          "ja": ["つきましては、皆様からの寄付を受け付けておりますので、ご支援を賜ります",
                 "ようよろしくお願い申し上げます。なお、TJADBにおけるほとんどの機能を",
                 "どなたでもご利用していただけるように考えていますが、支援者の方には",
                 "ささやかなお礼の品を用意しております。詳細につきましては、"]},
     "index.donate.a":
         {"en": ["donation page"],
-         "es": [],
+         "es": ["página de donaciones"],
          "ja": ["寄付のページ"]},
     "index.donate.p2b":
         {"en": ["."],
@@ -164,7 +177,7 @@
          "ja": ["をご確認ください。"]},
     "index.submit.h":
         {"en": ["How do I submit TJA's?"],
-         "es": [],
+         "es": ["Como subo mis TJA?"],
          "ja": ["譜面の提出方法について"]},
     "index.submit.text":
         {"en": ["During the first release, TJA submisions are limited to members",
@@ -175,7 +188,15 @@
                 " <b> #tja-publishing </b>, and send it to <b> Pidgey#8387 </b>,",
                 " with a request to insert it into the TJADB database. This",
                 " process will be smoother in future iterations of the website."],
-         "es": [],
+         "es": ["Durante la primera versión, el envío y subida de TJA está",
+                " limitado a miembros de el servidor de TJADB en Discord. Antes",
+                " de subir un TJA, pide a alguien en el canal de <b>#tja-general",
+                "</b> del servidor de Discord que verifique que tu TJA esté bien",
+                " hecho. Después de haber recibido la aprobación, completa el",
+                " formulario fijado en <b> #tja-publishing </b>, y envialo a <b>",
+                " Pidgey#8387 </b>, con una solicitud para añadirlo a la base de",
+                " datos de TJADB. Este proceso será mas facil en proximas",
+                " versiones de la página."],
          "ja": ["現在の段階では、TJADBのDiscordサーバーのメンバーのみ譜面を提出すること",
                 "ができます。譜面を提出する前に、Discordサーバーの<b>#tja-general</b>",
                 "チャンネルで、その譜面が正しく作られているかどうかを確認してもらって",
@@ -185,7 +206,7 @@
                 "ウェブサイトのリニューアルでよりスムーズに行えるようになる予定です。"]},
     "index.involved.h":
         {"en": ["Get involved!"],
-         "es": [],
+         "es": ["Contribuye!"],
          "ja": ["TJADBに携わってくれる方募集!"]},
     "index.involved.text1":
         {"en": ["Want to get involved in the development of the TJADB website?",
@@ -208,7 +229,25 @@
                 " Get in touch with <b>@Pidgey</b> for the requirements. <br />",
                 "<br /> Would you rather help out with coding? You can find the",
                 " repository on"],
-         "es": [],
+         "es": ["Quieres participar en el desarrollo de esta página de TJADB?",
+                " ¡Sí puedes! Puedes contribuir de diversas maneras: ",
+                "Programando, desarrollo web, arte, testeo, caza de bugs,",
+                " y por supuesto, entregando contenido! <br />",
+                "Hay muchas formas de proveer contenido, la mas obvia es,",
+                " por supuesto, el agregar nuevos TJA's (asegúrate que poseas",
+                " los derechos del chart). Otras formas de ayudar aparecen si tu",
+                " miras al menú, allí verás que hay links que actualmente llevan",
+                " a ninguna parte. Uno de ellos es \"Guías\". Si quieres",
+                " escribir guías sobre un simulador TJA en concreto, charting,",
+                " etc, ponte en contacto con los <b>moderadores del servidor de",
+                " Discord de TJADB</b>, y diles que guías piensas añadir. Una",
+                " vez que te den la aprobaci> lista. El añadirá tu página al",
+                " sitio web, una vez confirmado por los mods. <br /> <br />",
+                "¿Prefieres hacer arte para la página o el bot de Discord, como",
+                " el banner, barra de menú, fondo de la página o la foto de",
+                " perfil? Comunícate con <b>@Pidgey</b> para ver los",
+                " requerimientos. <br /><br /> Prefieres ayudar programando?",
+                " Puedes encontrar el repositorio en"],
          "ja": ["TJADBのウェブサイトの開発に携わりたいですか? 例えば以下ののようなことが",
                 "できます。<ul><li>コーディング</li><li>Web開発</li><li>デザイン</li>",
                 "<li>テスト</li><li>バグハンティング</li><li>コンテンツの提供</li></ul>",
@@ -227,7 +266,9 @@
         {"en": ["Since no fixed rules around the development or roadmap are set",
                 " in stone, please touch base with the dev team to make sure your",
                 " code will be approved later down the road."],
-         "es": [],
+         "es": ["Debido a que no hay reglas sobre el desarrollo o plan a futuro",
+                " te pedimos que te contactes con el equipo de desarrollo para",
+                " asegurarte si tu código será aprobado."],
          "ja": ["でリポジトリを見つけることができます。開発に関するルールやロードマップ",
                 "は決まっていないので、あなたのコードが承認されるかどうか、開発チームと",
                 "連絡を取ってみてください。"]},
@@ -253,7 +294,7 @@
          "ja": ["アーティストから探す"]},
     "artist.text":
         {"en": ["Songs by "],
-         "es": [""],
+         "es": ["Canciones de"],
          "ja": ["アーティスト: "]},
     "charter.title":
         {"en": ["Browse"],
@@ -261,7 +302,7 @@
          "ja": ["譜面製作者から探す"]},
     "charter.text":
         {"en": ["Songs charted by "],
-         "es": [""],
+         "es": ["Charts hechos por "],
          "ja": ["譜面製作者: "]},
 
     "source.title":
@@ -270,21 +311,21 @@
          "ja": ["元ネタから探す"]},
     "source.text":
         {"en": ["Songs from "],
-         "es": [""],
+         "es": ["Canciones de"],
          "ja": ["元ネタ: "]},
 
     "browse_names.title":
         {"en": ["Browse"],
-         "es": [""],
+         "es": ["Explorar"],
          "ja": ["名前から検索"]},
 
     "donate.title":
         {"en": ["Donate"],
-         "es": [""],
+         "es": ["Donar"],
          "ja": ["寄付について"]},
     "donate.thanks.h":
         {"en": ["Thank you for considering donating to the TJADB project!"],
-         "es": [],
+         "es": ["Gracias por considerar donar al proyecto de TJADB!"],
          "ja": ["TJADBプロジェクトへの寄付をご検討いただき、ありがとうございます!"]},
     "donate.thanks.text1a":
         {"en": ["Donations are used to keep the website, discord bot, domain and",
@@ -293,14 +334,19 @@
                 " If we reach a point where we have a large excess of donations,",
                 " we will notify any donors. For any questions, contact the staff",
                 " of the"],
-         "es": [],
+         "es": ["Las donaciones son para mantener la página, bot de Discord,",
+                " dominio y el proyecto ESE con vida.<br /> El exceso de",
+                " donaciones se almacenará por separado para mantener un comodin",
+                " para los meses con donaciones escasas. Si llegamos al punto de",
+                " tener un gran exceso de donaciones, le avisaremos a los",
+                " donadores. Para cualquier pregunta, contacta al staff del"],
          "ja": ["寄付されたお金はウェブサイト、Discordボット、ドメイン、そしてESE",
                 "プロジェクトの継続のために使われます。<br />余ったお金は、寄付金",
                 "の少ない月へのお金として別途保管されます。<br />なお、寄付金が大幅に",
                 "余った場合は寄付者の皆様にお知らせいたします。ご不明な点がありましたら、"]},
     "donate.thanks.a":
         {"en": ["TJADB Discord group"],
-         "es": [""],
+         "es": ["servidor de TJADB en Discord"],
          "ja": ["TJADBのDiscordグループ"]},
     "donate.thanks.text1b":
         {"en": ["."],
@@ -312,69 +358,76 @@
                 " send a mail to <b>tjadb-donations [at] pidgey.net</b>. Certain",
                 " donation tiers get rewarded with a small thank you, and every",
                 " donation is noted down for full transparancy."],
-         "es": [""],
+         "es": ["Una vez que hagas la donacion, menciona a <b>Pidgey#8387</b> en",
+                " Discord, o envia un correo a <b>tjadb-donations [at] pidgey.net",
+                "</b>. Algunos niveles de donacion reciben un pequeño",
+                " agradecimiento, y todas las donaciones son registradas para",
+                " transparencia completa."],
          "ja": ["寄付してくださった方は、Discordで<b>Pidgey#8387</b>にメンションを送る",
                 "か、もしくは<b>tjadb-donations [at] pidgey.net</b>にメールを送って",
                 "ください。一定の寄付をしていただいた方にはささやかなお礼の品を差し上げます。",
                 "すべての寄付は透明性確保のために記録されています。"]},
     "donate.options.h":
         {"en": ["Donation options"],
-         "es": [],
+         "es": ["Opciones para donar"],
          "ja": ["寄付の方法"]},
     "donate.options.text":
         {"en": ["There are a couple of ways you can donate to the project."],
-         "es": [],
+         "es": ["Hay varias maneras con las que puedes donar al proyecto."],
          "ja": ["TJADBプロジェクトに寄付をする方法はいくつかあります。"]},
     "donate.benefits.h":
         {"en": ["Benefits"],
-         "es": [],
+         "es": ["Beneficios"],
          "ja": ["お礼の品について"]},
     "donate.benefits.monthly":
         {"en": ["Monthly donations"],
-         "es": [],
+         "es": ["Donaciones mensuales"],
          "ja": ["毎月の寄付"]},
     "donate.benefits.month":
         {"en": ["month"],
-         "es": [],
+         "es": ["mes"],
          "ja": ["月"]},
     "donate.benefits.2m":
         {"en": ["Sponsor badge on GitHub"],
-         "es": [],
+         "es": ["Insignia de sponsor en GitHub"],
          "ja": ["GitHub上でのスポンサーバッジ"]},
     "donate.benefits.5m":
         {"en": ["Early release access to features of hosted projects <br />",
                 "Participate in polls that decide the directions of ongoing",
                 " projects <br /> Get the \"Sponsor\" role on Discord"],
-         "es": [],
+         "es": ["Acceso anticipado a funciones de los proyectos <br />",
+                "Participa de encuestas que decidiran el futuro de los proyectos",
+                " actuales <br /> Obten el rol de \"Sponsor\" en Discord"],
          "ja": ["プロジェクトの機能の早期アクセス<br />進行中のプロジェクトの方向性を",
                 "決める投票への参加権<br />TJADBのDiscordサーバー上でのスポンサーロール"]},
     "donate.benefits.10m":
         {"en": ["Logo or name in the repository README"],
-         "es": [],
+         "es": ["Logo o nombre en el README del repositorio"],
          "ja": ["プロジェクトのリポジトリのREADMEへロゴもしくは名前の掲載"]},
     "donate.benefits.20m":
         {"en": ["Logo or name on the website"],
-         "es": [],
+         "es": ["Logo o nombre en la página"],
          "ja": ["ウェブサイト上にロゴもしくは名前の掲載"]},
     "donate.benefits.onetime":
         {"en": ["One-time donations"],
-         "es": [],
+         "es": ["Donaciones unicas"],
          "ja": ["一度限りの寄付"]},
     "donate.benefits.20o":
         {"en": ["Get a sponsor role on the TJADB Discord server"],
-         "es": [],
+         "es": ["Obten un rol de sponsor en el server de Discord de TJADB"],
          "ja": ["TJADBのDiscordサーバー上でのスポンサーロール"]},
     "donate.benefits.50o":
         {"en": ["Logo or name on the project README"],
-         "es": [],
+         "es": ["Logo o nombre en el README del proyecto"],
          "ja": ["プロジェクトのリポジトリのREADMEへロゴもしくは名前の掲載"]},
     "donate.benefits.100o":
         {"en": ["Logo or name on the website"],
-         "es": [],
+         "es": ["Logo o nombre en la página"],
          "ja": ["ウェブサイト上にロゴもしくは名前の掲載"]},
     "donate.benefits.150o":
         {"en": ["High-priority feature requests (to be discussed what is do-able)"],
-         "es": [],
+         "es": ["Solicitudes de funciones con alta prioridad (se discutirá lo",
+                " que es factible)"],
          "ja": ["優先度の高い機能要望"]},
 
     "nameplates.title":
@@ -383,7 +436,7 @@
          "ja": ["Nameplates"]},
     "nameplates.h":
         {"en": ["Custom Nameplates"],
-         "es": [],
+         "es": ["Nameplates personalizadas"],
          "ja": ["Custom Nameplates"]},
     "nameplates.p1":
         {"en": ["Custom Nameplates can be created thanks to CRCR's nameplate",
