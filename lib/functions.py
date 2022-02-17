@@ -1,4 +1,5 @@
 import decimal
+import requests
 from collections import Mapping, Container
 from sys         import getsizeof
 
@@ -69,3 +70,10 @@ class DictObj(dict):
         self[attr] = value
     def as_dict(self):
         return self
+
+
+def is_image_url(url):
+    r = requests.head(url)
+    if r.headers["content-type"].startswith("image/"):
+        return True
+    return False

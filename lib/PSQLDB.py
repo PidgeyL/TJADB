@@ -91,19 +91,38 @@ class Database(metaclass=Singleton):
 
 
     @committing
-    def update_user(self, cur, id=None, charter_name=None, discord_id=None,
-                    email=None, password=None, salt=None, hashcount=None,
-                    staff=None, image_url=None, about=None,
-                    preferred_difficulty_id=None, preferred_language_id=None):
-        s = """UPDATE users
-               SET charter_name = %s, discord_id = %s, email = %s, password = %s,
-                 salt = %s, hashcount = %s, staff = %s, image_url = %s,
-                 about = %s, preferred_difficulty_id = %s,
-                 preferred_language_id = %s):
+    def update_user_password(self, cur, password, salt, hashcount):
+        s = """UPDATE users SET password = %s, salt = %s, hashcount = %s,
                WHERE id = %s"""
-        cur.execute(s, (charter_name, discord_id, email, password, salt,
-                        hashcount, staff, image_url, about,
-                        preferred_difficulty_id, preferred_language_id, id))
+        cur.execute(s, (password, salt, hashcount))
+
+
+    @committing
+    def update_user(self, cur, id=None, charter_name=None, discord_id=None,
+                    email=None, staff=None, image_url=None, about=None,
+                    preferred_difficulty_id=None, preferred_language_id=None,
+                    **kwargs):
+        if not id:
+            return False
+        # Update builder
+        fields = [('charter_name', charter_name), ('discord_id', discord_id),
+                  ('email', email), ('staff', staff), ('image_url', image_url),
+                  ('about', about),
+                  ('preferred_difficulty_id', preferred_difficulty_id),
+                  ('preferred_language_id',   preferred_language_id)]
+        values = []
+        querystring = ""
+        for field, value in fields:
+            if not value:
+                continue
+            values.append(value)
+            querystring += f"{field} = %s, "
+        # Query builder
+        if not querystring:
+            return False
+        querystring = querystring[:-2]
+        values.append(id)
+        cur.execute(f"UPDATE users  SET {querystring}  WHERE id = %s;", values)
 
 
     def get_user_by_id(self, id):

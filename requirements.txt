@@ -1,9 +1,11 @@
 discord
 flask
 flask-Babel
+flask-login
 polib
 psycopg2-binary
 python-magic
 redis
 simplejson
 Werkzeug
+zenora

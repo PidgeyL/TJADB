@@ -69,7 +69,6 @@ def oauth_callback():
                      code, redirect_uri=_REDIRECT_URI_).access_token
     bearer  = APIClient(access_token, bearer=True)
     account = bearer.users.get_current_user()
-    print(account)
     user    = AppUser.get(id=None, discord_id=account.id, display_name=None)
     if user:
         login_user(user)

@@ -65,6 +65,19 @@ def cacheid(cname):
     return wrapper
 
 
+def reset_cache_obj(cname):
+    def wrapper(funct):
+        @functools.wraps(funct)
+        def inner(self, obj):
+            if not obj:
+                return
+            if funct(self, obj):
+                cdb.clear_key(cname, obj.id)
+            return
+        return inner
+    return wrapper
+
+
 def cacheall(cname):
     def wrapper(funct):
         @functools.wraps(funct)
@@ -271,6 +284,11 @@ class Users():
     def add(self, user):
         user.verify()
         return self.db.add_user(**(user.as_dict()))
+
+    @reset_cache_obj(cname="user")
+    def update(self, user):
+        user.verify()
+        return self.db.update_user(**(user.as_dict()))
 
     @cacheid(cname="user")
     def get_by_id(self, id):
