@@ -1,8 +1,10 @@
 import decimal
 import requests
 from collections import Mapping, Container
+from flask       import url_for
 from sys         import getsizeof
-
+from lib.Config  import Configuration
+_URL_ = Configuration().web_url
 
 def number_format(number):
     if isinstance(number, type(None)):
@@ -77,3 +79,9 @@ def is_image_url(url):
     if r.headers["content-type"].startswith("image/"):
         return True
     return False
+
+
+def _url_for(profile):
+    if _URL_.lower().startswith("https://"):
+        return url_for(profile, _scheme='https', _external=True)
+    return url_for(profile)
