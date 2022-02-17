@@ -15,7 +15,7 @@ dbl  = DatabaseLayer()
 @app_profile.route('/', methods=['GET'])
 def profile():
     if not current_user.is_authenticated:
-        return redirect(url_for('auth.discord_login'))
+        return redirect(url_for('app_auth.discord_login'))
     songs = dbl.songs.get_by_charter_id(current_user.id)
     return render_template('profile/index.html', user=current_user, songs=songs)
 
