@@ -59,7 +59,6 @@ class CacheDB(metaclass=Singleton):
         if not (isinstance(cname, str) and isinstance(obj_id, (str, int))):
             return False
         self.id_db[cname].pop(obj_id, None)
-        self.id_db.delete(f"{cname}_{obj_id}")
         return True
 
 
