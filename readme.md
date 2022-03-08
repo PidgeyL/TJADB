@@ -34,5 +34,6 @@ This section is for people who helped out the project by sponsoring the server t
 
 ````
 @Y2K-x
+Hue#1629
 And others
 ````
