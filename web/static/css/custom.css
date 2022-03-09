@@ -89,8 +89,9 @@ body {
 }
 
 .sidebar-brand{
-    background: url("/static/imgs/header.png") center;
-    background-size:  auto 140%;
+    background: url("/static/imgs/logo.png") center;
+    background-size:  auto 200%;
+    background-repeat: no-repeat;
     height: 100px;
     border-bottom: 3px solid #444444;
 }
