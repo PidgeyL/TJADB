@@ -276,10 +276,9 @@ class Users():
     def get_by_id(self, id):
         return self.db.get_user_by_id(id)
 
-    @cacheid(cname="user_cn")
     def get_by_charter_name(self, name):
         user = self.db.get_user_by_charter_name(name)
-        return user[0] if user else None
+        return self.obj(**user[0]) if user else None
 
     @cacheid(cname="user_did")
     def get_by_discord_id(self, id):

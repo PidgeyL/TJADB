@@ -81,7 +81,7 @@ def set_tja_metadata(tja, title=None, sub=None, song=None, movie=None, image=Non
 
 
 def parse_tja(tja):
-    lval = lambda l:l.split(':')[1]
+    lval = lambda l:l.split(':')[1].strip()
     return_raw = False
     if isinstance(tja, bytes):
         tja = decode_tja(tja)
@@ -110,7 +110,7 @@ def parse_tja(tja):
         elif lline.startswith('life:'):     meta['tower_lives'] = lval(line)
         elif lline.startswith('notesdesigner'):
             level, charter = line.split(':')
-            meta[d_map[level[-1]]+'_charter'] = charter
+            meta[d_map[level[-1]]+'_charter'] = charter.strip()
         elif lline.startswith('course'):
             difficulty = lval(lline)
             if difficulty in d_map.keys():
