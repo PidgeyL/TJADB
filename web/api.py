@@ -116,7 +116,10 @@ def api_artist(id):
 @app.route('/api/browse', methods=['GET'])
 @api_reply
 def api_browse():
-    return dbl.songs.get_all()
+    songs = dbl.songs.get_all()
+    # Temp hard-coded filter:
+    states = [4, 5, 6]
+    return [s for s in songs if s.state.id in states]
 
 
 @app.route('/api/browse_artist/<id>', methods=['GET'])
