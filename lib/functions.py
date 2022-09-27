@@ -1,9 +1,9 @@
 import decimal
 import requests
-from collections import Mapping, Container
-from flask       import url_for
-from sys         import getsizeof
-from lib.Config  import Configuration
+from collections.abc import Mapping, Container
+from flask           import url_for
+from sys             import getsizeof
+from lib.Config      import Configuration
 _URL_ = Configuration().web_url
 
 def number_format(number):
