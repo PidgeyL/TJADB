@@ -1,6 +1,6 @@
 import decimal
-from collections import Mapping, Container
-from sys         import getsizeof
+from collections.abc import Mapping, Container
+from sys             import getsizeof
 
 
 def number_format(number):
