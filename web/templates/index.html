@@ -6,6 +6,11 @@
 {% block js %}
   <script type="text/javascript" src="/static/js/datatables.min.js"></script>
   <script type="text/javascript" src="/static/js/songtable.js"></script>
+  <script>
+    $(function(){
+      $("#thanks").load("/thanks"); 
+    });
+  </script>
 {% endblock %}
 
 {% block title %}{{_('index.title')}}{% endblock %}
@@ -44,5 +49,7 @@
       {{_('index.involved.text2')}}
     </div>
   </div>
+
+  <div id="thanks"> </div>
 
 {% endblock %}

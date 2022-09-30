@@ -12,7 +12,7 @@ from flask_babel   import Babel
 from flask_login   import LoginManager, current_user, login_required
 from lib.functions   import number_format, uniq, DictObj
 from web.api         import conf, dbl, app
-from web.blueprints  import app_auth, load_user, app_profile
+from web.blueprints  import app_auth, load_user, app_profile, app_disc
 
 import web.api as api
 
@@ -24,6 +24,7 @@ babel = Babel(app)
 # Load site pieces
 app.register_blueprint(app_profile) # Profile routes
 app.register_blueprint(app_auth)    # User auth (Discord oauth)
+app.register_blueprint(app_disc)    # Discord callbacks for info
 
 # Discord OATH Config
 app.config['SECRET_KEY'] = "Secret_Key"

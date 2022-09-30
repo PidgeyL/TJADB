@@ -1,0 +1,18 @@
+<div class="card border-secondary">
+  <div class="card-header">{{_('index.thanks.h')}}</div>
+  <div class="card-body">
+
+
+    <div class="d-flex flex-wrap">
+      {{accouts}}
+      {% for acc in accounts %}
+        <div class="card">
+          <img class="card-img-top" src="{{ acc['pfp_url'] }}">
+          <div class="card-body">
+            <h5 class="card-title">{{ acc['name'] }}</h5>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
