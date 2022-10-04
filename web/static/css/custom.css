@@ -48,6 +48,14 @@
   padding: 7px;
 }
 
+#thanks .card-img-top{
+  width: 220px;
+}
+
+.crown {
+  height: 30px;
+}
+
 
 @keyframes swing {
   0% {

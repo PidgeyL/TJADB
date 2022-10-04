@@ -1,10 +1,14 @@
 import decimal
 import requests
+import zenora
 from collections.abc import Mapping, Container
 from flask           import url_for
 from sys             import getsizeof
 from lib.Config      import Configuration
 _URL_ = Configuration().web_url
+
+conf        = Configuration()
+discord_api = zenora.APIClient(conf.discord_bot_key)
 
 def number_format(number):
     if isinstance(number, type(None)):
@@ -85,3 +89,8 @@ def _url_for(profile):
     if _URL_.lower().startswith("https://"):
         return url_for(profile, _scheme='https', _external=True)
     return url_for(profile)
+
+
+def discord_profile(id):
+    u = discord_api.users.get_user(id)
+    return {'name': u.username, 'pfp_url': u.avatar_url}

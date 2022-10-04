@@ -13,6 +13,7 @@ import os
 import psycopg2
 import redis
 import sys
+import yaml
 runPath = os.path.dirname(os.path.realpath(__file__))
 
 class Configuration():
@@ -31,7 +32,7 @@ class Configuration():
                'BotColors': {'SOTD':   0xf3f8fc, 'RandomSong': 0xa3f8fc,
                              'Search': 0x449920, 'About':      0xff1122,
                              'Donate': 0x338929,},
-               'Bot': {'API': '', 'Secret': ''},
+               'Discord': {'Key': '', 'Secret': ''},
                'Web': {'Host': 'localhost', 'Port':  4987,
                        'URL':  'change.me', 'Debug': True,}}
 
@@ -164,19 +165,34 @@ class Configuration():
     @classmethod
     @property
     def discord_bot_id(cls):
-        return cls.readSetting('DiscordBot', 'ID')
+        return cls.readSetting('Discord', 'ID')
 
     @classmethod
     @property
     def discord_bot_key(cls):
-        return cls.readSetting('DiscordBot', 'Key')
+        return cls.readSetting('Discord', 'Key')
 
     @classmethod
     @property
     def discord_bot_secret(cls):
-        return cls.readSetting('DiscordBot', 'Secret')
+        return cls.readSetting('Discord', 'Secret')
 
     @classmethod
     @property
     def discord_bot_prefix(cls):
-        return cls.readSetting('DiscordBot', 'Prefix')
+        return cls.readSetting('Discord', 'Prefix')
+
+
+    ############
+    # Sponsors #
+    ############
+    @classmethod
+    @property
+    def sponsors(cls):
+        try:
+            tiers = yaml.safe_load( open(os.path.join(runPath, "../etc/sponsors.yml"), 'r') )
+        except:
+            tiers = {x: [] for x in ['Tier 1 Sponsor', 'Tier 2 Sponsor', 'Tier 3 Sponsor', 'Developer', 'Contributor']}
+            print("Can't read the sponsors file")
+        tiers = {k: v or [] for k,v in tiers.items()}
+        return tiers

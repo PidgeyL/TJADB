@@ -1,17 +1,30 @@
 <div class="card border-secondary">
   <div class="card-header">{{_('index.thanks.h')}}</div>
   <div class="card-body">
-
-
     <div class="d-flex flex-wrap">
-      {{accouts}}
-      {% for acc in accounts %}
-        <div class="card">
-          <img class="card-img-top" src="{{ acc['pfp_url'] }}">
-          <div class="card-body">
-            <h5 class="card-title">{{ acc['name'] }}</h5>
+      {% for tier in ['Developer', 'Contributor', 'Tier 3 Sponsor', 'Tier 2 Sponsor', 'TIer 1 Sponsor'] %}
+        {% for acc in accounts[tier] %}
+          <div class="card">
+            <img class="card-img-top" src="{{ acc['pfp_url'] }}">
+            <div class="card-body">
+              <h5 class="card-title">
+                {{ acc['name'] }}
+                {% if tier == 'Tier 3 Sponsor' %}
+                  <img class="crown" src="/static/imgs/crown_rainbow.png">
+                {% elif tier == 'Tier 2 Sponsor' %}
+                  <img class="crown" src="/static/imgs/crown_gold.png">
+                {% elif tier == 'Tier 1 Sponsor' %}
+                  <img class="crown" src="/static/imgs/crown_silver.png">
+                {% elif tier == 'Contributor' %}
+                  <img class="crown" src="/static/imgs/player_2.png">
+                {% elif tier == 'Developer' %}
+                  <img class="crown" src="/static/imgs/player_1.png">
+                {% endif %}
+              </h5>
+              <span>({{ tier}})</span>
+            </div>
           </div>
-        </div>
+        {% endfor %}
       {% endfor %}
     </div>
   </div>
