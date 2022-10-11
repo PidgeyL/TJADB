@@ -1,6 +1,6 @@
 
 from flask        import Blueprint, redirect, request
-from flask_login  import current_user, login_user, login_required, LoginManager, UserMixin
+from flask_login  import current_user, login_user, UserMixin
 from urllib.parse import quote
 from zenora       import APIClient
 from lib.Config        import Configuration
@@ -22,15 +22,22 @@ class UserNotFoundError(Exception):
 
 class AppUser(UserMixin):
     def __init__(self, id=None, discord_id=None, display_name=None):
+        print(id, discord_id, display_name)
         # Try to get the user:
-        if id:            user = dbl.users.get_by_id(id)
-        elif discord_id:  user = dbl.users.get_by_discord_id(discord_id)
-        else:             raise UserNotFoundError()
-
+        user = None
+        if id:           user = dbl.users.get_by_id(id)
+        elif discord_id: user = dbl.users.get_by_discord_id(discord_id)
         # Create discord user if not exist
         if discord_id and not user:
-            user = User(discord_id=discord_id, image_url=None)
-            print("Would create user: %s"%user.discord_id)
+            user = User(discord_id=discord_id, image_url=None, preferred_language_id=1)
+            try:
+                id = dbl.users.add(user)
+                print(f"User with Discord ID {id} added")
+                user.id = id
+                print(user); print(type(user))
+            except Exception as e:
+                user = None
+                print(f"Couldn't add user with Discord ID {id}. Reason: {e}")
 
         # create user
         if user:
@@ -55,12 +62,18 @@ class AppUser(UserMixin):
 
 
 def load_user(id):
+    if isinstance(id, str):
+        try:
+            id = str(id)
+        except:
+            id = None
     return AppUser.get(id=id, discord_id=None, display_name=None)
 
 
 @app_auth.route('/discord', methods=['GET'])
 def discord_login():
     return redirect(_D_OAUTH_URL_)
+
 
 @app_auth.route('/discord/callback', methods=['GET'])
 def oauth_callback():
