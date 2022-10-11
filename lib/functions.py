@@ -79,6 +79,10 @@ class DictObj(dict):
 
 
 def is_image_url(url):
+    if not isinstance(url, str):
+        return False
+    if url[:7].lower() not in ('http://', 'https:/'):
+        return False
     r = requests.head(url)
     if r.headers["content-type"].startswith("image/"):
         return True

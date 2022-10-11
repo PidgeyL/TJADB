@@ -22,7 +22,6 @@ class UserNotFoundError(Exception):
 
 class AppUser(UserMixin):
     def __init__(self, id=None, discord_id=None, display_name=None):
-        print(id, discord_id, display_name)
         # Try to get the user:
         user = None
         if id:           user = dbl.users.get_by_id(id)
