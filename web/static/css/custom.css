@@ -532,3 +532,42 @@ body {
 .chiller-theme .sidebar-footer>a:last-child {
     border-right: none;
 }
+
+
+/*----------------------mobile fix----------------------*/
+body{
+	min-width: 0;
+}
+.toggle-vis,
+.toggle-dif{
+	cursor: pointer;
+}
+.dataTables_wrapper{
+	overflow: auto;
+}
+.dataTables_wrapper table{
+	min-width: 1000px;
+}
+.card-body img{
+	max-width: 100%;
+}
+.pagination{
+	flex-wrap: wrap;
+}
+@media screen and (max-width: 768px){
+	.page-wrapper .page-content > div{
+		padding-left: 0;
+		padding-right: 0;
+	}
+	.dataTables_wrapper{
+		margin: 0 -1rem;
+	}
+	.ribbon-vid{
+		left: 0;
+	}
+	#pag_content{
+		columns: 1;
+		-webkit-columns: 1;
+		-moz-columns: 1;
+	}
+}
