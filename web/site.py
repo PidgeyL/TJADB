@@ -94,21 +94,6 @@ def browse_source(id):
     return render_template('source.html', songlist=data, source=source)
 
 
-@app.route('/custom/nameplates', methods=['GET'])
-def custom_nameplates():
-    return render_template('custom/nameplates.html')
-
-
-@app.route('/custom/dons', methods=['GET'])
-def custom_dons():
-    return render_template('custom/dons.html')
-
-
-@app.route('/custom/puchichara', methods=['GET'])
-def custom_puchichara():
-    return render_template('custom/puchichara.html')
-
-
 @app.route('/assets/<asset>', methods=['GET'])
 def assets(asset):
     try:

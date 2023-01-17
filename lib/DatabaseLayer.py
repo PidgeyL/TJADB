@@ -255,7 +255,10 @@ class Songs():
         td   = date.today()
         sotd = self.db.get_song_of_the_day(td)
         if not sotd:
-            sotd = random.choice( cdb.get_all_keys('song') )
+            songs =  cdb.get_all_keys('song')
+            if len(songs) == 0:
+                return None
+            sotd = random.choice(songs)
             sotd = self.get_by_id(sotd)
             self.db.set_song_of_the_day(td, sotd.id)
             return sotd

@@ -167,6 +167,12 @@ def api_source(id):
     return dbl.sources.get_by_id(id)
 
 
+@app.route('/api/sotd', methods=['GET'])
+@api_reply
+def api_sotd():
+    return dbl.songs.get_sotd()
+
+
 @app.route('/download/orig/<id>', methods=['GET'])
 def download_orig(id):
     try:
