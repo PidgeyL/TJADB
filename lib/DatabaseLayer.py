@@ -258,8 +258,18 @@ class Songs():
             songs =  cdb.get_all_keys('song')
             if len(songs) == 0:
                 return None
-            sotd = random.choice(songs)
-            sotd = self.get_by_id(sotd)
+            # Randomize order
+            #  The reason for shuffle, is so when there are only
+            #  songs that don't have all difficulties available,
+            #  a random one can still be picked (the last one)
+            random.shuffle(songs)
+            # Look for applicable songs
+            required = ['d_kantan', 'd_futsuu', 'd_muzukashii', 'd_oni']
+            while len(songs) > 0:
+                song_id = songs.pop(0)
+                sotd = self.get_by_id(song_id)
+                if all([getattr(sotd, diff) for diff in required]):
+                    break
             self.db.set_song_of_the_day(td, sotd.id)
             return sotd
         return self.obj(**sotd)
